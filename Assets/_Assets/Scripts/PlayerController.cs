@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     private Rigidbody rb;
     [Header("Self-References")]
@@ -12,13 +12,22 @@ public class PlayerController : MonoBehaviour
 
     [Header("External References")]
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Transform arrowTransform;
+    [SerializeField] private Transform targArrowPos;
+    [SerializeField] private Rigidbody arrowRB;
 
     [Header("Parameters")]
+    [SerializeField] private float arrowPower;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float accelSpeed_ground;
     [SerializeField] private float frictionSpeed_ground;
     [SerializeField] private float accelSpeed_air;
     [SerializeField] private float frictionSpeed_air;
+
+    [SerializeField] private float gravUp;
+    [SerializeField] private float gravDown;
+    [SerializeField] private float spaceReleaseGravMult;
+    [Space(5)]
     [Space(10)]
     [SerializeField] private float jumpPower;
     [SerializeField] private LayerMask groundLayer;
@@ -33,9 +42,10 @@ public class PlayerController : MonoBehaviour
 
     bool grounded = false;
 
-    private Vector3 currNetGrav_Global = Vector3.down;
-
     private List<Transform> raycastPoints = new List<Transform>();
+
+    private float shootPickupDuration = 0.3f;
+    private float nextShootPickupTime;
 
     private enum BowStateEnum
     {
@@ -47,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        //Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
 
         rb = GetComponent<Rigidbody>();
 
@@ -79,8 +89,7 @@ public class PlayerController : MonoBehaviour
             case BowStateEnum.DrawBack:
                 if (InputHandler.Instance.Shoot.Up)
                 {
-                    bowState = BowStateEnum.Fired;
-                    bowAnim.SetTrigger("Fire");
+                    FireArrow();
                 }
                 break;
             case BowStateEnum.Fired:
@@ -106,6 +115,36 @@ public class PlayerController : MonoBehaviour
             if (grounded)
                 rb.velocity += transform.up * jumpPower;
         }
+
+        //Space release gravity
+        if (InputHandler.Instance.Jump.Up && rb.velocity.y > 0)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * spaceReleaseGravMult, rb.velocity.z);
+        }
+    }
+
+    public void PickupArrow()
+    {
+        if (Time.time < nextShootPickupTime)
+            return;
+
+        arrowTransform.gameObject.SetActive(false);
+        bowState = BowStateEnum.Ready;
+        bowAnim.SetTrigger("Pickup");
+    }
+
+    private void FireArrow()
+    {
+        nextShootPickupTime = Time.time + shootPickupDuration;
+
+        bowState = BowStateEnum.Fired;
+        bowAnim.SetTrigger("Fire");
+
+        arrowRB.velocity = Vector3.zero;
+        arrowTransform.position = targArrowPos.position;
+        arrowTransform.rotation = targArrowPos.rotation;
+        arrowTransform.gameObject.SetActive(true);
+        arrowRB.velocity = targArrowPos.forward * arrowPower;
     }
 
     // Update is called once per frame
@@ -127,16 +166,18 @@ public class PlayerController : MonoBehaviour
         }
         #endregion
 
-        #region Calculate and apply Gravity
-        //Apply gravity
-        rb.velocity += currNetGrav_Global;
+        #region Apply Gravity
+        if (InputHandler.Instance.Jump.Holding && rb.velocity.y > 0)
+            rb.velocity -= new Vector3(0, gravUp, 0);
+        else
+            rb.velocity -= new Vector3(0, gravDown, 0);
         #endregion
 
 
         #region Acceleration
         //Get gravityless velocity
-        Vector3 onlyGravVelocity = Vector3.Project(rb.velocity, currNetGrav_Global.normalized);
-        Vector3 noGravVelocity = rb.velocity - onlyGravVelocity;
+        Vector3 noGravVelocity = rb.velocity;
+        noGravVelocity.y = 0;
 
         //Convert global velocity to local velocity
         Vector3 velocity_local = transform.InverseTransformDirection(noGravVelocity);
@@ -180,7 +221,45 @@ public class PlayerController : MonoBehaviour
             }
 
             //Convert local velocity to global velocity
-            rb.velocity = onlyGravVelocity + transform.TransformDirection(updatedVelocity);
+            rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
+        }
+        else
+        {
+            //Apply air fricion
+            Vector3 velocity_local_friction = velocity_local.normalized * Mathf.Max(0, velocity_local.magnitude - frictionSpeed_air);
+
+            Vector3 updatedVelocity = velocity_local_friction;
+
+            if (currInput.magnitude > 0.05f) //Pressing something, try to accelerate
+            {
+                Vector3 velocity_local_input = velocity_local_friction + currInput * accelSpeed_air;
+
+                if (velocity_local_friction.magnitude <= maxSpeed)
+                {
+                    //under max speed, accelerate towards max speed
+                    updatedVelocity = velocity_local_input.normalized * Mathf.Min(maxSpeed, velocity_local_input.magnitude);
+                }
+                else
+                {
+                    //over max speed
+                    if (velocity_local_input.magnitude <= maxSpeed) //Use new direction, would go less than max speed
+                    {
+                        updatedVelocity = velocity_local_input;
+                    }
+                    else //Would stay over max speed, use vector with smaller magnitude
+                    {
+                        //Would accelerate more, so don't user player input
+                        if (velocity_local_input.magnitude > velocity_local_friction.magnitude)
+                            updatedVelocity = velocity_local_friction;
+                        else
+                            //Would accelerate less, user player input (input moves velocity more to 0,0 than just friciton)
+                            updatedVelocity = velocity_local_input;
+                    }
+                }
+            }
+
+            //Convert local velocity to global velocity
+            rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
         #endregion
     }

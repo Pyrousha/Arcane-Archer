@@ -14,14 +14,14 @@ TagManager:
   - 
   - Entity
   - Terrain
+  - 
+  - EnemyHitbox
   - Arrow
   - 
+  - EnemyHurtbox
+  - PlayerHurtbox
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerPickup
   - 
   - 
   - 

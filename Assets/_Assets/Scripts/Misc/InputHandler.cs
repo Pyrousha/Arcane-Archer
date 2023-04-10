@@ -16,11 +16,6 @@ public class InputHandler : Singleton<InputHandler>
         get;
         private set;
     }
-    public float MoveY
-    {
-        get;
-        private set;
-    }
     public Vector2 Look
     {
         get;
@@ -65,10 +60,6 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_MoveXZ(InputAction.CallbackContext _ctx)
     {
         MoveXZ = _ctx.ReadValue<Vector2>();
-    }
-    public void CTX_MoveY(InputAction.CallbackContext _ctx)
-    {
-        MoveY = _ctx.ReadValue<float>();
     }
     public void CTX_Look(InputAction.CallbackContext _ctx)
     {
