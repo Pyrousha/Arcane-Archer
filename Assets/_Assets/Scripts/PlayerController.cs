@@ -9,16 +9,17 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform raycastParent;
     [SerializeField] private Animator bowAnim;
     [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Transform shadowTransform;
 
     [Header("External References")]
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Transform arrowTransform;
     [SerializeField] private Transform targArrowPos;
-    [SerializeField] private Rigidbody arrowRB;
+    [SerializeField] private Arrow arrow;
 
     [Header("Parameters")]
     [SerializeField] private float arrowPower;
-    [SerializeField] private float maxSpeed;
+    [SerializeField] private float maxSpeed_Normal;
+    [SerializeField] private float maxSpeed_Charging;
     [SerializeField] private float accelSpeed_ground;
     [SerializeField] private float frictionSpeed_ground;
     [SerializeField] private float accelSpeed_air;
@@ -102,7 +103,7 @@ public class PlayerController : Singleton<PlayerController>
 
         //Camera Spin vertical
         targVerticalSpin -= turnSpeedY * InputHandler.Instance.Look.y * Time.deltaTime;
-        targVerticalSpin = Mathf.Clamp(targVerticalSpin, -80.5f, 80.5f);
+        targVerticalSpin = Mathf.Clamp(targVerticalSpin, -90f, 90f);
         cameraTarget.localRotation = Quaternion.Euler(targVerticalSpin, 0, 0);
 
         // //Make actual camera be facing in same direction as target
@@ -128,9 +129,10 @@ public class PlayerController : Singleton<PlayerController>
         if (Time.time < nextShootPickupTime)
             return;
 
-        arrowTransform.gameObject.SetActive(false);
         bowState = BowStateEnum.Ready;
         bowAnim.SetTrigger("Pickup");
+
+        arrow.Pickup();
     }
 
     private void FireArrow()
@@ -138,13 +140,11 @@ public class PlayerController : Singleton<PlayerController>
         nextShootPickupTime = Time.time + shootPickupDuration;
 
         bowState = BowStateEnum.Fired;
-        bowAnim.SetTrigger("Fire");
 
-        arrowRB.velocity = Vector3.zero;
-        arrowTransform.position = targArrowPos.position;
-        arrowTransform.rotation = targArrowPos.rotation;
-        arrowTransform.gameObject.SetActive(true);
-        arrowRB.velocity = targArrowPos.forward * arrowPower;
+        float firePower = Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
+        arrow.Fire(targArrowPos, firePower * arrowPower);
+
+        bowAnim.SetTrigger("Fire");
     }
 
     // Update is called once per frame
@@ -152,6 +152,19 @@ public class PlayerController : Singleton<PlayerController>
     {
         // Debug.DrawRay(transform.position, transform.forward * 1.6f / 2f, new Color(1, 0, 0), 5f);
         // Debug.DrawRay(cameraTransform.position, cameraTransform.forward * 1.5f / 2f, new Color(0, 1, 0), 5f);
+
+        #region Set position and scale of "shadow" object
+        float newScale = 0;
+        if (Physics.Raycast(transform.position, -transform.up, out RaycastHit _hit, 50, groundLayer))
+        {
+            shadowTransform.position = _hit.point;
+            float distToGround = _hit.distance;
+
+            //Shadow should be smaller the further away the character is from the ground
+            newScale = Mathf.Max(1.5f - 0.1f * distToGround, 0.5f);
+        }
+        shadowTransform.localScale = new Vector3(newScale, shadowTransform.localScale.y, newScale);
+        #endregion
 
         #region determine if player is grounded or not
         grounded = false; //number of raycasts that hit the ground 
@@ -182,6 +195,9 @@ public class PlayerController : Singleton<PlayerController>
         //Convert global velocity to local velocity
         Vector3 velocity_local = transform.InverseTransformDirection(noGravVelocity);
 
+        float maxSpeed = maxSpeed_Normal;
+        if (bowState == BowStateEnum.DrawBack)
+            maxSpeed = maxSpeed_Charging;
 
         //XZ Friction + acceleration
         Vector3 currInput = new Vector3(InputHandler.Instance.MoveXZ.x, 0, InputHandler.Instance.MoveXZ.y);
