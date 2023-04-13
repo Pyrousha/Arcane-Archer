@@ -9,6 +9,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform raycastParent;
     [SerializeField] private Animator bowAnim;
     [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Transform modelOrientation;
 
     [Header("External References")]
     [SerializeField] private Transform cameraTransform;
@@ -37,8 +38,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float turnSpeedX;
     [SerializeField] private float turnSpeedY;
 
-    float targHorizontalSpin;
-    float targVerticalSpin;
+    float targHorizontalRotation;
+    float targVerticalRotation;
 
     bool grounded = false;
 
@@ -97,17 +98,20 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         //Camera Spin horizontal
-        float amountToTurn = turnSpeedX * InputHandler.Instance.Look.x * Time.deltaTime;
-        transform.rotation = Quaternion.AngleAxis(amountToTurn, transform.up) * transform.rotation;
+        float mouseX = turnSpeedX * InputHandler.Instance.Look.x * Time.deltaTime;
+        float mouseY = turnSpeedY * InputHandler.Instance.Look.y * Time.deltaTime;
 
-        //Camera Spin vertical
-        targVerticalSpin -= turnSpeedY * InputHandler.Instance.Look.y * Time.deltaTime;
-        targVerticalSpin = Mathf.Clamp(targVerticalSpin, -80.5f, 80.5f);
-        cameraTarget.localRotation = Quaternion.Euler(targVerticalSpin, 0, 0);
+        targHorizontalRotation += mouseX;
 
-        // //Make actual camera be facing in same direction as target
+        targVerticalRotation -= mouseY;
+        targVerticalRotation = Mathf.Clamp(targVerticalRotation, -89.5f, 89.5f);
+
+        //Rotate camera and player model
+        cameraTransform.rotation = Quaternion.Euler(targVerticalRotation, targHorizontalRotation, 0);
+        modelOrientation.rotation = Quaternion.Euler(0, targHorizontalRotation, 0);
+
+        //Place camera
         cameraTransform.position = cameraTarget.position;
-        cameraTransform.rotation = cameraTarget.rotation;
 
         //Jump
         if (InputHandler.Instance.Jump.Down)
@@ -180,7 +184,7 @@ public class PlayerController : Singleton<PlayerController>
         noGravVelocity.y = 0;
 
         //Convert global velocity to local velocity
-        Vector3 velocity_local = transform.InverseTransformDirection(noGravVelocity);
+        Vector3 velocity_local = modelOrientation.InverseTransformDirection(noGravVelocity);
 
 
         //XZ Friction + acceleration
@@ -221,7 +225,7 @@ public class PlayerController : Singleton<PlayerController>
             }
 
             //Convert local velocity to global velocity
-            rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
+            rb.velocity = new Vector3(0, rb.velocity.y, 0) + modelOrientation.TransformDirection(updatedVelocity);
         }
         else
         {
@@ -259,7 +263,7 @@ public class PlayerController : Singleton<PlayerController>
             }
 
             //Convert local velocity to global velocity
-            rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
+            rb.velocity = new Vector3(0, rb.velocity.y, 0) + modelOrientation.TransformDirection(updatedVelocity);
         }
         #endregion
     }
