@@ -124,15 +124,18 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    public void PickupArrow()
+    public void TryPickupArrow()
     {
         if (Time.time < nextShootPickupTime)
             return;
 
-        bowState = BowStateEnum.Ready;
-        bowAnim.SetTrigger("Pickup");
+        if (InputHandler.Instance.Shoot.Down || arrow.State == Arrow.ArrowStateEnum.FlyingBack)
+        {
+            bowState = BowStateEnum.Ready;
+            bowAnim.SetTrigger("Pickup");
 
-        arrow.Pickup();
+            arrow.Pickup();
+        }
     }
 
     private void FireArrow()
@@ -201,6 +204,8 @@ public class PlayerController : Singleton<PlayerController>
 
         //XZ Friction + acceleration
         Vector3 currInput = new Vector3(InputHandler.Instance.MoveXZ.x, 0, InputHandler.Instance.MoveXZ.y);
+        if (currInput.magnitude > 0.05f)
+            currInput.Normalize();
         if (grounded)
         {
             //Apply ground fricion
@@ -248,28 +253,35 @@ public class PlayerController : Singleton<PlayerController>
 
             if (currInput.magnitude > 0.05f) //Pressing something, try to accelerate
             {
-                Vector3 velocity_local_input = velocity_local_friction + currInput * accelSpeed_air;
+                Vector3 velocity_local_with_input = velocity_local_friction + currInput * accelSpeed_air;
 
                 if (velocity_local_friction.magnitude <= maxSpeed)
                 {
                     //under max speed, accelerate towards max speed
-                    updatedVelocity = velocity_local_input.normalized * Mathf.Min(maxSpeed, velocity_local_input.magnitude);
+                    updatedVelocity = velocity_local_with_input.normalized * Mathf.Min(maxSpeed, velocity_local_with_input.magnitude);
                 }
                 else
                 {
                     //over max speed
-                    if (velocity_local_input.magnitude <= maxSpeed) //Use new direction, would go less than max speed
+                    if (velocity_local_with_input.magnitude <= maxSpeed) //Use new direction, would go less than max speed
                     {
-                        updatedVelocity = velocity_local_input;
+                        updatedVelocity = velocity_local_with_input;
                     }
                     else //Would stay over max speed, use vector with smaller magnitude
                     {
+                        Debug.Log("withotInput: " + velocity_local.magnitude);
+                        Debug.Log(velocity_local);
+                        Debug.Log("input: " + velocity_local_with_input.magnitude);
+                        Debug.Log(velocity_local_with_input);
+                        Debug.Log("friction: " + velocity_local_friction.magnitude);
+                        Debug.Log(velocity_local_friction);
+
                         //Would accelerate more, so don't user player input
-                        if (velocity_local_input.magnitude > velocity_local_friction.magnitude)
+                        if (velocity_local_with_input.magnitude > velocity_local_friction.magnitude)
                             updatedVelocity = velocity_local_friction;
                         else
                             //Would accelerate less, user player input (input moves velocity more to 0,0 than just friciton)
-                            updatedVelocity = velocity_local_input;
+                            updatedVelocity = velocity_local_with_input;
                     }
                 }
             }

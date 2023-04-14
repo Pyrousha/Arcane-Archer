@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerPickupHitbox : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        PlayerController.Instance.PickupArrow();
+        PlayerController.Instance.TryPickupArrow();
     }
 }
