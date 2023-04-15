@@ -8,11 +8,12 @@ public class Explosion : MonoBehaviour
 
     void OnTriggerEnter(Collider _col)
     {
-        Vector3 velocityToAdd = (_col.transform.position - transform.position).normalized * explosionPower;
+        //Debug.Log(PlayerController.Instance.BowDrawPercent);
+        Vector3 velocityToAdd = ((_col.transform.position + new Vector3(0, 3, 0)) - transform.position).normalized * explosionPower * PlayerController.Instance.BowDrawPercent;
         // Vector3 velocityToAdd = (_col.transform.position - transform.position);
         // velocityToAdd = (explosionPower / velocityToAdd.magnitude) * velocityToAdd.normalized;
-        Debug.Log(velocityToAdd);
-        Debug.Log(velocityToAdd.magnitude);
+        // Debug.Log(velocityToAdd);
+        // Debug.Log(velocityToAdd.magnitude);
         _col.gameObject.GetComponent<Rigidbody>().velocity += velocityToAdd;
 
         Debug.DrawRay(_col.gameObject.transform.position, velocityToAdd, Color.red, 2f);

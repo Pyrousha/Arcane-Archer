@@ -17,6 +17,7 @@ public class Arrow : MonoBehaviour
 
     [SerializeField] private Transform player;
     private Rigidbody playerRB;
+    private PlayerController playerController;
     [SerializeField] private ParticleSystem explosionEffect;
     [SerializeField] private Animator explodeAnim;
     [Space(5)]
@@ -31,6 +32,7 @@ public class Arrow : MonoBehaviour
         explosionTransform = explosionEffect.gameObject.transform;
         rb = GetComponent<Rigidbody>();
         playerRB = player.GetComponent<Rigidbody>();
+        playerController = player.GetComponent<PlayerController>();
     }
 
     private void FixedUpdate()
@@ -53,28 +55,32 @@ public class Arrow : MonoBehaviour
             case ArrowStateEnum.FlyingBack:
                 Vector3 targetForward = (player.position - transform.position).normalized;
 
+                //Debug.Log(targetForward);
+
                 //transform.forward = Vector3.RotateTowards(transform.forward, targetForward, lerpSpeed)
+
+                transform.forward = Vector3.RotateTowards(transform.forward, targetForward, lerpSpeed * Mathf.Deg2Rad, 0);
 
 
                 //Calculate new up-direction and rotate player
                 Quaternion targRotation = Quaternion.LookRotation(targetForward);
 
-                //Lerp up-direction (or jump if close enough)
-                float angleDiff = Quaternion.Angle(transform.rotation, targRotation);
-                if (angleDiff > lerpSpeed)
-                {
-                    //Angle between current rotation and target rotation big enough to lerp
-                    transform.rotation = Quaternion.Lerp(transform.rotation, targRotation, lerpSpeed * (1f / angleDiff));
-                }
-                else
-                {
-                    //current and target rotation are close enough, jump value to stop lerp from going forever
-                    transform.rotation = targRotation;
-                }
+                // //Lerp up-direction (or jump if close enough)
+                // float angleDiff = Quaternion.Angle(transform.rotation, targRotation);
+                // if (angleDiff > lerpSpeed)
+                // {
+                //     //Angle between current rotation and target rotation big enough to lerp
+                //     transform.rotation = Quaternion.Lerp(transform.rotation, targRotation, lerpSpeed * (1f / angleDiff));
+                // }
+                // else
+                // {
+                //     //current and target rotation are close enough, jump value to stop lerp from going forever
+                //     transform.rotation = targRotation;
+                // }
 
-                rb.angularVelocity = Vector3.zero;
+                //rb.angularVelocity = Vector3.zero;
                 rb.velocity = transform.forward * explodeSpeed;
-                rb.angularVelocity = Vector3.zero;
+                //rb.angularVelocity = Vector3.zero;
                 break;
         }
     }
@@ -106,9 +112,11 @@ public class Arrow : MonoBehaviour
 
         explodeAnim.SetTrigger("Explode");
 
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.up), 1f);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.up), 1f);
 
         rb.useGravity = false;
+
+        playerController.SetFireSize(0);
     }
 
     public void Fire(Transform targArrowPos, float arrowPower)

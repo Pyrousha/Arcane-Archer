@@ -15,6 +15,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform targArrowPos;
     [SerializeField] private Arrow arrow;
+    [SerializeField] private Transform arrowFire1;
+    [SerializeField] private Transform arrowFire2;
 
     [Header("Parameters")]
     [SerializeField] private float arrowPower;
@@ -37,6 +39,9 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Settings")]
     [SerializeField] private float turnSpeedX;
     [SerializeField] private float turnSpeedY;
+
+    private float bowDrawPercent = 0;
+    public float BowDrawPercent => bowDrawPercent;
 
     float targHorizontalSpin;
     float targVerticalSpin;
@@ -88,6 +93,9 @@ public class PlayerController : Singleton<PlayerController>
                 }
                 break;
             case BowStateEnum.DrawBack:
+                bowDrawPercent = Mathf.Min(1, bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                SetFireSize(bowDrawPercent);
+
                 if (InputHandler.Instance.Shoot.Up)
                 {
                     FireArrow();
@@ -290,5 +298,11 @@ public class PlayerController : Singleton<PlayerController>
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
         #endregion
+    }
+
+    public void SetFireSize(float _percentage)
+    {
+        arrowFire1.localScale = Vector3.one * _percentage;
+        arrowFire2.localScale = Vector3.one * _percentage;
     }
 }
