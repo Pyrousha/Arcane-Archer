@@ -22,6 +22,11 @@ public class InputHandler : Singleton<InputHandler>
         get;
         private set;
     }
+    public Vector2 Scroll
+    {
+        get;
+        private set;
+    }
     public ButtonState Jump
     {
         get { return buttons[(int)ButtonIndices.Jump]; }
@@ -69,6 +74,13 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_Look(InputAction.CallbackContext _ctx)
     {
         Look = _ctx.ReadValue<Vector2>();
+    }
+    public void CTX_Scroll(InputAction.CallbackContext _ctx)
+    {
+        Scroll = _ctx.ReadValue<Vector2>();
+
+        PlayerController.turnSpeedX = Mathf.Max(2.5f, PlayerController.turnSpeedX + Scroll.y * (2.5f / 120f));
+        SensitivityText.Instance.UpdateText();
     }
 
     //Buttons

@@ -396,6 +396,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndLEvel
       objectReference: {fileID: 0}
+    - target: {fileID: 7758332939598430884, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_text
+      value: "Welcome, Archer! \nUse WASD to move, and Space to jump."
+      objectReference: {fileID: 0}
     - target: {fileID: 8805791311011339490, guid: 4b126924c05de8647b27c8d9e832a5dd,
         type: 3}
       propertyPath: isFirstLevel

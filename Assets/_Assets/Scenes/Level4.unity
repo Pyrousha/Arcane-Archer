@@ -470,6 +470,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndLEvel
       objectReference: {fileID: 0}
+    - target: {fileID: 7186695248944078563, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186695248944078563, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7758332939598430884, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_text
+      value: "Pro gamer tip: \nJump slightly before detonation for extra height!"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b126924c05de8647b27c8d9e832a5dd, type: 3}
 --- !u!1001 &1044682036

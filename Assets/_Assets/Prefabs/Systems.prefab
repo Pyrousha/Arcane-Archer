@@ -193,6 +193,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 18837d75-26d3-4d99-a7f3-e3b912cfca9d
     m_ActionName: Player/Explode[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4207602540661894874}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: CTX_Scroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 5932be04-ca30-40dc-8dd0-c0a537e825b0
+    m_ActionName: Player/SensAdj[/Mouse/scroll]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

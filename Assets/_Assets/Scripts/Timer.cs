@@ -5,7 +5,14 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
+    private static float bestTime = float.MaxValue;
+
+    private static bool unlocked = false;
+
+    [SerializeField] private GameObject unlockText;
+    [SerializeField] private GameObject newBestTimeText;
     [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private bool isMainMenu;
     [SerializeField] private bool isFirstLevel;
     [SerializeField] private bool isCreditsScene;
 
@@ -24,9 +31,27 @@ public class Timer : MonoBehaviour
         UpdateUI();
 
         if (isCreditsScene)
+        {
+            if (!unlocked)
+            {
+                bestTime = totalTime;
+                unlocked = true;
+                unlockText.SetActive(true);
+            }
+            else
+            {
+                if (totalTime < bestTime)
+                {
+                    bestTime = totalTime;
+                    newBestTimeText.SetActive(true);
+                }
+            }
             return;
+        }
 
-        StartCoroutine(ResumeTimer());
+        text.gameObject.SetActive(unlocked);
+        if (!isMainMenu)
+            StartCoroutine(ResumeTimer());
     }
 
     public void PauseTimer()
@@ -62,6 +87,9 @@ public class Timer : MonoBehaviour
         currTime = Mathf.Max(0, currTime);
         float secsNum = totalTime + currTime;
 
+        if (isMainMenu)
+            secsNum = bestTime;
+
         int mins = Mathf.FloorToInt(secsNum / 60);
         string minsStr = mins.ToString();
         if (minsStr.Length < 2)
@@ -78,5 +106,7 @@ public class Timer : MonoBehaviour
             msStr = "0" + msStr;
 
         text.text = minsStr + ":" + secsStr + ":" + msStr;
+        if (isMainMenu)
+            text.text = "Best Time: " + text.text;
     }
 }
