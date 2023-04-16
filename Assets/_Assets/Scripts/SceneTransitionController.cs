@@ -11,9 +11,6 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Player")
-            return;
-
         LevelFinished = true;
         StartCoroutine(OnLevelFinished());
     }
@@ -25,5 +22,28 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
         yield return new WaitForSeconds(0.5f);
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void ToNextLevel()
+    {
+        LevelFinished = true;
+        StartCoroutine(OnLevelFinished());
+    }
+
+    public void OnDeath()
+    {
+        if (LevelFinished)
+            return;
+
+        StartCoroutine(ReloadCurrLevel());
+    }
+
+    private IEnumerator ReloadCurrLevel()
+    {
+        anim.SetTrigger("FadeToBlack");
+
+        yield return new WaitForSeconds(0.5f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

@@ -152,8 +152,9 @@ public class PlayerController : Singleton<PlayerController>
 
         bowState = BowStateEnum.Fired;
 
-        float firePower = Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
-        arrow.Fire(targArrowPos, firePower * arrowPower);
+        float firePower = arrowPower * Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
+        firePower *= Mathf.Max(1, Vector3.Dot(targArrowPos.forward, rb.velocity * 0.2f));
+        arrow.Fire(targArrowPos, firePower);
 
         bowAnim.SetTrigger("Fire");
     }

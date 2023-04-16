@@ -105,14 +105,17 @@ public class Arrow : MonoBehaviour
 
     public void Explode()
     {
+        if (state == ArrowStateEnum.InGround)
+        {
+            //BOOM!!!!
+
+            explosionTransform.position = transform.position;
+            explosionEffect.Play();
+
+            explodeAnim.SetTrigger("Explode");
+        }
+
         state = ArrowStateEnum.FlyingBack;
-
-        explosionTransform.position = transform.position;
-        explosionEffect.Play();
-
-        explodeAnim.SetTrigger("Explode");
-
-        //transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(Vector3.up), 1f);
 
         rb.useGravity = false;
 
