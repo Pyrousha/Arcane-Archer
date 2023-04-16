@@ -8,11 +8,28 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
     public bool LevelFinished { get; private set; } = false;
 
     [SerializeField] private Animator anim;
+    [SerializeField] private Timer timer;
 
     private void OnTriggerEnter(Collider other)
     {
+        timer.PauseTimer();
+
         LevelFinished = true;
         StartCoroutine(OnLevelFinished());
+    }
+
+    public void ToMainMenu()
+    {
+        StartCoroutine(ToMainMenuRoutine());
+    }
+
+    private IEnumerator ToMainMenuRoutine()
+    {
+        anim.SetTrigger("FadeToBlack");
+
+        yield return new WaitForSeconds(0.5f);
+
+        SceneManager.LoadScene(0);
     }
 
     private IEnumerator OnLevelFinished()
@@ -34,6 +51,8 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
     {
         if (LevelFinished)
             return;
+
+        timer.PauseTimer();
 
         StartCoroutine(ReloadCurrLevel());
     }

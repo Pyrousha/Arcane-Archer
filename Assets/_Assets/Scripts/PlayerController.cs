@@ -278,12 +278,12 @@ public class PlayerController : Singleton<PlayerController>
                     }
                     else //Would stay over max speed, use vector with smaller magnitude
                     {
-                        Debug.Log("withotInput: " + velocity_local.magnitude);
-                        Debug.Log(velocity_local);
-                        Debug.Log("input: " + velocity_local_with_input.magnitude);
-                        Debug.Log(velocity_local_with_input);
-                        Debug.Log("friction: " + velocity_local_friction.magnitude);
-                        Debug.Log(velocity_local_friction);
+                        // Debug.Log("withotInput: " + velocity_local.magnitude);
+                        // Debug.Log(velocity_local);
+                        // Debug.Log("input: " + velocity_local_with_input.magnitude);
+                        // Debug.Log(velocity_local_with_input);
+                        // Debug.Log("friction: " + velocity_local_friction.magnitude);
+                        // Debug.Log(velocity_local_friction);
 
                         //Would accelerate more, so don't user player input
                         if (velocity_local_with_input.magnitude > velocity_local_friction.magnitude)
