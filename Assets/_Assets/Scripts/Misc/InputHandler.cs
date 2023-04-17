@@ -9,7 +9,8 @@ public class InputHandler : Singleton<InputHandler>
     {
         Jump = 0,
         Shoot = 1,
-        Explode = 2
+        Explode = 2,
+        Slam = 3
     }
 
     public Vector2 MoveXZ
@@ -39,8 +40,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         get { return buttons[(int)ButtonIndices.Explode]; }
     }
+    public ButtonState Slam
+    {
+        get { return buttons[(int)ButtonIndices.Slam]; }
+    }
 
-    private int buttonCount = 3;
+    private int buttonCount = 4;
     [SerializeField] private short bufferFrames = 5;
     [SerializeField] private bool bufferEnabled = false;
     private short IDSRC = 0;
@@ -95,6 +100,10 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_Explode(InputAction.CallbackContext _ctx)
     {
         buttons[(int)ButtonIndices.Explode].Set(_ctx);
+    }
+    public void CTX_Slam(InputAction.CallbackContext _ctx)
+    {
+        buttons[(int)ButtonIndices.Slam].Set(_ctx);
     }
 
 

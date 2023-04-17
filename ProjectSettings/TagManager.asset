@@ -14,8 +14,8 @@ TagManager:
   - 
   - Player
   - Terrain
-  - 
-  - EnemyHitbox
+  - Terrain_Arrow
+  - Enemy_hurtbox_idk
   - Arrow
   - 
   - EnemyHurtbox
@@ -26,7 +26,7 @@ TagManager:
   - Explosion
   - 
   - EndLevel
-  - 
+  - Terrain_NoJump
   - 
   - 
   - 

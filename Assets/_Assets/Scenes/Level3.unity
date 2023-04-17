@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571376, b: 0.3069224, a: 1}
+  m_IndirectSpecularColor: {r: 0.010816373, g: 0.029111916, b: 0.04372567, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 07c1b73222fd4044381c16e84bc1184a,
+  m_LightingDataAsset: {fileID: 112000000, guid: 366f27151acd9d44dac0702912494c44,
     type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
@@ -310,6 +310,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EndLEvel
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186695248944078563, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7186695248944078563, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7758332939598430884, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_text
+      value: Cross that gap!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b126924c05de8647b27c8d9e832a5dd, type: 3}

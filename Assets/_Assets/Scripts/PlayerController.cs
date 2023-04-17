@@ -29,6 +29,7 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] private float gravUp;
     [SerializeField] private float gravDown;
+    [SerializeField] private float slamGrav;
     [SerializeField] private float spaceReleaseGravMult;
     [Space(5)]
     [Space(10)]
@@ -52,6 +53,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private float shootPickupDuration = 0.3f;
     private float nextShootPickupTime;
+
+    public bool CanSpaceRelease = false;
 
     private enum BowStateEnum
     {
@@ -86,7 +89,7 @@ public class PlayerController : Singleton<PlayerController>
         switch (bowState)
         {
             case BowStateEnum.Ready:
-                if (InputHandler.Instance.Shoot.Down)
+                if (InputHandler.Instance.Shoot.Down || InputHandler.Instance.Shoot.Holding)
                 {
                     bowState = BowStateEnum.DrawBack;
                     bowAnim.SetTrigger("DrawBack");
@@ -123,11 +126,14 @@ public class PlayerController : Singleton<PlayerController>
         if (InputHandler.Instance.Jump.Down)
         {
             if (grounded)
+            {
                 rb.velocity += transform.up * jumpPower;
+                CanSpaceRelease = true;
+            }
         }
 
         //Space release gravity
-        if (InputHandler.Instance.Jump.Up && rb.velocity.y > 0)
+        if (InputHandler.Instance.Jump.Up && rb.velocity.y > 0 && CanSpaceRelease)
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * spaceReleaseGravMult, rb.velocity.z);
         }
@@ -154,7 +160,7 @@ public class PlayerController : Singleton<PlayerController>
         bowState = BowStateEnum.Fired;
 
         float firePower = arrowPower * Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
-        firePower *= Mathf.Max(1, Vector3.Dot(targArrowPos.forward, rb.velocity * 0.2f));
+        firePower *= Mathf.Max(1, Vector3.Dot(targArrowPos.forward, rb.velocity * 0.1f));
         arrow.Fire(targArrowPos, firePower);
 
         bowAnim.SetTrigger("Fire");
@@ -193,10 +199,17 @@ public class PlayerController : Singleton<PlayerController>
         #endregion
 
         #region Apply Gravity
-        if (InputHandler.Instance.Jump.Holding && rb.velocity.y > 0)
-            rb.velocity -= new Vector3(0, gravUp, 0);
+        if (InputHandler.Instance.Slam.Holding)
+        {
+            rb.velocity -= new Vector3(0, slamGrav, 0);
+        }
         else
-            rb.velocity -= new Vector3(0, gravDown, 0);
+        {
+            if (InputHandler.Instance.Jump.Holding && rb.velocity.y > 0 && CanSpaceRelease)
+                rb.velocity -= new Vector3(0, gravUp, 0);
+            else
+                rb.velocity -= new Vector3(0, gravDown, 0);
+        }
         #endregion
 
 
@@ -214,6 +227,10 @@ public class PlayerController : Singleton<PlayerController>
 
         //XZ Friction + acceleration
         Vector3 currInput = new Vector3(InputHandler.Instance.MoveXZ.x, 0, InputHandler.Instance.MoveXZ.y);
+
+        // if (useSlamGrav)
+        //     currInput = Vector3.zero;
+
         if (currInput.magnitude > 0.05f)
             currInput.Normalize();
         if (grounded)

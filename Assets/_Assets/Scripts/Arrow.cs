@@ -15,6 +15,8 @@ public class Arrow : MonoBehaviour
     private ArrowStateEnum state;
     public ArrowStateEnum State => state;
 
+    AudioSource audioSourceIDK;
+
     [SerializeField] private Transform player;
     private Rigidbody playerRB;
     private PlayerController playerController;
@@ -23,6 +25,7 @@ public class Arrow : MonoBehaviour
     [Space(5)]
     [SerializeField] private float lerpSpeed;
     [SerializeField] private float explodeSpeed;
+
     private Transform explosionTransform;
 
     private Rigidbody rb;
@@ -33,6 +36,7 @@ public class Arrow : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerRB = player.GetComponent<Rigidbody>();
         playerController = player.GetComponent<PlayerController>();
+        audioSourceIDK = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -108,6 +112,7 @@ public class Arrow : MonoBehaviour
         if (state == ArrowStateEnum.InGround)
         {
             //BOOM!!!!
+            Explosion.Instance.PlaySFX();
 
             explosionTransform.position = transform.position;
             explosionEffect.Play();
@@ -133,6 +138,8 @@ public class Arrow : MonoBehaviour
         transform.rotation = targArrowPos.rotation;
         transform.gameObject.SetActive(true);
         rb.velocity = targArrowPos.forward * arrowPower; //+ new Vector3(0, playerRB.velocity.y, 0);
+
+        audioSourceIDK.Play();
     }
 
     public void Pickup()
