@@ -95,6 +95,9 @@ public class Arrow : MonoBehaviour
         {
             state = ArrowStateEnum.InGround;
 
+            explosionTransform.position = transform.position;
+            Explosion.Instance.RangeObj.enabled = true;
+
             rb.angularVelocity = Vector3.zero;
             rb.velocity = Vector3.zero;
             rb.useGravity = false;
@@ -114,13 +117,16 @@ public class Arrow : MonoBehaviour
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
 
-            explosionTransform.position = transform.position;
+            //explosionTransform.position = transform.position;
             explosionEffect.Play();
 
             explodeAnim.SetTrigger("Explode");
         }
 
+        Explosion.Instance.RangeObj.enabled = false;
+
         state = ArrowStateEnum.FlyingBack;
+        gameObject.layer = 12;
 
         rb.useGravity = false;
 
@@ -130,6 +136,7 @@ public class Arrow : MonoBehaviour
     public void Fire(Transform targArrowPos, float arrowPower)
     {
         state = ArrowStateEnum.Fired;
+        gameObject.layer = 11;
 
         gameObject.SetActive(true);
         rb.useGravity = true;

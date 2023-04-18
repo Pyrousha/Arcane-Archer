@@ -10,7 +10,8 @@ public class InputHandler : Singleton<InputHandler>
         Jump = 0,
         Shoot = 1,
         Explode = 2,
-        Slam = 3
+        Slam = 3,
+        Restart = 4
     }
 
     public Vector2 MoveXZ
@@ -44,8 +45,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         get { return buttons[(int)ButtonIndices.Slam]; }
     }
+    public ButtonState Restart
+    {
+        get { return buttons[(int)ButtonIndices.Restart]; }
+    }
 
-    private int buttonCount = 4;
+    private int buttonCount = 5;
     [SerializeField] private short bufferFrames = 5;
     [SerializeField] private bool bufferEnabled = false;
     private short IDSRC = 0;
@@ -55,6 +60,9 @@ public class InputHandler : Singleton<InputHandler>
 
     public void Start()
     {
+        transform.parent = null;
+        DontDestroyOnLoad(gameObject);
+
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
@@ -84,7 +92,8 @@ public class InputHandler : Singleton<InputHandler>
     {
         Scroll = _ctx.ReadValue<Vector2>();
 
-        PlayerController.turnSpeedX = Mathf.Max(2.5f, PlayerController.turnSpeedX + Scroll.y * (2.5f / 120f));
+        PlayerController.turnSpeedX = Mathf.Max(1f, PlayerController.turnSpeedX + Scroll.y * (0.5f / 120f));
+        PlayerPrefs.SetFloat("Sens", PlayerController.turnSpeedX);
         SensitivityText.Instance.UpdateText();
     }
 
@@ -104,6 +113,10 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_Slam(InputAction.CallbackContext _ctx)
     {
         buttons[(int)ButtonIndices.Slam].Set(_ctx);
+    }
+    public void CTX_Restart(InputAction.CallbackContext _ctx)
+    {
+        buttons[(int)ButtonIndices.Restart].Set(_ctx);
     }
 
 

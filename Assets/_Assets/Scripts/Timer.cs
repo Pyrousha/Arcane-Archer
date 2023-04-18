@@ -25,6 +25,16 @@ public class Timer : MonoBehaviour
 
     private void Start()
     {
+        if (isMainMenu)
+        {
+            //Load stuff
+            bestTime = PlayerPrefs.GetFloat("BestTime", float.MaxValue);
+            if (bestTime < float.MaxValue)
+                unlocked = true;
+
+            PlayerController.turnSpeedX = PlayerPrefs.GetFloat("Sens", PlayerController.turnSpeedX);
+        }
+
         if (isFirstLevel)
             totalTime = 0;
 
@@ -46,6 +56,7 @@ public class Timer : MonoBehaviour
                     newBestTimeText.SetActive(true);
                 }
             }
+            PlayerPrefs.SetFloat("BestTime", bestTime);
             return;
         }
 

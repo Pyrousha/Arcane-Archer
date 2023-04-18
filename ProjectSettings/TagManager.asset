@@ -17,7 +17,7 @@ TagManager:
   - Terrain_Arrow
   - Enemy_hurtbox_idk
   - Arrow
-  - 
+  - Arrow_NoTerrain
   - EnemyHurtbox
   - PlayerHurtbox
   - 

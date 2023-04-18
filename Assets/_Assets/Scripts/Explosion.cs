@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Explosion : Singleton<Explosion>
 {
+    [SerializeField] private Renderer rangeObj;
+    public Renderer RangeObj => rangeObj;
+
     [SerializeField] private float explosionPower;
 
     [SerializeField] private AudioSource source;

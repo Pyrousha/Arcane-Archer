@@ -225,6 +225,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5738714e-d121-4e35-ba94-33f89858e535
     m_ActionName: Player/SLAM[/Keyboard/anyKey]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4207602540661894874}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: CTX_Restart
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d37a4e31-67de-4c06-ba79-f49c7ba6b248
+    m_ActionName: Player/Restart[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player

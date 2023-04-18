@@ -723,6 +723,7 @@ MonoBehaviour:
   player: {fileID: 4848514860880018616}
   explosionEffect: {fileID: 0}
   explodeAnim: {fileID: 0}
+  col: {fileID: 4848514860998066147}
   lerpSpeed: 60
   explodeSpeed: 50
 --- !u!82 &4211888607519682590

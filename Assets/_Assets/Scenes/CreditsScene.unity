@@ -1369,7 +1369,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A Game by Travis Bird
+  m_text: A Game by Pyrousha
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0195aefc2aa09de44aa899c8eaeed039, type: 2}
   m_sharedMaterial: {fileID: -3995343779376696062, guid: 0195aefc2aa09de44aa899c8eaeed039,
@@ -41343,6 +41343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPower: 25
+  source: {fileID: 0}
+  clips: []
 --- !u!1 &1654902349917828315
 GameObject:
   m_ObjectHideFlags: 0
