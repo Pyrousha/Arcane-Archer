@@ -324,7 +324,10 @@ PrefabInstance:
     - target: {fileID: 7758332939598430884, guid: 4b126924c05de8647b27c8d9e832a5dd,
         type: 3}
       propertyPath: m_text
-      value: Cross that gap!
+      value: 'It''s ok if you miss!
+
+        Press right click to recall your arrow
+        at any time.'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b126924c05de8647b27c8d9e832a5dd, type: 3}

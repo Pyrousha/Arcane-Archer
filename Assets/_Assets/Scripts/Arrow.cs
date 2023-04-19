@@ -22,9 +22,13 @@ public class Arrow : MonoBehaviour
     private PlayerController playerController;
     [SerializeField] private ParticleSystem explosionEffect;
     [SerializeField] private Animator explodeAnim;
+    [SerializeField] private Animator arrowAnim;
     [Space(5)]
     [SerializeField] private float lerpSpeed;
     [SerializeField] private float explodeSpeed;
+    [SerializeField] private float distToPlayer;
+
+    private bool inRange = false;
 
     private Transform explosionTransform;
 
@@ -37,6 +41,8 @@ public class Arrow : MonoBehaviour
         playerRB = player.GetComponent<Rigidbody>();
         playerController = player.GetComponent<PlayerController>();
         audioSourceIDK = GetComponent<AudioSource>();
+
+        distToPlayer *= distToPlayer;
     }
 
     private void FixedUpdate()
@@ -106,6 +112,21 @@ public class Arrow : MonoBehaviour
 
     void Update()
     {
+        if (state == ArrowStateEnum.InGround)
+        {
+            float currDist = Vector3.SqrMagnitude(transform.position - player.position);
+            if (currDist <= distToPlayer)
+            {
+                BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.InRange);
+                inRange = true;
+            }
+            else
+            {
+                BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.CanBoom);
+                inRange = false;
+            }
+        }
+
         if (InputHandler.Instance.Explode.Down && (state == ArrowStateEnum.InGround || state == ArrowStateEnum.Fired))
             Explode();
     }
@@ -114,6 +135,14 @@ public class Arrow : MonoBehaviour
     {
         if (state == ArrowStateEnum.InGround)
         {
+            if (inRange)
+            {
+                Explosion.Instance.BoomPlayer(player);
+                inRange = false;
+            }
+
+            BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.Unlit);
+
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
 
@@ -128,13 +157,19 @@ public class Arrow : MonoBehaviour
         state = ArrowStateEnum.FlyingBack;
         gameObject.layer = 12;
 
-        rb.useGravity = false;
+        //rb.useGravity = false;
 
         playerController.SetFireSize(0);
+
+        playerController.PickupArrow();
+        Pickup();
     }
 
     public void Fire(Transform targArrowPos, float arrowPower)
     {
+        arrowAnim.ResetTrigger("FadeOut");
+        arrowAnim.SetTrigger("FadeIn");
+
         state = ArrowStateEnum.Fired;
         gameObject.layer = 11;
 
@@ -151,7 +186,9 @@ public class Arrow : MonoBehaviour
 
     public void Pickup()
     {
-        gameObject.SetActive(false);
+        arrowAnim.ResetTrigger("FadeIn");
+        arrowAnim.SetTrigger("FadeOut");
+        // gameObject.SetActive(false);
 
         state = ArrowStateEnum.Idle;
     }

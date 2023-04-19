@@ -14,6 +14,9 @@ public class Explosion : Singleton<Explosion>
 
     void OnTriggerEnter(Collider _col)
     {
+        Debug.LogError("no longer used");
+        return;
+
         PlayerController.Instance.CanSpaceRelease = false;
 
         //Debug.Log(PlayerController.Instance.BowDrawPercent);
@@ -31,6 +34,24 @@ public class Explosion : Singleton<Explosion>
 
         //Debug.DrawRay(_col.gameObject.transform.position, velocityToAdd, Color.red, 2f);
         //Debug.DrawRay(_col.gameObject.transform.position, velocityToAdd * 0.5f, Color.blue, 2f);
+    }
+
+    public void BoomPlayer(Transform _player)
+    {
+        PlayerController.Instance.CanSpaceRelease = false;
+
+        //Debug.Log(PlayerController.Instance.BowDrawPercent);
+        Vector3 horizontalVelocity = (_player.position - transform.position).normalized;
+        horizontalVelocity.y = 0;
+        horizontalVelocity *= explosionPower * PlayerController.Instance.BowDrawPercent * 0.5f;
+        //Vector3 velocityToAdd = ((_col.transform.position + new Vector3(0, 3, 0)) - transform.position).normalized * explosionPower * PlayerController.Instance.BowDrawPercent;
+        // Vector3 velocityToAdd = (_col.transform.position - transform.position);
+        // velocityToAdd = (explosionPower / velocityToAdd.magnitude) * velocityToAdd.normalized;
+        // Debug.Log(velocityToAdd);
+        // Debug.Log(velocityToAdd.magnitude);
+        Rigidbody rb = _player.gameObject.GetComponent<Rigidbody>();
+        rb.velocity = new Vector3(rb.velocity.x, explosionPower * PlayerController.Instance.BowDrawPercent, rb.velocity.z);
+        rb.velocity += horizontalVelocity;
     }
 
     public void PlaySFX()

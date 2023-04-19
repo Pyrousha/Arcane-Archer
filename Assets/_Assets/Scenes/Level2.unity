@@ -396,6 +396,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndLEvel
       objectReference: {fileID: 0}
+    - target: {fileID: 3855758143128934370, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7186695248944078563, guid: 4b126924c05de8647b27c8d9e832a5dd,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -409,7 +414,8 @@ PrefabInstance:
     - target: {fileID: 7758332939598430884, guid: 4b126924c05de8647b27c8d9e832a5dd,
         type: 3}
       propertyPath: m_text
-      value: "Hold and release Left click to shoot, \nThen press right click to detonate!"
+      value: "Hold and release Left click to shoot, \nThen press right click to detonate!\nLonger
+        charge = more powerful boom!"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b126924c05de8647b27c8d9e832a5dd, type: 3}
@@ -689,6 +695,11 @@ PrefabInstance:
     - target: {fileID: 887255439797635270, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6322731721236290977, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -996,6 +1007,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvases
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668021362841651959, guid: 5e7ac89b69badd946a960f48e47bcfa0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e7ac89b69badd946a960f48e47bcfa0, type: 3}

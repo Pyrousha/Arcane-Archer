@@ -154,9 +154,16 @@ public class PlayerController : Singleton<PlayerController>
         {
             bowState = BowStateEnum.Ready;
             bowAnim.SetTrigger("Pickup");
+            SummonFireAnim.Instance.SummonFire();
 
             arrow.Pickup();
         }
+    }
+
+    public void PickupArrow()
+    {
+        bowState = BowStateEnum.Ready;
+        bowAnim.SetTrigger("Pickup");
     }
 
     private void FireArrow()

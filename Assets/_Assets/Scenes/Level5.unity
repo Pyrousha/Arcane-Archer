@@ -570,8 +570,8 @@ PrefabInstance:
       propertyPath: m_text
       value: 'Wall too high? Scale it with your arrows!
 
-        (continuously shoot
-        and detonate at the wall!)'
+        (detonate charged
+        arrows in walls while airborne!)'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b126924c05de8647b27c8d9e832a5dd, type: 3}

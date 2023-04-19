@@ -19,6 +19,9 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             Debug.LogWarning("Duplicate instance of singleton found: " + gameObject.name + ", destroying.");
             Destroy(gameObject);
+            return;
         }
+
+        // instance = gameObject.GetComponent<T>();
     }
 }
