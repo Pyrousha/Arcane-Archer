@@ -39,7 +39,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float raycastHeight;
 
     [Header("Settings")]
-    public static float turnSpeedX = 50;
+    public static float turnSpeedX = 25;
     // public static float turnSpeedY = 50;
 
     private float bowDrawPercent = 0;

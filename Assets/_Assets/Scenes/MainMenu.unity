@@ -504,6 +504,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 675523436938795718, guid: 4b126924c05de8647b27c8d9e832a5dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2469083358305013421, guid: 4b126924c05de8647b27c8d9e832a5dd,
         type: 3}
       propertyPath: m_Enabled
@@ -40874,6 +40879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d36e82ade3c26b1409a570e90aba0328, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rangeObj: {fileID: 0}
   explosionPower: 25
   source: {fileID: 0}
   clips: []

@@ -11,7 +11,8 @@ public class Timer : MonoBehaviour
 
     [SerializeField] private GameObject unlockText;
     [SerializeField] private GameObject newBestTimeText;
-    [SerializeField] private TextMeshProUGUI text;
+    [SerializeField] private TextMeshProUGUI timer_total;
+    [SerializeField] private TextMeshProUGUI timer_current;
     [SerializeField] private bool isMainMenu;
     [SerializeField] private bool isFirstLevel;
     [SerializeField] private bool isCreditsScene;
@@ -60,7 +61,12 @@ public class Timer : MonoBehaviour
             return;
         }
 
-        text.gameObject.SetActive(unlocked);
+        if (!isMainMenu && !isCreditsScene && unlocked)
+            timer_current.gameObject.SetActive(true);
+        else
+            timer_current.gameObject.SetActive(false);
+
+        timer_total.gameObject.SetActive(unlocked);
         if (!isMainMenu)
             StartCoroutine(ResumeTimer());
     }
@@ -92,7 +98,33 @@ public class Timer : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (text == null)
+        string TimeToString(float _time)
+        {
+            float secsNum = _time;
+
+            if (isMainMenu)
+                secsNum = bestTime;
+
+            int mins = Mathf.FloorToInt(secsNum / 60);
+            string minsStr = mins.ToString();
+            if (minsStr.Length < 2)
+                minsStr = "0" + minsStr;
+
+            int secs = Mathf.FloorToInt(secsNum - mins * 60);
+            string secsStr = secs.ToString();
+            if (secsStr.Length < 2)
+                secsStr = "0" + secsStr;
+
+            int ms = Mathf.FloorToInt((secsNum % 1) * 1000);
+            string msStr = ms.ToString();
+            while (msStr.Length < 3)
+                msStr = "0" + msStr;
+
+            return minsStr + ":" + secsStr + ":" + msStr;
+        }
+
+        //Overall time
+        if (timer_total == null)
             return;
 
         currTime = Mathf.Max(0, currTime);
@@ -101,23 +133,15 @@ public class Timer : MonoBehaviour
         if (isMainMenu)
             secsNum = bestTime;
 
-        int mins = Mathf.FloorToInt(secsNum / 60);
-        string minsStr = mins.ToString();
-        if (minsStr.Length < 2)
-            minsStr = "0" + minsStr;
-
-        int secs = Mathf.FloorToInt(secsNum - mins * 60);
-        string secsStr = secs.ToString();
-        if (secsStr.Length < 2)
-            secsStr = "0" + secsStr;
-
-        int ms = Mathf.FloorToInt((secsNum % 1) * 60);
-        string msStr = ms.ToString();
-        if (msStr.Length < 2)
-            msStr = "0" + msStr;
-
-        text.text = minsStr + ":" + secsStr + ":" + msStr;
+        timer_total.text = TimeToString(secsNum);
         if (isMainMenu)
-            text.text = "Best Time: " + text.text;
+            timer_total.text = "Best Time: " + timer_total.text;
+
+
+        //Current level time
+        if (timer_current == null)
+            return;
+
+        timer_current.text = TimeToString(currTime);
     }
 }
