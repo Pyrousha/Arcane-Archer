@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,11 +5,13 @@ using UnityEngine.SceneManagement;
 public class PlayerController : Singleton<PlayerController>
 {
     private Rigidbody rb;
+    public Rigidbody RB => rb;
     [Header("Self-References")]
     [SerializeField] private Transform raycastParent;
     [SerializeField] private Animator bowAnim;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private Transform shadowTransform;
+    [field: SerializeField] public Transform BottomOfModel { get; private set; }
 
     [Header("External References")]
     [SerializeField] private Transform cameraTransform;

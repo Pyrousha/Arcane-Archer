@@ -1,7 +1,6 @@
-using UnityEngine.InputSystem;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputHandler : Singleton<InputHandler>
 {
@@ -60,9 +59,6 @@ public class InputHandler : Singleton<InputHandler>
 
     public void Start()
     {
-        transform.parent = null;
-        DontDestroyOnLoad(gameObject);
-
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -137,7 +134,7 @@ public class Arrow : MonoBehaviour
         {
             if (inRange)
             {
-                Explosion.Instance.BoomPlayer(player);
+                Explosion.Instance.BoomPlayer(distToPlayer);
                 inRange = false;
             }
 

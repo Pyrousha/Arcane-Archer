@@ -619,6 +619,7 @@ MonoBehaviour:
   bowAnim: {fileID: 0}
   cameraTarget: {fileID: 4848514860035369749}
   shadowTransform: {fileID: 4848514861355891071}
+  <BottomOfModel>k__BackingField: {fileID: 4955045834124831201}
   cameraTransform: {fileID: 0}
   targArrowPos: {fileID: 0}
   arrow: {fileID: 4848514860998066145}
