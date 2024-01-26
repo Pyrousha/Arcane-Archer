@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -58,6 +57,8 @@ public class PlayerController : Singleton<PlayerController>
 
     public bool CanSpaceRelease = false;
 
+    private bool levelOver = false;
+
     private enum BowStateEnum
     {
         Ready,
@@ -80,10 +81,13 @@ public class PlayerController : Singleton<PlayerController>
 
     void Update()
     {
-        if (InputHandler.Instance.Restart.Down)
-        {
-            SceneManager.LoadScene(1);
-        }
+        if (levelOver)
+            return;
+
+        //if (InputHandler.Instance.Restart.Down)
+        //{
+        //    SceneManager.LoadScene(1);
+        //}
 
         //Jump
         if (InputHandler.Instance.Jump.Down)
@@ -183,6 +187,9 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (levelOver)
+            return;
+
         // Debug.DrawRay(transform.position, transform.forward * 1.6f / 2f, new Color(1, 0, 0), 5f);
         // Debug.DrawRay(cameraTransform.position, cameraTransform.forward * 1.5f / 2f, new Color(0, 1, 0), 5f);
 
@@ -337,5 +344,14 @@ public class PlayerController : Singleton<PlayerController>
     {
         arrowFire1.localScale = Vector3.one * _percentage;
         arrowFire2.localScale = Vector3.one * _percentage;
+    }
+
+    public void OnLevelEnd()
+    {
+        levelOver = true;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+
+        Cursor.lockState = CursorLockMode.None;
     }
 }

@@ -10,8 +10,11 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
 
     public const int MAIN_MENU_INDEX = 1;
     public const int FIRST_LEVEL_INDEX = 2;
+    public const int CREDITS_SCENE_INDEX = 14;
 
     public const float FADE_ANIM_DURATION = 0.25f;
+
+    public static bool IsFullGame { get; set; }
 
     private void Start()
     {
@@ -24,20 +27,20 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
 
         LevelFinished = true;
         Timer.Instance.PauseTimer();
-        SaveData.Instance.OnLevelCompleted(currBuildIndex - FIRST_LEVEL_INDEX, Timer.Instance.CurrTime);
+        bool isNewBestTime = SaveData.Instance.OnLevelCompleted(currBuildIndex - FIRST_LEVEL_INDEX, Timer.Instance.CurrTime);
 
-        LoadSceneWithIndex(currBuildIndex + 1);
+        if (IsFullGame)
+            LoadSceneWithIndex(currBuildIndex + 1);
+        else
+        {
+            StageClearCanvas.Instance.OpenPopup(SaveData.CurrSaveData.LevelsList[currBuildIndex - FIRST_LEVEL_INDEX], isNewBestTime);
+            PlayerController.Instance.OnLevelEnd();
+        }
     }
 
     public void ToMainMenu()
     {
         LoadSceneWithIndex(MAIN_MENU_INDEX);
-    }
-
-    public void ToNextLevel()
-    {
-        LevelFinished = true;
-        LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void LoadSceneWithIndex(int _index)
@@ -51,26 +54,18 @@ public class SceneTransitionController : Singleton<SceneTransitionController>
 
         yield return new WaitForSeconds(FADE_ANIM_DURATION);
 
+        LevelFinished = false;
         SceneManager.LoadScene(_index);
     }
 
     public void OnDeath()
     {
+        Debug.Log("U DED LOL");
         if (LevelFinished)
             return;
 
         Timer.Instance.PauseTimer();
-        StartCoroutine(ReloadCurrLevel());
-    }
-
-    private IEnumerator ReloadCurrLevel()
-    {
-        anim.ResetTrigger("ToClear");
-        anim.SetTrigger("ToBlack");
-
-        yield return new WaitForSeconds(FADE_ANIM_DURATION);
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void OnSceneFinishedLoading()

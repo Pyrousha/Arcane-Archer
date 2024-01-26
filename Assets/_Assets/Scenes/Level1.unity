@@ -1038,6 +1038,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6668021362154643285, guid: 5e7ac89b69badd946a960f48e47bcfa0,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 6668021362841651956, guid: 5e7ac89b69badd946a960f48e47bcfa0,
         type: 3}
       propertyPath: m_RootOrder
@@ -1097,6 +1102,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvases
+      objectReference: {fileID: 0}
+    - target: {fileID: 9164311553851922986, guid: 5e7ac89b69badd946a960f48e47bcfa0,
+        type: 3}
+      propertyPath: m_Name
+      value: TutorialText
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e7ac89b69badd946a960f48e47bcfa0, type: 3}

@@ -22,6 +22,6 @@ public class Singleton<T> : MonoBehaviour where T : Component
             return;
         }
 
-        // instance = gameObject.GetComponent<T>();
+        instance = gameObject.GetComponent<T>();
     }
 }

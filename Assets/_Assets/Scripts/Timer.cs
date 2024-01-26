@@ -113,7 +113,7 @@ public class Timer : Singleton<Timer>
 
         int mins = Mathf.FloorToInt(secsNum / 60);
         string minsStr = mins.ToString();
-        if (minsStr.Length < 2)
+        if (minsStr.Length < 1)
             minsStr = "0" + minsStr;
 
         int secs = Mathf.FloorToInt(secsNum - mins * 60);
