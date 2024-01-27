@@ -4,9 +4,9 @@ public class MainMenuCanvas : MonoBehaviour
 {
     public void OnPlayClicked()
     {
-        SceneTransitionController.IsFullGame = true;
+        SceneTransitioner.IsFullGame = true;
         //TODO: Reset Timer
-        SceneTransitionController.Instance.LoadSceneWithIndex(SceneTransitionController.FIRST_LEVEL_INDEX);
+        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX);
     }
 
     public void OnLevelSelectClicked()

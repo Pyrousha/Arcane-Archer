@@ -6,6 +6,6 @@ public class EndLevelTrigger : MonoBehaviour
     {
         Debug.Log("Level Finished!");
 
-        SceneTransitionController.Instance.OnLevelFinished();
+        SceneTransitioner.Instance.OnLevelFinished();
     }
 }

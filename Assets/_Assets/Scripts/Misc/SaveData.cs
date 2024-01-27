@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SaveData : Singleton<SaveData>
@@ -68,6 +69,8 @@ public class SaveData : Singleton<SaveData>
         CurrSaveData = new SerializedSaveData();
 
         Save();
+
+        SceneTransitioner.Instance.ToMainMenu();
     }
     #endregion
 
@@ -79,6 +82,27 @@ public class SaveData : Singleton<SaveData>
             CurrSaveData.LevelsList[_levelIndex + 1].Unlock();
 
         bool toReturn = CurrSaveData.LevelsList[_levelIndex].UpdateTime(_secs);
+
+        Save();
+
+        return toReturn;
+    }
+
+    /// <returns> If a new record was set (requires full game to already be completed). </returns>
+    public bool OnFullGameCompleted(float _secs)
+    {
+        bool toReturn = false;
+
+        if (CurrSaveData.BestFullTime > 0)
+        {
+            //Game has been finished before
+            if (_secs < CurrSaveData.BestFullTime)
+                toReturn = true;
+
+            CurrSaveData.BestFullTime = Mathf.Min(CurrSaveData.BestFullTime, _secs);
+        }
+        else
+            CurrSaveData.BestFullTime = _secs;
 
         Save();
 
@@ -110,8 +134,6 @@ public class SerializedSaveData
         //Populate List
         while (LevelsList.Count < SaveData.NUM_TOTAL_LEVELS)
             LevelsList.Add(new LevelStruct(false));
-
-        Debug.Log(LevelsList);
 
         PlayerController.turnSpeedX = MouseSens;
     }
@@ -159,3 +181,18 @@ public class LevelStruct
         return toReturn;
     }
 }
+
+[CustomEditor(typeof(SaveData))]
+public class SaveData_Inspector : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        if (GUILayout.Button("Reset All Data"))
+        {
+            ((SaveData)target).ResetSaveData();
+        }
+    }
+}
+

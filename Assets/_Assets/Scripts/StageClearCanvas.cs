@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StageClearCanvas : Singleton<StageClearCanvas>
@@ -26,7 +25,7 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
             bestTimeLabel.text = "Best: " + Timer.TimeToString(_levelStruct.Seconds);
 
         //If this is the last level, shouldn't be able to click next
-        nextLevelButton.interactable = (SceneManager.GetActiveScene().buildIndex != SceneTransitionController.CREDITS_SCENE_INDEX - 1);
+        nextLevelButton.interactable = ((SceneTransitioner.CurrBuildIndex + 1) != SceneTransitioner.CREDITS_SCENE_INDEX);
         parent.SetActive(true);
     }
 
@@ -43,13 +42,13 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
     public void OnReplayClicked()
     {
         ClosePopup();
-        SceneTransitionController.Instance.LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex);
+        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.CurrBuildIndex);
     }
 
     public void OnNextLevelClicked()
     {
         ClosePopup();
-        SceneTransitionController.Instance.LoadSceneWithIndex(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.CurrBuildIndex + 1);
     }
 
     public void OnLevelSelectClicked()
@@ -60,6 +59,6 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
     public void OnMainMenuClicked()
     {
         ClosePopup();
-        SceneTransitionController.Instance.ToMainMenu();
+        SceneTransitioner.Instance.ToMainMenu();
     }
 }

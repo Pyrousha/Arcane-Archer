@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class LevelButton : MonoBehaviour
 {
-    [SerializeField] private GameObject lockedObj;
-    [SerializeField] private TextMeshProUGUI levelLabel;
-    [SerializeField] private TextMeshProUGUI timeLabel;
+    [SerializeField] protected GameObject lockedObj;
+    [SerializeField] protected TextMeshProUGUI levelLabel;
+    [SerializeField] protected TextMeshProUGUI timeLabel;
     [field: SerializeField] public int Index { get; set; }
     private LevelStruct levelInfo;
 
     // Start is called before the first frame update
-    public void SetData()
+    public virtual void SetData()
     {
         levelInfo = SaveData.CurrSaveData.LevelsList[Index];
         levelLabel.text = "Lv ";
@@ -31,10 +31,12 @@ public class LevelButton : MonoBehaviour
         }
     }
 
-    public void OnClicked()
+    public virtual void OnClicked()
     {
         LevelSelectCanvas.Instance.ClosePopup();
         StageClearCanvas.Instance.ClosePopup();
-        SceneTransitionController.Instance.LoadSceneWithIndex(SceneTransitionController.FIRST_LEVEL_INDEX + Index);
+        SceneTransitioner.IsFullGame = false;
+        Timer.Instance.SetTimerVisualsStatus(false, true);
+        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX + Index);
     }
 }

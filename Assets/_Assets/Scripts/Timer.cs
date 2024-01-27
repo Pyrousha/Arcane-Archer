@@ -7,73 +7,44 @@ public class Timer : Singleton<Timer>
     [SerializeField] private TextMeshProUGUI totalTime_Label;
     [SerializeField] private TextMeshProUGUI currTime_Label;
 
-    private static float totalTime = 0;
+    public float TotalTime { get; private set; }
     public float CurrTime { get; private set; }
 
     private bool isPaused = true;
 
     private float startingTime;
 
-    private void Start()
+    public void SetTimerVisualsStatus(bool _totalTimeVisible, bool _currTimeVisible)
     {
-        //if (isMainMenu)
-        //{
-        //    //Load stuff
-        //    bestTime = PlayerPrefs.GetFloat("BestTime", float.MaxValue);
-        //    if (bestTime < float.MaxValue)
-        //        unlocked = true;
+        totalTime_Label.gameObject.SetActive(_totalTimeVisible);
+        currTime_Label.gameObject.SetActive(_currTimeVisible);
+    }
 
+    public IEnumerator RestartTimer()
+    {
+        yield return new WaitForSeconds(SceneTransitioner.FADE_ANIM_DURATION);
 
-        //}
+        CurrTime = 0;
+        TotalTime = 0;
+        startingTime = Time.time;
 
-        //if (isFirstLevel)
-        //    totalTime = 0;
-
-        //UpdateUI();
-
-        //if (isCreditsScene)
-        //{
-        //    if (!unlocked)
-        //    {
-        //        bestTime = totalTime;
-        //        unlocked = true;
-        //        unlockText.SetActive(true);
-        //    }
-        //    else
-        //    {
-        //        if (totalTime < bestTime)
-        //        {
-        //            bestTime = totalTime;
-        //            newBestTimeText.SetActive(true);
-        //        }
-        //    }
-        //    PlayerPrefs.SetFloat("BestTime", bestTime);
-        //    return;
-        //}
-
-        //if (!isMainMenu && !isCreditsScene && unlocked)
-        //    currTime_Label.gameObject.SetActive(true);
-        //else
-        //    currTime_Label.gameObject.SetActive(false);
-
-        //totalTime_Label.gameObject.SetActive(unlocked);
-        //if (!isMainMenu)
-        //    StartCoroutine(ResumeTimer());
+        isPaused = false;
     }
 
     public void PauseTimer()
     {
-        totalTime += CurrTime;
+        TotalTime += CurrTime;
         isPaused = true;
     }
 
     public IEnumerator ResumeTimer()
     {
-        yield return new WaitForSeconds(SceneTransitionController.FADE_ANIM_DURATION);
+        yield return new WaitForSeconds(SceneTransitioner.FADE_ANIM_DURATION);
+
+        CurrTime = 0;
+        startingTime = Time.time;
 
         isPaused = false;
-        startingTime = Time.time;
-        CurrTime = 0;
     }
 
     void Update()
@@ -93,11 +64,9 @@ public class Timer : Singleton<Timer>
             return;
 
         CurrTime = Mathf.Max(0, CurrTime);
-        float secsNum = totalTime + CurrTime;
+        float secsNum = TotalTime + CurrTime;
 
         totalTime_Label.text = TimeToString(secsNum);
-        //if (isMainMenu)
-        //    totalTime_Label.text = "Best Time: " + totalTime_Label.text;
 
 
         //Current level time

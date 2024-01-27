@@ -4,6 +4,6 @@ public class KillBox : MonoBehaviour
 {
     private void OnTriggerExit(Collider other)
     {
-        SceneTransitionController.Instance.OnDeath();
+        SceneTransitioner.Instance.OnDeath();
     }
 }
