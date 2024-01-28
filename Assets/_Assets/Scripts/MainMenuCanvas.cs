@@ -1,7 +1,15 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainMenuCanvas : MonoBehaviour
 {
+    [SerializeField] private Button levelSelectButton;
+
+    private void Start()
+    {
+        levelSelectButton.interactable = SaveData.CurrSaveData.BestFullTime > 0;
+    }
+
     public void OnPlayClicked()
     {
         SceneTransitioner.IsFullGame = true;

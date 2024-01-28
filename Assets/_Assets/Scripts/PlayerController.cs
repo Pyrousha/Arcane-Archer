@@ -252,7 +252,10 @@ public class PlayerController : Singleton<PlayerController>
         // if (useSlamGrav)
         //     currInput = Vector3.zero;
 
-        if (currInput.magnitude > 0.05f)
+        if (InputHandler.Instance.Restart.Down)
+            Debug.Log("a?");
+
+        if (currInput.magnitude > 1f)
             currInput.Normalize();
         if (grounded)
         {
@@ -301,7 +304,15 @@ public class PlayerController : Singleton<PlayerController>
 
             if (currInput.magnitude > 0.05f) //Pressing something, try to accelerate
             {
-                Vector3 velocity_local_with_input = velocity_local_friction + currInput * accelSpeed_air;
+                Vector3 inputVect = currInput * accelSpeed_air;
+
+
+                float angle = Mathf.Atan2(currInput.normalized.z, currInput.normalized.x);
+
+                if (angle > Mathf.PI / 2.0f && angle < Mathf.PI)
+                    Debug.Log("a");
+
+                Vector3 velocity_local_with_input = velocity_local_friction + inputVect;
 
                 if (velocity_local_friction.magnitude <= maxSpeed)
                 {
@@ -310,29 +321,51 @@ public class PlayerController : Singleton<PlayerController>
                 }
                 else
                 {
-                    //over max speed
-                    if (velocity_local_with_input.magnitude <= maxSpeed) //Use new direction, would go less than max speed
+                    float velocityOntoInput = Vector3.Project(velocity_local_with_input, inputVect).magnitude;
+                    if (Vector3.Dot(velocity_local_with_input, inputVect) < 0)
+                        velocityOntoInput *= -1;
+
+                    Debug.Log(velocityOntoInput);
+                    if (velocityOntoInput <= maxSpeed)
                     {
+                        //Speed in direction of input lower than maxSpeed
                         updatedVelocity = velocity_local_with_input;
                     }
-                    else //Would stay over max speed, use vector with smaller magnitude
+                    else
                     {
-                        // Debug.Log("withotInput: " + velocity_local.magnitude);
-                        // Debug.Log(velocity_local);
-                        // Debug.Log("input: " + velocity_local_with_input.magnitude);
-                        // Debug.Log(velocity_local_with_input);
-                        // Debug.Log("friction: " + velocity_local_friction.magnitude);
-                        // Debug.Log(velocity_local_friction);
+                        //Would accelerate more, so don't user player input directly
 
-                        //Would accelerate more, so don't user player input
-                        if (velocity_local_with_input.magnitude > velocity_local_friction.magnitude)
-                            updatedVelocity = velocity_local_friction;
-                        else
-                            //Would accelerate less, user player input (input moves velocity more to 0,0 than just friciton)
-                            updatedVelocity = velocity_local_with_input;
+                        Vector3 velocityOntoFriction = Vector3.Project(velocity_local_friction, inputVect);
+
+                        Vector3 perp = velocity_local_friction - velocityOntoFriction;
+
+                        //Accelerate towards max speed
+                        float amountToAdd = Mathf.Max(0, Mathf.Min(maxSpeed - velocityOntoFriction.magnitude, inputVect.magnitude));
+                        float perpAmountToSubtract = Mathf.Max(0, Mathf.Min(accelSpeed_air - amountToAdd, perp.magnitude));
+
+                        perp = perp.normalized * perpAmountToSubtract;
+
+                        updatedVelocity = velocity_local_friction + amountToAdd * inputVect.normalized - perp;
                     }
+                    ////over max speed
+                    //if (velocity_local_with_input.magnitude <= maxSpeed) //Use new direction, would go less than max speed
+                    //{
+
+                    //}
+                    //else //Would stay over max speed, use vector with smaller magnitude
+                    //{
+                    //    if (velocity_local_with_input.magnitude <= velocity_local_friction.magnitude)
+                    //        //Would accelerate less, user player input (input moves velocity more to 0,0 than just friciton)
+                    //        updatedVelocity = velocity_local_with_input;
+                    //    else
+                    //    {
+
+                    //    }
+                    //}
                 }
             }
+
+            //Debug.Log(updatedVelocity);
 
             //Convert local velocity to global velocity
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);

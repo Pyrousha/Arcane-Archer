@@ -29,7 +29,7 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
     {
         LevelFinished = true;
         Timer.Instance.PauseTimer();
-        bool isNewBestTime = SaveData.Instance.OnLevelCompleted(CurrBuildIndex - FIRST_LEVEL_INDEX, Timer.Instance.TotalTime);
+        bool isNewBestTime = SaveData.Instance.OnLevelCompleted(CurrBuildIndex - FIRST_LEVEL_INDEX, Timer.Instance.CurrTime);
 
         if (IsFullGame)
         {
@@ -37,7 +37,7 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
             if (nextIndex == CREDITS_SCENE_INDEX)
             {
                 //Full game just finished! 
-                GotNewBestTime = SaveData.Instance.OnFullGameCompleted(Timer.Instance.CurrTime);
+                GotNewBestTime = SaveData.Instance.OnFullGameCompleted(Timer.Instance.TotalTime);
             }
 
             LoadSceneWithIndex(nextIndex);

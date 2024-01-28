@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class SaveData : Singleton<SaveData>
 {
@@ -68,7 +71,7 @@ public class SaveData : Singleton<SaveData>
     {
         CurrSaveData = new SerializedSaveData();
 
-        Save();
+        PlayerPrefs.DeleteAll();
 
         SceneTransitioner.Instance.ToMainMenu();
     }
@@ -182,6 +185,7 @@ public class LevelStruct
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(SaveData))]
 public class SaveData_Inspector : Editor
 {
@@ -189,10 +193,12 @@ public class SaveData_Inspector : Editor
     {
         base.OnInspectorGUI();
 
+        SaveData data = target as SaveData;
+
         if (GUILayout.Button("Reset All Data"))
         {
-            ((SaveData)target).ResetSaveData();
+            data.ResetSaveData();
         }
     }
 }
-
+#endif
