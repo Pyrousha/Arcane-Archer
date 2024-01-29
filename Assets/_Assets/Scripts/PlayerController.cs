@@ -59,6 +59,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private bool levelOver = false;
 
+    private bool releasedArrow = false;
+
     private enum BowStateEnum
     {
         Ready,
@@ -102,6 +104,7 @@ public class PlayerController : Singleton<PlayerController>
             case BowStateEnum.Ready:
                 if (InputHandler.Instance.Shoot.Down || InputHandler.Instance.Shoot.Holding)
                 {
+                    releasedArrow = false;
                     bowState = BowStateEnum.DrawBack;
                     bowAnim.SetTrigger("DrawBack");
                 }
@@ -112,8 +115,14 @@ public class PlayerController : Singleton<PlayerController>
 
                 if (InputHandler.Instance.Shoot.Up)
                 {
+                    releasedArrow = true;
+                }
+
+                if (bowDrawPercent >= 0.5f && releasedArrow)
+                {
                     FireArrow();
                 }
+
                 break;
             case BowStateEnum.Fired:
                 break;

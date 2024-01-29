@@ -34,7 +34,7 @@ public class Explosion : Singleton<Explosion>
         Vector3 boomVelocity = explosionPower * PlayerController.Instance.BowDrawPercent * newDir;
 
         Vector3 currVelocity = PlayerController.Instance.RB.velocity;
-        currVelocity.y = Mathf.Max((currVelocity.y * 0.5f) + boomVelocity.y, boomVelocity.y);
+        currVelocity.y = Mathf.Max((currVelocity.y * 0.35f) + boomVelocity.y, boomVelocity.y);
         currVelocity += new Vector3(boomVelocity.x, 0, boomVelocity.z);
         PlayerController.Instance.RB.velocity = currVelocity;
 
