@@ -98,34 +98,36 @@ public class PlayerController : Singleton<PlayerController>
                 rb.velocity += transform.up * jumpPower;
         }
 
-
-        switch (bowState)
+        if (!PauseMenuCanvas.Instance.IsOpen)
         {
-            case BowStateEnum.Ready:
-                if (InputHandler.Instance.Shoot.Down || InputHandler.Instance.Shoot.Holding)
-                {
-                    releasedArrow = false;
-                    bowState = BowStateEnum.DrawBack;
-                    bowAnim.SetTrigger("DrawBack");
-                }
-                break;
-            case BowStateEnum.DrawBack:
-                bowDrawPercent = Mathf.Min(1, bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                SetFireSize(bowDrawPercent);
+            switch (bowState)
+            {
+                case BowStateEnum.Ready:
+                    if (!PauseMenuCanvas.Instance.IsOpen && (InputHandler.Instance.Shoot.Down || InputHandler.Instance.Shoot.Holding))
+                    {
+                        releasedArrow = false;
+                        bowState = BowStateEnum.DrawBack;
+                        bowAnim.SetTrigger("DrawBack");
+                    }
+                    break;
+                case BowStateEnum.DrawBack:
+                    bowDrawPercent = Mathf.Min(1, bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                    SetFireSize(bowDrawPercent);
 
-                if (InputHandler.Instance.Shoot.Up)
-                {
-                    releasedArrow = true;
-                }
+                    if (InputHandler.Instance.Shoot.Up || !InputHandler.Instance.Shoot.Holding)
+                    {
+                        releasedArrow = true;
+                    }
 
-                if (bowDrawPercent >= 0.5f && releasedArrow)
-                {
-                    FireArrow();
-                }
+                    if (bowDrawPercent >= 0.5f && releasedArrow)
+                    {
+                        FireArrow();
+                    }
 
-                break;
-            case BowStateEnum.Fired:
-                break;
+                    break;
+                case BowStateEnum.Fired:
+                    break;
+            }
         }
 
         //Camera Spin horizontal

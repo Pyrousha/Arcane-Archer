@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StageClearCanvas : Singleton<StageClearCanvas>
+public class StageClearCanvas : Submenu
 {
     [SerializeField] private GameObject parent;
     [SerializeField] private TextMeshProUGUI timeLabel;
@@ -10,6 +10,32 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
     [SerializeField] private GameObject newBestPopup;
     [SerializeField] private Button nextLevelButton;
     private bool isOpen = false;
+
+    #region Singleton
+    private static StageClearCanvas instance = null;
+
+    public static StageClearCanvas Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = FindObjectOfType<StageClearCanvas>();
+            return instance;
+        }
+    }
+
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("Duplicate instance of singleton found: " + gameObject.name + ", destroying.");
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+    }
+    #endregion
 
     public void OpenPopup(LevelStruct _levelStruct, bool _isNewBestTime)
     {
@@ -27,6 +53,8 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
         //If this is the last level, shouldn't be able to click next
         nextLevelButton.interactable = ((SceneTransitioner.CurrBuildIndex + 1) != SceneTransitioner.CREDITS_SCENE_INDEX);
         parent.SetActive(true);
+
+        firstSelectable.Select();
     }
 
     public void ClosePopup()
@@ -53,7 +81,7 @@ public class StageClearCanvas : Singleton<StageClearCanvas>
 
     public void OnLevelSelectClicked()
     {
-        LevelSelectCanvas.Instance.OpenPopup();
+        LevelSelectCanvas.Instance.SelectFromPast(this);
     }
 
     public void OnMainMenuClicked()

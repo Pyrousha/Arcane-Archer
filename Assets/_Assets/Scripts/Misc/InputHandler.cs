@@ -10,7 +10,8 @@ public class InputHandler : Singleton<InputHandler>
         Shoot = 1,
         Explode = 2,
         Slam = 3,
-        Restart = 4
+        Restart = 4,
+        Pause = 5
     }
 
     public Vector2 MoveXZ
@@ -48,8 +49,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         get { return buttons[(int)ButtonIndices.Restart]; }
     }
+    public ButtonState Pause
+    {
+        get { return buttons[(int)ButtonIndices.Pause]; }
+    }
 
-    private int buttonCount = 5;
+    private int buttonCount = 6;
     [SerializeField] private short bufferFrames = 5;
     [SerializeField] private bool bufferEnabled = false;
     private short IDSRC = 0;
@@ -62,6 +67,8 @@ public class InputHandler : Singleton<InputHandler>
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
+
+        buttons[(int)ButtonIndices.Pause].SetOneInputPerFrame(true);
     }
 
     private void FixedUpdate()
@@ -114,6 +121,10 @@ public class InputHandler : Singleton<InputHandler>
     {
         buttons[(int)ButtonIndices.Restart].Set(_ctx);
     }
+    public void CTX_Pause(InputAction.CallbackContext _ctx)
+    {
+        buttons[(int)ButtonIndices.Pause].Set(_ctx);
+    }
 
 
     //Buffer functions
@@ -146,6 +157,13 @@ public class InputHandler : Singleton<InputHandler>
                                 STATE_RELEASED = 1;
         private InputHandler handler;
         private bool firstFrame;
+
+        private bool oneInputPerFrame;
+        public void SetOneInputPerFrame(bool _oneInputPerFrame)
+        {
+            oneInputPerFrame = _oneInputPerFrame;
+        }
+
         public bool Holding
         {
             get;
@@ -161,12 +179,24 @@ public class InputHandler : Singleton<InputHandler>
                     {
                         if (frame.ContainsKey(id) && frame[id] == STATE_PRESSED)
                         {
-                            return frame.Remove(id);
+                            if (frame.Remove(id))
+                            {
+                                if (oneInputPerFrame)
+                                    firstFrame = false;
+                                return true;
+                            }
+                            return false;
                         }
                     }
                     return false;
                 }
-                return Holding && firstFrame;
+                if (Holding && firstFrame)
+                {
+                    if (oneInputPerFrame)
+                        firstFrame = false;
+                    return true;
+                }
+                return false;
             }
         }
 
