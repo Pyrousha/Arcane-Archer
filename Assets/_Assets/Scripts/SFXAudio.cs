@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SFXAudio : MonoBehaviour
@@ -13,7 +11,7 @@ public class SFXAudio : MonoBehaviour
 
     public void ChangeVolume()
     {
-        audioSource.volume = Music.sfxVolume;
+        audioSource.volume = SaveData.CurrSaveData.SfxVol;
     }
 
 #if UNITY_EDITOR

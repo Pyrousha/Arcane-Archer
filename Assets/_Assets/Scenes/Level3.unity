@@ -449,12 +449,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2001002310 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 887255440931962524, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
-    type: 3}
-  m_PrefabInstance: {fileID: 887255440019146802}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &887255440019146802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -524,6 +518,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05f9c49836cdd7a4d815f1393a5e7f3f, type: 3}
+--- !u!4 &887255440019146803 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1313244759367360329, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
+    type: 3}
+  m_PrefabInstance: {fileID: 887255440019146802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3073958408023843981
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -669,7 +669,7 @@ PrefabInstance:
         type: 3}
       propertyPath: arrowFire2
       value: 
-      objectReference: {fileID: 2001002310}
+      objectReference: {fileID: 887255440019146803}
     - target: {fileID: 4848514860880018623, guid: 9b74728742ce8b04a974a18c3547af64,
         type: 3}
       propertyPath: targArrowPos

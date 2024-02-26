@@ -1435,7 +1435,7 @@ PrefabInstance:
     - target: {fileID: 2505065264302503686, guid: 9060a0dc72277aa429934dc92cce9fcb,
         type: 3}
       propertyPath: m_Name
-      value: VFX_Flame
+      value: VFX_Flame_Arrow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9060a0dc72277aa429934dc92cce9fcb, type: 3}

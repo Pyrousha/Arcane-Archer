@@ -93,11 +93,11 @@ public class InputHandler : Singleton<InputHandler>
     }
     public void CTX_Scroll(InputAction.CallbackContext _ctx)
     {
-        Scroll = _ctx.ReadValue<Vector2>();
+        //Scroll = _ctx.ReadValue<Vector2>();
 
-        PlayerController.turnSpeedX = Mathf.Max(1f, PlayerController.turnSpeedX + Scroll.y * (0.5f / 120f));
-        PlayerPrefs.SetFloat("Sens", PlayerController.turnSpeedX);
-        SensitivityText.Instance.UpdateText();
+        //PlayerController.turnSpeedX = Mathf.Max(1f, PlayerController.turnSpeedX + Scroll.y * (0.5f / 120f));
+        //PlayerPrefs.SetFloat("Sens", PlayerController.turnSpeedX);
+        //SensitivityText.Instance.UpdateText();
     }
 
     //Buttons

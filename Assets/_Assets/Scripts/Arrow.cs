@@ -178,6 +178,7 @@ public class Arrow : MonoBehaviour
         transform.gameObject.SetActive(true);
         rb.velocity = targArrowPos.forward * arrowPower; //+ new Vector3(0, playerRB.velocity.y, 0);
 
+        audioSourceIDK.volume = SaveData.CurrSaveData.SfxVol;
         audioSourceIDK.Play();
     }
 

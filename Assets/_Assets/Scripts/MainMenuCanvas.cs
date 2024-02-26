@@ -53,6 +53,7 @@ public class MainMenuCanvas : Submenu
     public void OnSettingsClicked()
     {
         //TODO: Settings Menu
+        SettingsCanvas.Instance.SelectFromPast(this);
     }
 
     public void OnQuitClicked()

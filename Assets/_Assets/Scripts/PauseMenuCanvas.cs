@@ -118,6 +118,6 @@ public class PauseMenuCanvas : Submenu
 
     public void OnOptionsClicked()
     {
-        //OptionsMenuCanvas.Instance.OpenPopup();
+        SettingsCanvas.Instance.SelectFromPast(this);
     }
 }

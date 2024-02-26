@@ -118,8 +118,8 @@ public class SerializedSaveData
 {
     public float Version = 0.125f;
 
-    public bool MusicEnabled = true;
-    public bool SoundEnabled = true;
+    public float MusicVol = 0.5f;
+    public float SfxVol = 0.5f;
 
     public float MouseSens = 20;
     public float BestFullTime = 0;

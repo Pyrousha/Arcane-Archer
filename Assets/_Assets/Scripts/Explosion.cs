@@ -52,6 +52,8 @@ public class Explosion : Singleton<Explosion>
         if (rand == clips.Length)
             rand = 0;
         source.clip = clips[rand];
+
+        source.volume = SaveData.CurrSaveData.SfxVol;
         source.Play();
     }
 }
