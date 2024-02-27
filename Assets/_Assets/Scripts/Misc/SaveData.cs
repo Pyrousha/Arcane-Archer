@@ -121,7 +121,7 @@ public class SerializedSaveData
     public float MusicVol = 0.5f;
     public float SfxVol = 0.5f;
 
-    public float MouseSens = 20;
+    public float MouseSens = 0.25f;
     public float BestFullTime = 0;
 
     public List<LevelStruct> LevelsList;
@@ -137,8 +137,6 @@ public class SerializedSaveData
         //Populate List
         while (LevelsList.Count < SaveData.NUM_TOTAL_LEVELS)
             LevelsList.Add(new LevelStruct(false));
-
-        PlayerController.turnSpeedX = MouseSens;
     }
 }
 

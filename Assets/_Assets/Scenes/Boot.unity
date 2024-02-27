@@ -692,6 +692,63 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5461981970757997197, guid: ddf1ac90872b5c04cb2bde04362cf732, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ddf1ac90872b5c04cb2bde04362cf732, type: 3}
+--- !u!1 &403839621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 403839624}
+  - component: {fileID: 403839623}
+  - component: {fileID: 403839622}
+  m_Layer: 0
+  m_Name: SubmenuController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &403839622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403839621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e688d9396a78345ba0946361ec2c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &403839623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403839621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb82706c66ce27c4d9d90dbe91e3c12d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &403839624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 403839621}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &711843879
 GameObject:
   m_ObjectHideFlags: 0
@@ -2747,7 +2804,7 @@ MonoBehaviour:
     type: 3}
   m_SubmitAction: {fileID: -7728183958456183131, guid: cb5fa5d02b036294d9c4e661adc95ecf,
     type: 3}
-  m_CancelAction: {fileID: 379364279150955988, guid: cb5fa5d02b036294d9c4e661adc95ecf,
+  m_CancelAction: {fileID: 2580061893191808568, guid: cb5fa5d02b036294d9c4e661adc95ecf,
     type: 3}
   m_LeftClickAction: {fileID: -9063231228156487653, guid: cb5fa5d02b036294d9c4e661adc95ecf,
     type: 3}

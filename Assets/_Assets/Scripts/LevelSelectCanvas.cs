@@ -38,6 +38,10 @@ public class LevelSelectCanvas : Submenu
     {
         OpenPopup();
     }
+    public override void OnSubmenuClosed()
+    {
+        ClosePopup();
+    }
 
     private void OpenPopup()
     {
@@ -53,14 +57,12 @@ public class LevelSelectCanvas : Submenu
         parent.SetActive(true);
     }
 
-    public void ClosePopup()
+    private void ClosePopup()
     {
         if (!isOpen)
             return;
 
         isOpen = false;
         parent.SetActive(false);
-
-        ToLastSubmenu();
     }
 }

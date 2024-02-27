@@ -14,7 +14,7 @@ public class SensitivityText : Singleton<SensitivityText>
 
     public void UpdateText()
     {
-        float val = PlayerController.turnSpeedX = Mathf.Round(PlayerController.turnSpeedX * 100f) / 100f;
+        float val = PlayerController.MouseSens = Mathf.Round(PlayerController.MouseSens * 100f) / 100f;
         text.text = "Mouse Sens: " + val;
     }
 }

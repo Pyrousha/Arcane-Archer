@@ -20,17 +20,6 @@ public class Submenu : MonoBehaviour
         LastSelectedObj = firstSelectable;
     }
 
-    private void Update()
-    {
-        if (InputHandler.Instance.Pause.Down)
-        {
-            if (ActiveSubmenu == this)
-            {
-                ToLastSubmenu();
-            }
-        }
-    }
-
     public void SetLastLayout(Submenu _menu)
     {
         LastSubmenu = _menu;
@@ -38,8 +27,15 @@ public class Submenu : MonoBehaviour
 
     public void ToLastSubmenu()
     {
-        if (LastSubmenu != null)
-            LastSubmenu.Select();
+        OnSubmenuClosed();
+
+        if (LastSubmenu == null)
+        {
+            ActiveSubmenu = null;
+            return;
+        }
+
+        LastSubmenu.Select();
     }
 
     public void SelectFromPast(Submenu _submenu)
@@ -62,4 +58,5 @@ public class Submenu : MonoBehaviour
     }
 
     public virtual void OnSubmenuSelected() { }
+    public virtual void OnSubmenuClosed() { }
 }

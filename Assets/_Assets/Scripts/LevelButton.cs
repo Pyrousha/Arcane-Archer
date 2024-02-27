@@ -33,8 +33,8 @@ public class LevelButton : MonoBehaviour
 
     public virtual void OnClicked()
     {
-        LevelSelectCanvas.Instance.ClosePopup();
-        StageClearCanvas.Instance.ClosePopup();
+        LevelSelectCanvas.Instance.ToLastSubmenu();
+        StageClearCanvas.Instance.ToLastSubmenu();
         SceneTransitioner.IsFullGame = false;
         Timer.Instance.SetTimerVisualsStatus(false, true);
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX + Index);

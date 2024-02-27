@@ -22,8 +22,8 @@ public class LevelButton_All : LevelButton
 
     public override void OnClicked()
     {
-        LevelSelectCanvas.Instance.ClosePopup();
-        StageClearCanvas.Instance.ClosePopup();
+        LevelSelectCanvas.Instance.ToLastSubmenu();
+        StageClearCanvas.Instance.ToLastSubmenu();
         SceneTransitioner.IsFullGame = true;
         Timer.Instance.SetTimerVisualsStatus(true, true);
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX);

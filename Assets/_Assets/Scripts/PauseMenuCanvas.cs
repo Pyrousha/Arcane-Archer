@@ -34,19 +34,16 @@ public class PauseMenuCanvas : Submenu
     }
     #endregion
 
-    private void Update()
+    public void TryOpen()
     {
-        if (InputHandler.Instance.Pause.Down)
+        if (SceneTransitioner.CurrBuildIndex > SceneTransitioner.MAIN_MENU_INDEX && SceneTransitioner.CurrBuildIndex != SceneTransitioner.CREDITS_SCENE_INDEX)
         {
-            if (SceneTransitioner.CurrBuildIndex > SceneTransitioner.MAIN_MENU_INDEX && SceneTransitioner.CurrBuildIndex != SceneTransitioner.CREDITS_SCENE_INDEX)
+            if (!SceneTransitioner.Instance.LevelFinished)
             {
-                if (!SceneTransitioner.Instance.LevelFinished)
-                {
-                    if (IsOpen)
-                        OnResumeClicked();
-                    else
-                        OpenPopup();
-                }
+                if (IsOpen)
+                    ToLastSubmenu();
+                else
+                    SelectFromPast(null);
             }
         }
     }
@@ -55,8 +52,12 @@ public class PauseMenuCanvas : Submenu
     {
         OpenPopup();
     }
+    public override void OnSubmenuClosed()
+    {
+        ClosePopup();
+    }
 
-    public void OpenPopup()
+    private void OpenPopup()
     {
         if (IsOpen)
             return;
@@ -71,7 +72,7 @@ public class PauseMenuCanvas : Submenu
         Time.timeScale = 0;
     }
 
-    public void ClosePopup()
+    private void ClosePopup()
     {
         if (!IsOpen)
             return;
@@ -79,15 +80,11 @@ public class PauseMenuCanvas : Submenu
         parent.SetActive(false);
         Time.timeScale = 1;
 
-        ToLastSubmenu();
-
         StartCoroutine(ClosePopupRoutine());
     }
 
     private IEnumerator ClosePopupRoutine()
     {
-        //yield return null;
-        //yield return null;
         yield return null;
         yield return new WaitForSeconds(0.1f);
 
@@ -97,13 +94,13 @@ public class PauseMenuCanvas : Submenu
     public void OnResumeClicked()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        ClosePopup();
+        ToLastSubmenu();
     }
 
     public void OnMainMenuClicked()
     {
         Cursor.lockState = CursorLockMode.None;
-        ClosePopup();
+        ToLastSubmenu();
 
         SceneTransitioner.Instance.ToMainMenu();
     }
@@ -111,7 +108,7 @@ public class PauseMenuCanvas : Submenu
     public void OnRetryClicked()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        ClosePopup();
+        ToLastSubmenu();
 
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.CurrBuildIndex);
     }

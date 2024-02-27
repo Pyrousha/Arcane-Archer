@@ -8,9 +8,12 @@ public class SettingsCanvas : Submenu
 
     [SerializeField] private GameObject parent;
     [Space(10)]
+    [SerializeField] private Slider sensSlider;
+    [SerializeField] private TMP_InputField sensInputField;
+    [Space(10)]
     [SerializeField] private Slider musicSlider;
     [SerializeField] private TMP_InputField musicInputField;
-    [Space(10)]
+    [Space(5)]
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_InputField sfxInputField;
 
@@ -48,11 +51,20 @@ public class SettingsCanvas : Submenu
 
         sfxSlider.value = SaveData.CurrSaveData.SfxVol;
         sfxInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.SfxVol * 100).ToString();
+
+        sensSlider.value = SaveData.CurrSaveData.MouseSens;
+        sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
+
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
     }
 
     public override void OnSubmenuSelected()
     {
         OpenPopup();
+    }
+    public override void OnSubmenuClosed()
+    {
+        ClosePopup();
     }
 
     private void OpenPopup()
@@ -64,7 +76,7 @@ public class SettingsCanvas : Submenu
         parent.SetActive(true);
     }
 
-    public void ClosePopup()
+    private void ClosePopup()
     {
         if (!isOpen)
             return;
@@ -72,7 +84,7 @@ public class SettingsCanvas : Submenu
         isOpen = false;
         parent.SetActive(false);
 
-        ToLastSubmenu();
+        SaveData.Instance.Save();
     }
 
     public void OnFullscreenTypeChanged(int _resolutionType)
@@ -109,7 +121,7 @@ public class SettingsCanvas : Submenu
     {
         try
         {
-            SaveData.CurrSaveData.MusicVol = Mathf.Clamp(float.Parse(_volStr), 0, 1);
+            SaveData.CurrSaveData.MusicVol = Mathf.Clamp(float.Parse(_volStr) / 100f, 0, 1);
         }
         catch { }
 
@@ -129,11 +141,33 @@ public class SettingsCanvas : Submenu
     {
         try
         {
-            SaveData.CurrSaveData.SfxVol = Mathf.Clamp(float.Parse(_volStr), 0, 1);
+            SaveData.CurrSaveData.SfxVol = Mathf.Clamp(float.Parse(_volStr) / 100f, 0, 1);
         }
         catch { }
 
         sfxSlider.value = SaveData.CurrSaveData.SfxVol;
         sfxInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.SfxVol * 100).ToString();
+    }
+
+    public void OnSensChanged_Slider(float _percent)
+    {
+        SaveData.CurrSaveData.MouseSens = Mathf.Clamp(_percent, 0, 1);
+        sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
+
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
+    }
+
+    public void OnSensChanged_InputField(string _volStr)
+    {
+        try
+        {
+            SaveData.CurrSaveData.MouseSens = Mathf.Clamp(float.Parse(_volStr) / 255f, 0, 1);
+        }
+        catch { }
+
+        sensSlider.value = SaveData.CurrSaveData.MouseSens;
+        sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
+
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
     }
 }

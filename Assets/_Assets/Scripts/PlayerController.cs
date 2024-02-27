@@ -39,7 +39,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float raycastHeight;
 
     [Header("Settings")]
-    public static float turnSpeedX = 25;
+    public static float MouseSens = 25;
     // public static float turnSpeedY = 50;
 
     private float bowDrawPercent = 0;
@@ -131,12 +131,12 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         //Camera Spin horizontal
-        float amountToTurn = turnSpeedX * InputHandler.Instance.Look.x * Time.deltaTime;
+        float amountToTurn = MouseSens * InputHandler.Instance.Look.x * Time.deltaTime;
         transform.rotation = Quaternion.AngleAxis(amountToTurn, transform.up) * transform.rotation;
 
         //Camera Spin vertical
         //targVerticalSpin -= turnSpeedY * InputHandler.Instance.Look.y * Time.deltaTime;
-        targVerticalSpin -= turnSpeedX * InputHandler.Instance.Look.y * Time.deltaTime;
+        targVerticalSpin -= MouseSens * InputHandler.Instance.Look.y * Time.deltaTime;
         targVerticalSpin = Mathf.Clamp(targVerticalSpin, -90f, 90f);
         cameraTarget.localRotation = Quaternion.Euler(targVerticalSpin, 0, 0);
 

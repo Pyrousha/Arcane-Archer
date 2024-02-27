@@ -67,8 +67,6 @@ public class InputHandler : Singleton<InputHandler>
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
-
-        buttons[(int)ButtonIndices.Pause].SetOneInputPerFrame(true);
     }
 
     private void FixedUpdate()
@@ -158,12 +156,6 @@ public class InputHandler : Singleton<InputHandler>
         private InputHandler handler;
         private bool firstFrame;
 
-        private bool oneInputPerFrame;
-        public void SetOneInputPerFrame(bool _oneInputPerFrame)
-        {
-            oneInputPerFrame = _oneInputPerFrame;
-        }
-
         public bool Holding
         {
             get;
@@ -179,24 +171,14 @@ public class InputHandler : Singleton<InputHandler>
                     {
                         if (frame.ContainsKey(id) && frame[id] == STATE_PRESSED)
                         {
-                            if (frame.Remove(id))
-                            {
-                                if (oneInputPerFrame)
-                                    firstFrame = false;
-                                return true;
-                            }
-                            return false;
+                            return frame.Remove(id);
                         }
                     }
                     return false;
                 }
-                if (Holding && firstFrame)
-                {
-                    if (oneInputPerFrame)
-                        firstFrame = false;
-                    return true;
-                }
-                return false;
+
+                //Buffer disabled
+                return (Holding && firstFrame);
             }
         }
 
@@ -215,6 +197,8 @@ public class InputHandler : Singleton<InputHandler>
                     }
                     return false;
                 }
+
+                //Buffer disabled
                 return !Holding && firstFrame;
             }
         }
