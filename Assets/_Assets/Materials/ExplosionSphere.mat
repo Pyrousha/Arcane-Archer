@@ -97,7 +97,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _Amplification: 1
+    - _Amplification: 1.5
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
@@ -126,11 +126,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BackColor: {r: 0.33962262, g: 0.2672125, b: 0.2672125, a: 1}
+    - _BackColor: {r: 1, g: 0.9831933, b: 0, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _FrontColor: {r: 0.958199, g: 1, b: 0, a: 1}
+    - _FrontColor: {r: 0.3962264, g: 0.3504361, b: 0.3229619, a: 1}
     - _RotationSpeed: {r: 0.1, g: -0.1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []

@@ -94,7 +94,7 @@ public class Arrow : MonoBehaviour
         {
             state = ArrowStateEnum.InGround;
 
-            ObjReferencer.Instance.ExplodeEffect.transform.position = transform.position;
+            //ObjReferencer.Instance.ExplodeEffect.transform.position = transform.position;
             ObjReferencer.Instance.ExplodeIndicator.transform.position = transform.position;
 
             ObjReferencer.Instance.ExplodeIndicator.SetActive(true);
@@ -141,7 +141,8 @@ public class Arrow : MonoBehaviour
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
 
-            ObjReferencer.Instance.ExplodeEffect.Play();
+            //ObjReferencer.Instance.ExplodeEffect.Play();
+            Instantiate(ObjReferencer.Instance.ExplodeEffectPrefab, transform.position, Quaternion.identity, ObjReferencer.Instance.ArrowFXParent);
         }
 
         ObjReferencer.Instance.ExplodeIndicator.SetActive(false);
