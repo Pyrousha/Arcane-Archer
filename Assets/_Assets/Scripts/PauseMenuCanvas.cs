@@ -77,6 +77,9 @@ public class PauseMenuCanvas : Submenu
         if (!IsOpen)
             return;
 
+        Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log("Locked mouse!");
+
         parent.SetActive(false);
         Time.timeScale = 1;
 
@@ -93,13 +96,11 @@ public class PauseMenuCanvas : Submenu
 
     public void OnResumeClicked()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         ToLastSubmenu();
     }
 
     public void OnMainMenuClicked()
     {
-        Cursor.lockState = CursorLockMode.None;
         ToLastSubmenu();
 
         SceneTransitioner.Instance.ToMainMenu();
@@ -107,7 +108,6 @@ public class PauseMenuCanvas : Submenu
 
     public void OnRetryClicked()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         ToLastSubmenu();
 
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.CurrBuildIndex);

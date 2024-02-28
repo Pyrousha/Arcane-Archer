@@ -10,6 +10,8 @@ public class MainMenuCanvas : Submenu
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+
         levelSelectButton.interactable = SaveData.CurrSaveData.BestFullTime > 0;
         if (SaveData.CurrSaveData.BestFullTime <= 0)
         {

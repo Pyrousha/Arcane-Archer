@@ -84,6 +84,8 @@ public class PlayerController : Singleton<PlayerController>
     {
         arrowFire1.localScale = Vector3.zero;
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
+
+        Debug.Log("Sens: " + MouseSens);
     }
 
     void Update()
@@ -347,7 +349,7 @@ public class PlayerController : Singleton<PlayerController>
                     if (Vector3.Dot(velocity_local_with_input, inputVect) < 0)
                         velocityOntoInput *= -1;
 
-                    Debug.Log(velocityOntoInput);
+                    //Debug.Log(velocityOntoInput);
                     if (velocityOntoInput <= maxSpeed)
                     {
                         //Speed in direction of input lower than maxSpeed
