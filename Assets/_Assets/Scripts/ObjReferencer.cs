@@ -7,4 +7,10 @@ public class ObjReferencer : Singleton<ObjReferencer>
     //[field: SerializeField] public ParticleSystem ExplodeEffect;
     [field: SerializeField] public Transform ArrowFXParent;
     [field: SerializeField] public GameObject ExplodeEffectPrefab;
+    [field: SerializeField] public Camera MainCamera;
+
+    private void Start()
+    {
+        MainCamera.fieldOfView = SaveData.CurrSaveData.Fov;
+    }
 }

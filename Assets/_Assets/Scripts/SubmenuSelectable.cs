@@ -14,6 +14,6 @@ public class SubmenuSelectable : MonoBehaviour, ISelectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        parentSubmenu.SetLastSelected(c_selectable);
+        //parentSubmenu.SetLastSelected(c_selectable);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Submenu : MonoBehaviour
@@ -40,6 +41,9 @@ public class Submenu : MonoBehaviour
 
     public void SelectFromPast(Submenu _submenu)
     {
+        if (_submenu != null)
+            _submenu.SetLastSelected(EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>());
+
         LastSubmenu = _submenu;
 
         firstSelectable.Select();

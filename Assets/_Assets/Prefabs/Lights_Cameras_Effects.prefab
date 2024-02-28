@@ -327,6 +327,7 @@ MonoBehaviour:
   ArrowFXParent: {fileID: 531899096942833781}
   ExplodeEffectPrefab: {fileID: 8791159856885113892, guid: 2aeb0e653aea6474a805d279d0336ad5,
     type: 3}
+  MainCamera: {fileID: 887255440246414843}
 --- !u!1 &887255439874198066
 GameObject:
   m_ObjectHideFlags: 0
@@ -2951,6 +2952,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2457480624514197536, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457480624514197536, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457480624514197536, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457480624514197536, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2998,6 +3014,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457480624514197536, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9076201040949785567, guid: dc1e68972b3275a4fa3c51b273d6cfb5,
         type: 3}

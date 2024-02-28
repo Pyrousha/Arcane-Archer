@@ -121,7 +121,8 @@ public class SerializedSaveData
     public float MusicVol = 0.5f;
     public float SfxVol = 0.5f;
 
-    public float MouseSens = 0.25f;
+    public float MouseSens = 16f / 255f;
+    public float Fov = 90;
     public float BestFullTime = 0;
 
     public List<LevelStruct> LevelsList;
