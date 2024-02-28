@@ -17,8 +17,7 @@ public class Arrow : MonoBehaviour
     [SerializeField] private Transform player;
     private Rigidbody playerRB;
     private PlayerController playerController;
-    [SerializeField] private ParticleSystem explosionEffect;
-    [SerializeField] private Animator explodeAnim;
+    //[SerializeField] private Animator explodeAnim;
     [SerializeField] private Animator arrowAnim;
     [Space(5)]
     [SerializeField] private float lerpSpeed;
@@ -27,13 +26,10 @@ public class Arrow : MonoBehaviour
 
     private bool inRange = false;
 
-    private Transform explosionTransform;
-
     private Rigidbody rb;
 
     void Awake()
     {
-        explosionTransform = explosionEffect.gameObject.transform;
         rb = GetComponent<Rigidbody>();
         playerRB = player.GetComponent<Rigidbody>();
         playerController = player.GetComponent<PlayerController>();
@@ -98,8 +94,10 @@ public class Arrow : MonoBehaviour
         {
             state = ArrowStateEnum.InGround;
 
-            explosionTransform.position = transform.position;
-            Explosion.Instance.RangeObj.enabled = true;
+            ObjReferencer.Instance.ExplodeEffect.transform.position = transform.position;
+            ObjReferencer.Instance.ExplodeIndicator.transform.position = transform.position;
+
+            ObjReferencer.Instance.ExplodeIndicator.SetActive(true);
 
             rb.angularVelocity = Vector3.zero;
             rb.velocity = Vector3.zero;
@@ -143,20 +141,15 @@ public class Arrow : MonoBehaviour
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
 
-            //explosionTransform.position = transform.position;
-            explosionEffect.Play();
-
-            explodeAnim.SetTrigger("Explode");
+            ObjReferencer.Instance.ExplodeEffect.Play();
         }
 
-        Explosion.Instance.RangeObj.enabled = false;
+        ObjReferencer.Instance.ExplodeIndicator.SetActive(false);
 
         state = ArrowStateEnum.FlyingBack;
         gameObject.layer = 12;
 
         //rb.useGravity = false;
-
-        playerController.SetFireSize(0);
 
         playerController.PickupArrow();
         Pickup();

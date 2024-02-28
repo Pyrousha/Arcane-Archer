@@ -17,7 +17,6 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform targArrowPos;
     [SerializeField] private Arrow arrow;
     [SerializeField] private Transform arrowFire1;
-    [SerializeField] private Transform arrowFire2;
 
     [Header("Parameters")]
     [SerializeField] private float arrowPower;
@@ -81,6 +80,12 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private void Start()
+    {
+        arrowFire1.localScale = Vector3.zero;
+        ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
+    }
+
     void Update()
     {
         if (levelOver)
@@ -112,7 +117,7 @@ public class PlayerController : Singleton<PlayerController>
                     break;
                 case BowStateEnum.DrawBack:
                     bowDrawPercent = Mathf.Min(1, bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime);
-                    SetFireSize(bowDrawPercent);
+                    ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.one * bowDrawPercent;
 
                     if (InputHandler.Instance.Shoot.Up || !InputHandler.Instance.Shoot.Holding)
                     {
@@ -126,6 +131,8 @@ public class PlayerController : Singleton<PlayerController>
 
                     break;
                 case BowStateEnum.Fired:
+                    arrowFire1.localScale = Vector3.one;
+                    ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
                     break;
             }
         }
@@ -163,23 +170,27 @@ public class PlayerController : Singleton<PlayerController>
 
     public void TryPickupArrow()
     {
-        if (Time.time < nextShootPickupTime)
-            return;
+        //OLD
+        //if (Time.time < nextShootPickupTime)
+        //    return;
 
-        if (InputHandler.Instance.Shoot.Down || arrow.State == Arrow.ArrowStateEnum.FlyingBack)
-        {
-            bowState = BowStateEnum.Ready;
-            bowAnim.SetTrigger("Pickup");
-            SummonFireAnim.Instance.SummonFire();
+        //if (InputHandler.Instance.Shoot.Down || arrow.State == Arrow.ArrowStateEnum.FlyingBack)
+        //{
+        //    bowState = BowStateEnum.Ready;
+        //    bowAnim.SetTrigger("Pickup");
+        //    SummonFireAnim.Instance.SummonFire();
 
-            arrow.Pickup();
-        }
+        //    arrow.Pickup();
+        //}
     }
 
     public void PickupArrow()
     {
         bowState = BowStateEnum.Ready;
         bowAnim.SetTrigger("Pickup");
+
+        arrowFire1.localScale = Vector3.zero;
+        ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
     }
 
     private void FireArrow()
@@ -382,12 +393,6 @@ public class PlayerController : Singleton<PlayerController>
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
         #endregion
-    }
-
-    public void SetFireSize(float _percentage)
-    {
-        arrowFire1.localScale = Vector3.one * _percentage;
-        arrowFire2.localScale = Vector3.one * _percentage;
     }
 
     public void OnLevelEnd()
