@@ -624,7 +624,6 @@ MonoBehaviour:
   targArrowPos: {fileID: 0}
   arrow: {fileID: 4848514860998066145}
   arrowFire1: {fileID: 4867687427973491132}
-  arrowFire2: {fileID: 0}
   arrowPower: 35
   maxSpeed_Normal: 20
   maxSpeed_Charging: 20
@@ -632,9 +631,9 @@ MonoBehaviour:
   frictionSpeed_ground: 0.8
   accelSpeed_air: 4
   frictionSpeed_air: 0.4
-  gravUp: 0.4
+  gravUp: 0.3
   gravDown: 0.3
-  slamGrav: 5
+  slamGrav: 2.5
   spaceReleaseGravMult: 0.5
   jumpPower: 15
   groundLayer:
@@ -724,8 +723,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 4848514860880018616}
-  explosionEffect: {fileID: 0}
-  explodeAnim: {fileID: 0}
   arrowAnim: {fileID: 7428862199576478920}
   lerpSpeed: 60
   explodeSpeed: 50

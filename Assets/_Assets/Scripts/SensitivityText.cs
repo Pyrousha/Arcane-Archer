@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class SensitivityText : Singleton<SensitivityText>
 {
@@ -14,7 +12,7 @@ public class SensitivityText : Singleton<SensitivityText>
 
     public void UpdateText()
     {
-        float val = PlayerController.MouseSens = Mathf.Round(PlayerController.MouseSens * 100f) / 100f;
-        text.text = "Mouse Sens: " + val;
+        //float val = PlayerController.MouseSens = Mathf.Round(PlayerController.MouseSens * 100f) / 100f;
+        //text.text = "Mouse Sens: " + val;
     }
 }

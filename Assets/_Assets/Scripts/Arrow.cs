@@ -122,7 +122,7 @@ public class Arrow : MonoBehaviour
             }
         }
 
-        if (InputHandler.Instance.Explode.Down && (state == ArrowStateEnum.InGround || state == ArrowStateEnum.Fired))
+        if ((state == ArrowStateEnum.InGround || state == ArrowStateEnum.Fired) && InputHandler.Instance.Explode.Down)
             Explode();
     }
 

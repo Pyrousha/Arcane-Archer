@@ -47,6 +47,8 @@ public class SettingsCanvas : Submenu
     }
     #endregion
 
+    private const float SENS_MULTIPLIER = 0.25f;
+
     private void Start()
     {
         sensSlider.value = SaveData.CurrSaveData.MouseSens;
@@ -61,7 +63,7 @@ public class SettingsCanvas : Submenu
         sfxSlider.value = SaveData.CurrSaveData.SfxVol;
         sfxInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.SfxVol * 100).ToString();
 
-        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255f * SENS_MULTIPLIER);
     }
 
     public override void OnSubmenuSelected()
@@ -160,7 +162,7 @@ public class SettingsCanvas : Submenu
         SaveData.CurrSaveData.MouseSens = Mathf.Clamp(_percent, 0, 1);
         sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
 
-        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255f * SENS_MULTIPLIER);
     }
 
     public void OnSensChanged_InputField(string _sensText)
@@ -174,7 +176,7 @@ public class SettingsCanvas : Submenu
         sensSlider.value = SaveData.CurrSaveData.MouseSens;
         sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
 
-        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255);
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255f * SENS_MULTIPLIER);
     }
 
     public void OnFovChanged_Slider(float _percent)

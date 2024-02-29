@@ -102,7 +102,10 @@ public class PlayerController : Singleton<PlayerController>
         if (InputHandler.Instance.Jump.Down)
         {
             if (grounded)
+            {
                 rb.velocity += transform.up * jumpPower;
+                CanSpaceRelease = true;
+            }
         }
 
         if (!PauseMenuCanvas.Instance.IsOpen)
@@ -153,21 +156,15 @@ public class PlayerController : Singleton<PlayerController>
         cameraTransform.position = cameraTarget.position;
         cameraTransform.rotation = cameraTarget.rotation;
 
-        //Jump
-        if (InputHandler.Instance.Jump.Down)
-        {
-            if (grounded)
-            {
-                rb.velocity += transform.up * jumpPower;
-                CanSpaceRelease = true;
-            }
-        }
-
         //Space release gravity
         if (InputHandler.Instance.Jump.Up && rb.velocity.y > 0 && CanSpaceRelease)
         {
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * spaceReleaseGravMult, rb.velocity.z);
+            CanSpaceRelease = false;
         }
+
+        //if (InputHandler.Instance.Explode.Down)
+        //    pressedBoom = true;
     }
 
     public void TryPickupArrow()
@@ -207,6 +204,8 @@ public class PlayerController : Singleton<PlayerController>
 
         bowAnim.SetTrigger("Fire");
     }
+
+    //private bool pressedBoom = false;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -250,10 +249,19 @@ public class PlayerController : Singleton<PlayerController>
         }
         else
         {
+            //if (pressedBoom)
+            //    pressedBoom = false;
+
             if (InputHandler.Instance.Jump.Holding && rb.velocity.y > 0 && CanSpaceRelease)
+            {
+                Debug.Log("Up");
                 rb.velocity -= new Vector3(0, gravUp, 0);
+            }
             else
+            {
+                Debug.Log("Down");
                 rb.velocity -= new Vector3(0, gravDown, 0);
+            }
         }
         #endregion
 

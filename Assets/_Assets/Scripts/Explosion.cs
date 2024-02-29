@@ -12,7 +12,6 @@ public class Explosion : Singleton<Explosion>
 
     public void BoomPlayer(float _sqrExplosionRadius)
     {
-
         PlayerController.Instance.CanSpaceRelease = false;
 
         Vector3 playerPos = PlayerController.Instance.BottomOfModel.position;
