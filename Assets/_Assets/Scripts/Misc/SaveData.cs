@@ -125,6 +125,8 @@ public class SerializedSaveData
     public float Fov = 90;
     public float BestFullTime = 0;
 
+    public string reboundControls = null;
+
     public List<LevelStruct> LevelsList;
 
     public SerializedSaveData()

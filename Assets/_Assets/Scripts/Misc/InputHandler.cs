@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : Singleton<InputHandler>
 {
+    [SerializeField] private PlayerInput playerInput;
+
     private enum ButtonIndices
     {
         Jump = 0,
@@ -67,6 +69,9 @@ public class InputHandler : Singleton<InputHandler>
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
+
+        if (SaveData.CurrSaveData.reboundControls != null)
+            playerInput.actions.LoadBindingOverridesFromJson(SaveData.CurrSaveData.reboundControls);
     }
 
     private void FixedUpdate()
@@ -88,6 +93,10 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_Look(InputAction.CallbackContext _ctx)
     {
         Look = _ctx.ReadValue<Vector2>();
+    }
+    public void CTX_Look_Gamepad(InputAction.CallbackContext _ctx)
+    {
+        Look = _ctx.ReadValue<Vector2>() * 10f;
     }
     public void CTX_Scroll(InputAction.CallbackContext _ctx)
     {

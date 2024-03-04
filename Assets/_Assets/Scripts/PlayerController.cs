@@ -85,7 +85,7 @@ public class PlayerController : Singleton<PlayerController>
         arrowFire1.localScale = Vector3.zero;
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
 
-        Debug.Log("Sens: " + MouseSens);
+        //Debug.Log("Sens: " + MouseSens);
     }
 
     void Update()
@@ -254,12 +254,12 @@ public class PlayerController : Singleton<PlayerController>
 
             if (InputHandler.Instance.Jump.Holding && rb.velocity.y > 0 && CanSpaceRelease)
             {
-                Debug.Log("Up");
+                //Debug.Log("Up");
                 rb.velocity -= new Vector3(0, gravUp, 0);
             }
             else
             {
-                Debug.Log("Down");
+                //Debug.Log("Down");
                 rb.velocity -= new Vector3(0, gravDown, 0);
             }
         }
@@ -339,10 +339,10 @@ public class PlayerController : Singleton<PlayerController>
                 Vector3 inputVect = currInput * accelSpeed_air;
 
 
-                float angle = Mathf.Atan2(currInput.normalized.z, currInput.normalized.x);
+                //float angle = Mathf.Atan2(currInput.normalized.z, currInput.normalized.x);
 
-                if (angle > Mathf.PI / 2.0f && angle < Mathf.PI)
-                    Debug.Log("a");
+                //if (angle > Mathf.PI / 2.0f && angle < Mathf.PI)
+                //    Debug.Log("a");
 
                 Vector3 velocity_local_with_input = velocity_local_friction + inputVect;
 
