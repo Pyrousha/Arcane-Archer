@@ -119,6 +119,8 @@ public class SettingsCanvas : Submenu
 
     public void OnMusicVolChanged_Slider(float _vol)
     {
+        //_vol is the new value that the player selected from the slider
+
         SaveData.CurrSaveData.MusicVol = Mathf.Clamp(_vol, 0, 1);
         musicInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MusicVol * 100).ToString();
 

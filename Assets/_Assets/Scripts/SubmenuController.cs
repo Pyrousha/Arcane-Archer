@@ -1,10 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem.UI;
 
 public class SubmenuController : Singleton<SubmenuController>
 {
-    [SerializeField] private InputSystemUIInputModule inputModule;
-
     // Update is called once per frame
     void Update()
     {
