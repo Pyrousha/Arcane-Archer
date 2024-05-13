@@ -105,6 +105,18 @@ public class LinkSelectables : MonoBehaviour
             return null;
         }
     }
+
+    public void GetSelectablesFromChildren()
+    {
+        selectables = new List<Selectable>();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Selectable selectable = transform.GetChild(i).GetComponent<Selectable>();
+            if (selectable != null)
+                selectables.Add(selectable);
+        }
+    }
 }
 
 #if UNITY_EDITOR
@@ -114,9 +126,15 @@ public class LinkSelectables_Editor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+
         if (GUILayout.Button("Link"))
         {
             ((LinkSelectables)target).Link();
+        }
+
+        if (GUILayout.Button("Get Selectables from Children"))
+        {
+            ((LinkSelectables)target).GetSelectablesFromChildren();
         }
     }
 }

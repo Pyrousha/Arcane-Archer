@@ -18,20 +18,17 @@ public class MainMenuCanvas : Submenu
             //Game has not been finished before, disable level select button
             levelSelectButton.interactable = false;
 
-            Navigation nav_play = new Navigation();
-            nav_play.mode = Navigation.Mode.Explicit;
+            Navigation nav_play = playButton.navigation;
             nav_play.selectOnUp = quitButton;
             nav_play.selectOnDown = settingsButton;
             playButton.navigation = nav_play;
 
-            Navigation nav_settings = new Navigation();
-            nav_play.mode = Navigation.Mode.Explicit;
+            Navigation nav_settings = settingsButton.navigation;
             nav_play.selectOnUp = playButton;
             nav_play.selectOnDown = quitButton;
             settingsButton.navigation = nav_settings;
 
-            Navigation nav_quit = new Navigation();
-            nav_play.mode = Navigation.Mode.Explicit;
+            Navigation nav_quit = playButton.navigation;
             nav_play.selectOnUp = settingsButton;
             nav_play.selectOnDown = playButton;
             playButton.navigation = nav_quit;
