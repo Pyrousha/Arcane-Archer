@@ -43,7 +43,8 @@ public class MainMenuCanvas : Submenu
     public void OnPlayClicked()
     {
         SceneTransitioner.IsFullGame = true;
-        //TODO: Reset Timer
+        if (SaveData.CurrSaveData.BestFullTime > 0) //Game has been finished before, show timer
+            Timer.Instance.SetTimerVisualsStatus(true, true);
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX);
     }
 
@@ -54,7 +55,6 @@ public class MainMenuCanvas : Submenu
 
     public void OnSettingsClicked()
     {
-        //TODO: Settings Menu
         SettingsCanvas.Instance.SelectFromPast(this);
     }
 

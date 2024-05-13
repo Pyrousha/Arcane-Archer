@@ -26,15 +26,13 @@ public class RebindControlsMenu : Submenu
         [field: SerializeField] public InputID InputID { get; private set; }
         [field: SerializeField] public InputActionReference Action { get; private set; }
 
+        [field: SerializeField] public string Name { get; private set; }
+
         public InputIDToActionRef(InputID _inputID)
         {
             InputID = _inputID;
             Action = null;
-        }
-
-        public void SetAction(InputActionReference _action)
-        {
-            Action = _action;
+            Name = null;
         }
     }
 
@@ -90,6 +88,12 @@ public class RebindControlsMenu : Submenu
     public override void OnSubmenuClosed()
     {
         ClosePopup();
+    }
+
+    private void Start()
+    {
+        //foreach (InputIDToActionRef actionRef in actionsMap)
+        //    UpdateButtonText(actionRef);
     }
 
     private void OpenPopup()

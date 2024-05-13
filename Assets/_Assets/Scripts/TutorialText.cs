@@ -12,7 +12,7 @@ public class TutorialText : MonoBehaviour
         "It's ok if you miss!\nPress right click to recall your arrow at any time",
         "Pro gamer tip:\nJump right before detonation for extra height!",
         "Falling too slow?\nHold shift to fall faster!\n(Don't worry about how it works)",
-        "Detonate arrows in the wall to scale even the tallest obstacles!",
+        "Scale walls by detonating arrows in them!",
         "You'll fall through green terrain, but arrows won't!\nTime those detonations well!",
         "Time to test that right-clicking!",
         "Ready for some \"Wall jumps\"?",

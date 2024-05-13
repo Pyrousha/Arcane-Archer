@@ -124,12 +124,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!95 &165921282 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 887255439874198064, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
-    type: 3}
-  m_PrefabInstance: {fileID: 887255440019146802}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &170517855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -214,12 +208,6 @@ Transform:
 --- !u!4 &376466539 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 887255440183764057, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
-    type: 3}
-  m_PrefabInstance: {fileID: 887255440019146802}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &414511752 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 887255440537357030, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
     type: 3}
   m_PrefabInstance: {fileID: 887255440019146802}
   m_PrefabAsset: {fileID: 0}
@@ -993,12 +981,12 @@ PrefabInstance:
         type: 3}
       propertyPath: explodeAnim
       value: 
-      objectReference: {fileID: 165921282}
+      objectReference: {fileID: 0}
     - target: {fileID: 4848514860998066145, guid: 9b74728742ce8b04a974a18c3547af64,
         type: 3}
       propertyPath: explosionEffect
       value: 
-      objectReference: {fileID: 414511752}
+      objectReference: {fileID: 0}
     - target: {fileID: 4848514860998066157, guid: 9b74728742ce8b04a974a18c3547af64,
         type: 3}
       propertyPath: m_IsActive
