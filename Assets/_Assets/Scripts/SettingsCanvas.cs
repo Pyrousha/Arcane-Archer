@@ -19,6 +19,9 @@ public class SettingsCanvas : Submenu
     [Space(5)]
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_InputField sfxInputField;
+    [Space(5)]
+    [SerializeField] private Toggle timerToggle;
+    [SerializeField] private Toggle tutToggle;
 
 
     #region Singleton
@@ -51,8 +54,14 @@ public class SettingsCanvas : Submenu
 
     private void Start()
     {
+        LoadValuesFromSaveData();
+    }
+
+    public void LoadValuesFromSaveData()
+    {
         sensSlider.value = SaveData.CurrSaveData.MouseSens;
         sensInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.MouseSens * 255).ToString();
+        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255f * SENS_MULTIPLIER);
 
         fovSlider.value = Utils.Remap(SaveData.CurrSaveData.Fov, 60, 120, 0, 1);
         fovInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.Fov).ToString();
@@ -63,7 +72,8 @@ public class SettingsCanvas : Submenu
         sfxSlider.value = SaveData.CurrSaveData.SfxVol;
         sfxInputField.text = Mathf.RoundToInt(SaveData.CurrSaveData.SfxVol * 100).ToString();
 
-        PlayerController.MouseSens = Mathf.Round(SaveData.CurrSaveData.MouseSens * 255f * SENS_MULTIPLIER);
+        tutToggle.isOn = SaveData.CurrSaveData.ShowTutText;
+        timerToggle.isOn = SaveData.CurrSaveData.ShowTimer;
     }
 
     public override void OnSubmenuSelected()
@@ -91,6 +101,12 @@ public class SettingsCanvas : Submenu
 
         isOpen = false;
         parent.SetActive(false);
+
+        if (Timer.Instance != null)
+            Timer.Instance.RefreshTimerState();
+
+        if (TutorialText.Instance != null)
+            TutorialText.Instance.SetText();
 
         SaveData.Instance.Save();
     }
@@ -203,5 +219,15 @@ public class SettingsCanvas : Submenu
 
         if (ObjReferencer.Instance != null)
             ObjReferencer.Instance.MainCamera.fieldOfView = SaveData.CurrSaveData.Fov;
+    }
+
+    public void OnTutToggled(bool _on)
+    {
+        SaveData.CurrSaveData.ShowTutText = _on;
+    }
+
+    public void OnTimerToggled(bool _on)
+    {
+        SaveData.CurrSaveData.ShowTimer = _on;
     }
 }

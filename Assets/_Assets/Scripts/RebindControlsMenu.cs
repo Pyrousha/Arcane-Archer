@@ -8,6 +8,32 @@ using UnityEngine.UI;
 
 public class RebindControlsMenu : Submenu
 {
+    private static RebindControlsMenu instance = null;
+
+    public static RebindControlsMenu Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = FindObjectOfType<RebindControlsMenu>();
+            return instance;
+        }
+    }
+
+    public void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Debug.LogWarning("Duplicate instance of singleton found: " + gameObject.name + ", destroying.");
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = gameObject.GetComponent<RebindControlsMenu>();
+    }
+
+
+
     public enum InputID
     {
         FORWARD,
@@ -21,12 +47,12 @@ public class RebindControlsMenu : Submenu
     }
 
     [System.Serializable]
-    public struct InputIDToActionRef
+    public class InputIDToActionRef
     {
         [field: SerializeField] public InputID InputID { get; private set; }
         [field: SerializeField] public InputActionReference Action { get; private set; }
 
-        [field: SerializeField] public string Name { get; private set; }
+        [field: SerializeField] public string Name { get; set; }
 
         public InputIDToActionRef(InputID _inputID)
         {
@@ -41,7 +67,7 @@ public class RebindControlsMenu : Submenu
     [SerializeField] private GameObject parent;
     [Space(10)]
 
-    [SerializeField] private List<InputIDToActionRef> actionsMap = new List<InputIDToActionRef>();
+    [SerializeField] public List<InputIDToActionRef> actionsMap = new List<InputIDToActionRef>();
     [SerializeField] private List<RebindButton> rebindButtons;
 
     private string startingBinds;
@@ -74,7 +100,7 @@ public class RebindControlsMenu : Submenu
             //Save Changes
             string rebinds = playerInput.actions.SaveBindingOverridesAsJson();
 
-            SaveData.CurrSaveData.reboundControls = rebinds;
+            SaveData.CurrSaveData.ReboundControls = rebinds;
             SaveData.Instance.Save();
         }
 
@@ -90,10 +116,10 @@ public class RebindControlsMenu : Submenu
         ClosePopup();
     }
 
-    private void Start()
+    public void Start()
     {
-        //foreach (InputIDToActionRef actionRef in actionsMap)
-        //    UpdateButtonText(actionRef);
+        foreach (InputIDToActionRef actionRef in actionsMap)
+            UpdateButtonText(actionRef);
     }
 
     private void OpenPopup()
@@ -130,7 +156,7 @@ public class RebindControlsMenu : Submenu
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private GameObject eventSystem;
     private Selectable lastSelected;
-    InputIDToActionRef? currRebinding = null;
+    InputIDToActionRef currRebinding = null;
 
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
 
@@ -157,7 +183,7 @@ public class RebindControlsMenu : Submenu
 
         if (inputIndex <= (int)InputID.RIGHT)
         {
-            rebindingOperation = currRebinding.Value.Action.action.PerformInteractiveRebinding(inputIndex + 1)
+            rebindingOperation = currRebinding.Action.action.PerformInteractiveRebinding(inputIndex + 1)
                 //.WithControlsExcluding("Mouse")
                 .OnMatchWaitForAnother(0.1f)
                 .OnComplete(operation => RebindComplete())
@@ -165,7 +191,7 @@ public class RebindControlsMenu : Submenu
         }
         else
         {
-            rebindingOperation = currRebinding.Value.Action.action.PerformInteractiveRebinding()
+            rebindingOperation = currRebinding.Action.action.PerformInteractiveRebinding()
                 //.WithControlsExcluding("Mouse")
                 .OnMatchWaitForAnother(0.1f)
                 .OnComplete(operation => RebindComplete())
@@ -175,7 +201,7 @@ public class RebindControlsMenu : Submenu
 
     private void RebindComplete()
     {
-        UpdateButtonText(currRebinding.Value);
+        UpdateButtonText(currRebinding);
 
         rebindingOperation.Dispose();
 
@@ -213,8 +239,17 @@ public class RebindControlsMenu : Submenu
 
         string bindingName = InputControlPath.ToHumanReadableString(
             currAction.action.bindings[bindingIndex].effectivePath,
-            InputControlPath.HumanReadableStringOptions.OmitDevice);
+            InputControlPath.HumanReadableStringOptions.OmitDevice).ToLower()
+            .Replace("left button", "lmb")
+            .Replace("right button", "rmb");
+
+        actionRef.Name = bindingName;
 
         currButton.SetLabel(bindingName);
+    }
+
+    public static string GetNameOfBinding(InputID _button)
+    {
+        return instance.actionsMap[(int)_button].Name;
     }
 }

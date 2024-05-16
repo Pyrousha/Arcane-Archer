@@ -105,7 +105,15 @@ public class SaveData : Singleton<SaveData>
             CurrSaveData.BestFullTime = Mathf.Min(CurrSaveData.BestFullTime, _secs);
         }
         else
+        {
+            //First time clearing game
+            CurrSaveData.ShowTutText = false;
+            CurrSaveData.ShowTimer = true;
+
             CurrSaveData.BestFullTime = _secs;
+
+            SettingsCanvas.Instance.LoadValuesFromSaveData();
+        }
 
         Save();
 
@@ -125,9 +133,12 @@ public class SerializedSaveData
     public float Fov = 90;
     public float BestFullTime = 0;
 
-    public string reboundControls = null;
+    public string ReboundControls = null;
 
     public List<LevelStruct> LevelsList;
+
+    public bool ShowTutText = true;
+    public bool ShowTimer = false;
 
     public SerializedSaveData()
     {

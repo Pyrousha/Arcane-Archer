@@ -19,19 +19,12 @@ public class MainMenuCanvas : Submenu
             levelSelectButton.interactable = false;
 
             Navigation nav_play = playButton.navigation;
-            nav_play.selectOnUp = quitButton;
             nav_play.selectOnDown = settingsButton;
             playButton.navigation = nav_play;
 
             Navigation nav_settings = settingsButton.navigation;
-            nav_play.selectOnUp = playButton;
-            nav_play.selectOnDown = quitButton;
+            nav_settings.selectOnUp = playButton;
             settingsButton.navigation = nav_settings;
-
-            Navigation nav_quit = playButton.navigation;
-            nav_play.selectOnUp = settingsButton;
-            nav_play.selectOnDown = playButton;
-            playButton.navigation = nav_quit;
         }
 
         playButton.Select();
@@ -40,8 +33,7 @@ public class MainMenuCanvas : Submenu
     public void OnPlayClicked()
     {
         SceneTransitioner.IsFullGame = true;
-        if (SaveData.CurrSaveData.BestFullTime > 0) //Game has been finished before, show timer
-            Timer.Instance.SetTimerVisualsStatus(true, true);
+        Timer.Instance.SetTimerVisualsStatus(true, true);
         SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX);
     }
 

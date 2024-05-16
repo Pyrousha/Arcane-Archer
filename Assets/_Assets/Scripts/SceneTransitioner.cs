@@ -20,6 +20,8 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
 
     public static bool GotNewBestTime { get; private set; }
 
+    public static bool IsFading { get; private set; } = false;
+
     private void Start()
     {
         ToMainMenu();
@@ -60,6 +62,8 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
     }
     private IEnumerator LoadSceneRoutine(int _index)
     {
+        IsFading = true;
+
         anim.ResetTrigger("ToClear");
         anim.SetTrigger("ToBlack");
 
@@ -113,5 +117,7 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
                     break;
                 }
         }
+
+        IsFading = false;
     }
 }

@@ -5,7 +5,7 @@ public class SubmenuController : Singleton<SubmenuController>
     // Update is called once per frame
     void Update()
     {
-        if (InputHandler.Instance.Pause.Down)
+        if (InputHandler.Instance.Pause.Down && SceneTransitioner.IsFading == false)
         {
             if (Submenu.ActiveSubmenu == null)
                 PauseMenuCanvas.Instance.TryOpen();

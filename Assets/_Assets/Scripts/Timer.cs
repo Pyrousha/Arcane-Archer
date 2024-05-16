@@ -14,10 +14,21 @@ public class Timer : Singleton<Timer>
 
     private float startingTime;
 
+    private bool total_enabled;
+    private bool curr_enabled;
+
     public void SetTimerVisualsStatus(bool _totalTimeVisible, bool _currTimeVisible)
     {
-        totalTime_Label.gameObject.SetActive(_totalTimeVisible);
-        currTime_Label.gameObject.SetActive(_currTimeVisible);
+        total_enabled = _totalTimeVisible;
+        curr_enabled = _currTimeVisible;
+
+        RefreshTimerState();
+    }
+
+    public void RefreshTimerState()
+    {
+        totalTime_Label.gameObject.SetActive(total_enabled && SaveData.CurrSaveData.ShowTimer);
+        currTime_Label.gameObject.SetActive(curr_enabled && SaveData.CurrSaveData.ShowTimer);
     }
 
     public IEnumerator RestartTimer()

@@ -70,8 +70,8 @@ public class InputHandler : Singleton<InputHandler>
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
 
-        if (SaveData.CurrSaveData.reboundControls != null)
-            playerInput.actions.LoadBindingOverridesFromJson(SaveData.CurrSaveData.reboundControls);
+        if (SaveData.CurrSaveData.ReboundControls != null)
+            playerInput.actions.LoadBindingOverridesFromJson(SaveData.CurrSaveData.ReboundControls);
     }
 
     private void FixedUpdate()

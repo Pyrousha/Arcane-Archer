@@ -1,29 +1,80 @@
 using TMPro;
 using UnityEngine;
+using static RebindControlsMenu;
 
-public class TutorialText : MonoBehaviour
+public class TutorialText : Singleton<TutorialText>
 {
     [SerializeField] private TextMeshProUGUI tutText;
 
-    private static readonly string[] tutorialTexts = {
-        "Welcome Archer!\nUse WASD to move and space to jump.",
-        "Open the pause menu with ESC.",
-        "Hold and release left click to shoot,\nthen press right click to detonate!\nLonger charge = more powerful explosion!",
-        "It's ok if you miss!\nPress right click to recall your arrow at any time",
-        "Pro gamer tip:\nJump right before detonation for extra height!",
-        "Falling too slow?\nHold shift to fall faster!\n(Don't worry about how it works)",
-        "Scale walls by detonating arrows in them!",
-        "You'll fall through green terrain, but arrows won't!\nTime those detonations well!",
-        "Time to test that right-clicking!",
-        "Ready for some \"Wall jumps\"?",
-        "Getting close to the end!",
-        "Who needs floor anyways?"
-    };
+    const string prefix = "<color=#FF8000>";
+    const string suffix = "</color>";
+
+    int currLevelIndex;
 
     private void Start()
     {
-        int currIndex = SceneTransitioner.CurrBuildIndex - SceneTransitioner.FIRST_LEVEL_INDEX;
-        if (currIndex > -1 && currIndex < tutorialTexts.Length)
-            tutText.text = tutorialTexts[currIndex];
+        currLevelIndex = SceneTransitioner.CurrBuildIndex - SceneTransitioner.FIRST_LEVEL_INDEX;
+        SetText();
+    }
+
+    public void SetText()
+    {
+        tutText.text = GetTutorialTextForLevelIndex(currLevelIndex);
+    }
+
+    private string GetTutorialTextForLevelIndex(int _levelIndex)
+    {
+        if (!SaveData.CurrSaveData.ShowTutText)
+            return "";
+
+        switch (_levelIndex)
+        {
+            case 0:
+                return $"Welcome Archer!\nUse {prefix + GetNameOfBinding(InputID.FORWARD) + suffix}{prefix + GetNameOfBinding(InputID.LEFT) + suffix}" +
+                       $"{prefix + GetNameOfBinding(InputID.BACK) + suffix}{prefix + GetNameOfBinding(InputID.RIGHT) + suffix} to move and {prefix + GetNameOfBinding(InputID.JUMP) + suffix} to jump.";
+
+            case 1:
+                return $"Open the pause menu with ESC.";
+
+            case 2:
+                return $"Hold and release {prefix + GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
+                       $"\nthen press {prefix + GetNameOfBinding(InputID.KABOOM) + suffix} to detonate!" +
+                       $"\nLonger charge = more powerful explosion!";
+
+            case 3:
+                return $"It's ok if you miss!" +
+                       $"\nPress {prefix + GetNameOfBinding(InputID.KABOOM) + suffix} to recall your arrow at any time";
+
+            case 4:
+                return $"Pro gamer tip:" +
+                       $"\nJump right before detonation for extra height!";
+
+            case 5:
+                return $"Falling too slow?" +
+                       $"\nHold {prefix + GetNameOfBinding(InputID.FALL) + suffix} to fall faster!" +
+                       $"\n(Don't worry about how it works)";
+
+            case 6:
+                return $"Scale walls by detonating arrows in them!";
+
+            case 7:
+                return $"You'll fall through green terrain, but arrows won't!" +
+                       $"\nTime those detonations well!";
+
+            case 8:
+                return $"Time to test that right-clicking!";
+
+            case 9:
+                return $"Ready for some \"Wall jumps\"?";
+
+            case 10:
+                return $"Getting close to the end!";
+
+            case 11:
+                return $"Who needs floor anyways?";
+
+            default:
+                return "ERROR_NO_TUTORIAL_TEXT";
+        }
     }
 }
