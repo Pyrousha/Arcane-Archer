@@ -31,13 +31,16 @@ TagManager:
   - NoLight
   - 
   - 
+  - testLayer
   - 
   - 
   - 
   - 
-  - 
-  - 
+  - Skybox
   m_SortingLayers:
+  - name: Behind
+    uniqueID: 478603665
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

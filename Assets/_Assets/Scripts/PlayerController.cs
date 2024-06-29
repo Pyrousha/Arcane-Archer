@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -82,10 +83,11 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Start()
     {
+        if (SceneTransitioner.Instance == null)
+            SceneManager.LoadScene(0);
+
         arrowFire1.localScale = Vector3.zero;
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
-
-        //Debug.Log("Sens: " + MouseSens);
     }
 
     void Update()
@@ -153,8 +155,7 @@ public class PlayerController : Singleton<PlayerController>
         cameraTarget.localRotation = Quaternion.Euler(targVerticalSpin, 0, 0);
 
         // //Make actual camera be facing in same direction as target
-        cameraTransform.position = cameraTarget.position;
-        cameraTransform.rotation = cameraTarget.rotation;
+        cameraTransform.SetPositionAndRotation(cameraTarget.position, cameraTarget.rotation);
 
         //Space release gravity
         if (InputHandler.Instance.Jump.Up && rb.velocity.y > 0 && CanSpaceRelease)
@@ -163,8 +164,9 @@ public class PlayerController : Singleton<PlayerController>
             CanSpaceRelease = false;
         }
 
-        //if (InputHandler.Instance.Explode.Down)
-        //    pressedBoom = true;
+        //Vector3 newPos = transform.position;
+        //newPos.y = ObjReferencer.Instance.SkyboxTransform.position.y;
+        //ObjReferencer.Instance.SkyboxTransform.position = newPos;
     }
 
     public void TryPickupArrow()
@@ -241,6 +243,8 @@ public class PlayerController : Singleton<PlayerController>
             }
         }
         #endregion
+
+        //Vector3 preVelocity = rb.velocity;
 
         #region Apply Gravity
         if (InputHandler.Instance.Slam.Holding)
@@ -402,6 +406,9 @@ public class PlayerController : Singleton<PlayerController>
             //Convert local velocity to global velocity
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
+
+        //Debug.Log(preVelocity + "\n" + rb.velocity);
+
         #endregion
     }
 

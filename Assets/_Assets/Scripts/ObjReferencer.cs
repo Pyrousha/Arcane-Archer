@@ -8,6 +8,7 @@ public class ObjReferencer : Singleton<ObjReferencer>
     [field: SerializeField] public Transform ArrowFXParent;
     [field: SerializeField] public GameObject ExplodeEffectPrefab;
     [field: SerializeField] public Camera MainCamera;
+    [field: SerializeField] public Transform SkyboxTransform { get; private set; }
 
     private void Start()
     {
