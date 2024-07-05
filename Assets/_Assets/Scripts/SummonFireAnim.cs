@@ -5,6 +5,7 @@ using UnityEngine;
 public class SummonFireAnim : Singleton<SummonFireAnim>
 {
     private Animator anim;
+    [SerializeField] private ParticleSystem summonParticles;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -12,6 +13,7 @@ public class SummonFireAnim : Singleton<SummonFireAnim>
 
     public void SummonFire()
     {
-        anim.SetTrigger("SummonFire");
+        summonParticles.Play();
+        //anim.SetTrigger("SummonFire");
     }
 }

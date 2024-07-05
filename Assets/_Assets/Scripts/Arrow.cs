@@ -19,6 +19,7 @@ public class Arrow : MonoBehaviour
     private PlayerController playerController;
     //[SerializeField] private Animator explodeAnim;
     [SerializeField] private Animator arrowAnim;
+    [SerializeField] private GameObject recallExplosionPrefab;
     [Space(5)]
     [SerializeField] private float lerpSpeed;
     [SerializeField] private float explodeSpeed;
@@ -143,6 +144,8 @@ public class Arrow : MonoBehaviour
 
             //ObjReferencer.Instance.ExplodeEffect.Play();
             Instantiate(ObjReferencer.Instance.ExplodeEffectPrefab, transform.position, Quaternion.identity, ObjReferencer.Instance.ArrowFXParent);
+        } else {
+            Instantiate(recallExplosionPrefab, transform.position, Quaternion.identity);
         }
 
         ObjReferencer.Instance.ExplodeIndicator.SetActive(false);

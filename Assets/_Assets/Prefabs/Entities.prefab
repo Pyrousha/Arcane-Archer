@@ -764,6 +764,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 4848514860880018616}
   arrowAnim: {fileID: 7428862199576478920}
+  recallExplosionPrefab: {fileID: 5501330302085910537, guid: 03434d4fbbcaaf942826a75f8eab8070,
+    type: 3}
   lerpSpeed: 60
   explodeSpeed: 50
   distToPlayer: 15
