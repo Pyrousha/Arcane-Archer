@@ -16,8 +16,8 @@ public class PlayerController : Singleton<PlayerController>
     [Header("External References")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform targArrowPos;
-    [SerializeField] private Arrow arrow;
-    [SerializeField] private Transform arrowFire1;
+    [SerializeField] private GameObject arrowPrefab;
+    private Arrow currArrow;
 
     [Header("Parameters")]
     [SerializeField] private float arrowPower;
@@ -86,7 +86,6 @@ public class PlayerController : Singleton<PlayerController>
         if (SceneTransitioner.Instance == null)
             SceneManager.LoadScene(0);
 
-        arrowFire1.localScale = Vector3.zero;
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
     }
 
@@ -94,11 +93,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (levelOver)
             return;
-
-        //if (InputHandler.Instance.Restart.Down)
-        //{
-        //    SceneManager.LoadScene(1);
-        //}
 
         //Jump
         if (InputHandler.Instance.Jump.Down)
@@ -138,7 +132,6 @@ public class PlayerController : Singleton<PlayerController>
 
                     break;
                 case BowStateEnum.Fired:
-                    arrowFire1.localScale = Vector3.one;
                     ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
                     break;
             }
@@ -163,26 +156,6 @@ public class PlayerController : Singleton<PlayerController>
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y * spaceReleaseGravMult, rb.velocity.z);
             CanSpaceRelease = false;
         }
-
-        //Vector3 newPos = transform.position;
-        //newPos.y = ObjReferencer.Instance.SkyboxTransform.position.y;
-        //ObjReferencer.Instance.SkyboxTransform.position = newPos;
-    }
-
-    public void TryPickupArrow()
-    {
-        //OLD
-        //if (Time.time < nextShootPickupTime)
-        //    return;
-
-        //if (InputHandler.Instance.Shoot.Down || arrow.State == Arrow.ArrowStateEnum.FlyingBack)
-        //{
-        //    bowState = BowStateEnum.Ready;
-        //    bowAnim.SetTrigger("Pickup");
-        //    SummonFireAnim.Instance.SummonFire();
-
-        //    arrow.Pickup();
-        //}
     }
 
     public void PickupArrow()
@@ -190,7 +163,6 @@ public class PlayerController : Singleton<PlayerController>
         bowState = BowStateEnum.Ready;
         bowAnim.SetTrigger("Pickup");
 
-        arrowFire1.localScale = Vector3.zero;
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
     }
 
@@ -202,14 +174,13 @@ public class PlayerController : Singleton<PlayerController>
 
         float firePower = arrowPower * Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
         firePower *= Mathf.Max(1, Vector3.Dot(targArrowPos.forward, rb.velocity * 0.1f));
-        arrow.Fire(targArrowPos, firePower);
+
+        currArrow = Instantiate(arrowPrefab, transform.parent).GetComponent<Arrow>();
+        currArrow.Fire(targArrowPos, firePower);
 
         bowAnim.SetTrigger("Fire");
     }
 
-    //private bool pressedBoom = false;
-
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (levelOver)

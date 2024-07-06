@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -14,12 +15,11 @@ public class Arrow : MonoBehaviour
 
     AudioSource audioSourceIDK;
 
-    [SerializeField] private Transform player;
-    private Rigidbody playerRB;
-    private PlayerController playerController;
+    private Transform playerTransform;
     //[SerializeField] private Animator explodeAnim;
     [SerializeField] private Animator arrowAnim;
     [SerializeField] private GameObject recallExplosionPrefab;
+    [SerializeField] private ParticleSystem pSystem;
     [Space(5)]
     [SerializeField] private float lerpSpeed;
     [SerializeField] private float explodeSpeed;
@@ -32,9 +32,9 @@ public class Arrow : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        playerRB = player.GetComponent<Rigidbody>();
-        playerController = player.GetComponent<PlayerController>();
         audioSourceIDK = GetComponent<AudioSource>();
+
+        playerTransform = PlayerController.Instance.transform;
 
         distToPlayer *= distToPlayer;
     }
@@ -57,7 +57,7 @@ public class Arrow : MonoBehaviour
                 break;
 
             case ArrowStateEnum.FlyingBack:
-                Vector3 targetForward = (player.position - transform.position).normalized;
+                Vector3 targetForward = (playerTransform.position - transform.position).normalized;
 
                 //Debug.Log(targetForward);
 
@@ -110,7 +110,7 @@ public class Arrow : MonoBehaviour
     {
         if (state == ArrowStateEnum.InGround)
         {
-            float currDist = Vector3.SqrMagnitude(transform.position - player.position);
+            float currDist = Vector3.SqrMagnitude(transform.position - playerTransform.position);
             if (currDist <= distToPlayer)
             {
                 BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.InRange);
@@ -142,9 +142,10 @@ public class Arrow : MonoBehaviour
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
 
-            //ObjReferencer.Instance.ExplodeEffect.Play();
             Instantiate(ObjReferencer.Instance.ExplodeEffectPrefab, transform.position, Quaternion.identity, ObjReferencer.Instance.ArrowFXParent);
-        } else {
+        }
+        else
+        {
             Instantiate(recallExplosionPrefab, transform.position, Quaternion.identity);
         }
 
@@ -153,10 +154,20 @@ public class Arrow : MonoBehaviour
         state = ArrowStateEnum.FlyingBack;
         gameObject.layer = 12;
 
-        //rb.useGravity = false;
+        pSystem.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        StartCoroutine(DestroyRoutine());
 
-        playerController.PickupArrow();
+        PlayerController.Instance.PickupArrow();
         Pickup();
+    }
+
+    private IEnumerator DestroyRoutine()
+    {
+        rb.useGravity = false;
+        rb.velocity = Vector3.zero;
+
+        yield return new WaitForSeconds(3);
+        Destroy(gameObject);
     }
 
     public void Fire(Transform targArrowPos, float arrowPower)
