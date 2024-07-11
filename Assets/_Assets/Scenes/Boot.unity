@@ -3409,6 +3409,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -25.01
       objectReference: {fileID: 0}
+    - target: {fileID: 7754362555597608857, guid: 5767def01a1290a46aa25934802279e9,
+        type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 8177779610829849368}
+    - target: {fileID: 7754362555597608857, guid: 5767def01a1290a46aa25934802279e9,
+        type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 8177779610180217984}
     - target: {fileID: 7969829425879876715, guid: 5767def01a1290a46aa25934802279e9,
         type: 3}
       propertyPath: m_SizeDelta.x

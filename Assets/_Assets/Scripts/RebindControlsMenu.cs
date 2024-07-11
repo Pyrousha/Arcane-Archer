@@ -241,7 +241,10 @@ public class RebindControlsMenu : Submenu
             currAction.action.bindings[bindingIndex].effectivePath,
             InputControlPath.HumanReadableStringOptions.OmitDevice).ToLower()
             .Replace("left button", "lmb")
-            .Replace("right button", "rmb");
+            .Replace("right button", "rmb")
+            .Replace("control", "ctrl")
+            .Replace("left ", "l ")
+            .Replace("right ", "r ");
 
         actionRef.Name = bindingName;
 

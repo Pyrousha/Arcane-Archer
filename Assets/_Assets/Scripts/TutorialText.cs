@@ -36,7 +36,9 @@ public class TutorialText : Singleton<TutorialText>
                        $"{prefix + GetNameOfBinding(InputID.BACK) + suffix}{prefix + GetNameOfBinding(InputID.RIGHT) + suffix} to move and {prefix + GetNameOfBinding(InputID.JUMP) + suffix} to jump.";
 
             case 1:
-                return $"Open the pause menu with {prefix}ESC{suffix}.";
+                return $"Move the camera with your mouse." +
+                       $"\nAlso, {prefix}ESC{suffix} will Open the pause menu. " +
+                       $"\ntry changing controls or sensitivity!";
 
             case 2:
                 return $"Hold and release {prefix + GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
