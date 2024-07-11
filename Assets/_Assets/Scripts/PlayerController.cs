@@ -21,6 +21,7 @@ public class PlayerController : Singleton<PlayerController>
     private Arrow currArrow;
 
     [Header("Parameters")]
+    [SerializeField] private float maxSpeedForSpeedlines;
     [SerializeField] private int numShakeIterations;
     [SerializeField] private float cameraShakePower;
     [SerializeField] private float cameraShakeDuration;
@@ -423,7 +424,7 @@ public class PlayerController : Singleton<PlayerController>
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
 
-        //Debug.Log(preVelocity + "\n" + rb.velocity);
+        ObjReferencer.Instance.SpeedLines.UpdateParticleSystem((rb.velocity.magnitude + Mathf.Abs(rb.velocity.y)) / maxSpeedForSpeedlines);
 
         #endregion
     }

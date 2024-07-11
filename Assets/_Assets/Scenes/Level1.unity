@@ -652,7 +652,7 @@ PrefabInstance:
     - target: {fileID: 887255439716286469, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
       propertyPath: m_Positions.Array.data[0].z
-      value: 0.36397687
+      value: -12.036023
       objectReference: {fileID: 0}
     - target: {fileID: 887255439716286469, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
@@ -667,7 +667,7 @@ PrefabInstance:
     - target: {fileID: 887255439716286469, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
       propertyPath: m_Positions.Array.data[1].z
-      value: 0.31724334
+      value: -12.082756
       objectReference: {fileID: 0}
     - target: {fileID: 887255439716286469, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
@@ -682,7 +682,7 @@ PrefabInstance:
     - target: {fileID: 887255439716286469, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
       propertyPath: m_Positions.Array.data[2].z
-      value: 0.36397687
+      value: -12.036023
       objectReference: {fileID: 0}
     - target: {fileID: 887255439797635265, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
         type: 3}
@@ -798,6 +798,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 5499583038553256657, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
+        type: 3}
+      propertyPath: m_Depth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5908743216721021727, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735567477050078662, guid: 05f9c49836cdd7a4d815f1393a5e7f3f,
+        type: 3}
+      propertyPath: m_CameraType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1078,16 +1093,6 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 330585546}
-    - target: {fileID: 4848514860880018623, guid: 9b74728742ce8b04a974a18c3547af64,
-        type: 3}
-      propertyPath: cameraShakePower
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4848514860880018623, guid: 9b74728742ce8b04a974a18c3547af64,
-        type: 3}
-      propertyPath: numShakeIterations
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 4848514860998066145, guid: 9b74728742ce8b04a974a18c3547af64,
         type: 3}
       propertyPath: explodeAnim

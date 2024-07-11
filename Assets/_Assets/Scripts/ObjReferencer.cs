@@ -9,6 +9,7 @@ public class ObjReferencer : Singleton<ObjReferencer>
     [field: SerializeField] public GameObject ExplodeEffectPrefab;
     [field: SerializeField] public Camera MainCamera;
     [field: SerializeField] public Transform SkyboxTransform { get; private set; }
+    [field: SerializeField] public ParticleSystemModifier SpeedLines { get; private set; }
 
     private void Start()
     {
