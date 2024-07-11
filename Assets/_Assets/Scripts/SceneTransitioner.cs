@@ -41,6 +41,14 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
                 //Full game just finished! 
                 GotNewBestTime = SaveData.Instance.OnFullGameCompleted(Timer.Instance.TotalTime);
                 LeaderboardCallHandler.Instance.UpdateScore((int)(SaveData.CurrSaveData.BestFullTime * 1000));
+
+                AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.FINISH);
+                if (SaveData.CurrSaveData.BestFullTime < 60 * 10)
+                    AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.FINISH_10M);
+                if (SaveData.CurrSaveData.BestFullTime < 60 * 5)
+                    AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.FINISH_5M);
+                if (SaveData.CurrSaveData.BestFullTime < 60 * 2)
+                    AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.FINISH_2M);
             }
 
             LoadSceneWithIndex(nextIndex);
@@ -78,6 +86,8 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
     {
         if (LevelFinished)
             return;
+
+        AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.DIE);
 
         Timer.Instance.PauseTimer();
         LoadSceneWithIndex(CurrBuildIndex);

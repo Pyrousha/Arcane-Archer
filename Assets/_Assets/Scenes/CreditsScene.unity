@@ -44292,6 +44292,42 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6894685581326859817, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_text
+      value: A Game by Pyrousha and Aeswyr
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894685581608487996, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f75fbb7c68e1add4bac232cefe2d593f,
+        type: 3}
+    - target: {fileID: 6894685581611223572, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894685582204257868, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894685582204257868, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894685582204257868, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6894685582204257868, guid: 30abb7524e87fe0438e5f8d1354b775e,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 6894685582329229218, guid: 30abb7524e87fe0438e5f8d1354b775e,
         type: 3}
       propertyPath: m_Name
@@ -44531,6 +44567,7 @@ MonoBehaviour:
     type: 3}
   MainCamera: {fileID: 887255441153241329}
   <SkyboxTransform>k__BackingField: {fileID: 2748321776098631671}
+  <SpeedLines>k__BackingField: {fileID: 0}
 --- !u!1 &7460833824836847300
 GameObject:
   m_ObjectHideFlags: 0

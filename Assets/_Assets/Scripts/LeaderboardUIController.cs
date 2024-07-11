@@ -81,15 +81,15 @@ public class LeaderboardUIController : Submenu
             newPlayer.SetData(currPlayerData);
         }
 
-        for (int i = 2; i < 67; i++)
-        {
-            PlayerRank newPlayer = Instantiate(playerRankPrefab, playerListParent).GetComponent<PlayerRank>();
-            LeaderboardData currPlayerData = new LeaderboardData();
-            currPlayerData.rank = i;
-            currPlayerData.username = "Fortnite Guy #" + (i - 1).ToString();
-            currPlayerData.score = i * 10000 + 100000;
-            newPlayer.SetData(currPlayerData);
-        }
+        //for (int i = 2; i < 67; i++)
+        //{
+        //    PlayerRank newPlayer = Instantiate(playerRankPrefab, playerListParent).GetComponent<PlayerRank>();
+        //    LeaderboardData currPlayerData = new LeaderboardData();
+        //    currPlayerData.rank = i;
+        //    currPlayerData.username = "Fortnite Guy #" + (i - 1).ToString();
+        //    currPlayerData.score = i * 10000 + 100000;
+        //    newPlayer.SetData(currPlayerData);
+        //}
 
         isCalling = false;
     }
