@@ -104,7 +104,8 @@ public class PlayerController : Singleton<PlayerController>
         if (currScreenshakeRoutine != null)
             StopCoroutine(currScreenshakeRoutine);
 
-        currScreenshakeRoutine = StartCoroutine(CameraShakeRoutine(numShakeIterations));
+        if (SaveData.CurrSaveData.EnableScreenshake)
+            currScreenshakeRoutine = StartCoroutine(CameraShakeRoutine(numShakeIterations));
     }
 
     private IEnumerator CameraShakeRoutine(int _numberOfTimesToRepeat)

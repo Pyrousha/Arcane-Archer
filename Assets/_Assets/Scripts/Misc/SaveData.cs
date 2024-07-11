@@ -139,6 +139,7 @@ public class SerializedSaveData
 
     public bool ShowTutText = true;
     public bool ShowTimer = false;
+    public bool EnableScreenshake = true;
 
     public SerializedSaveData()
     {

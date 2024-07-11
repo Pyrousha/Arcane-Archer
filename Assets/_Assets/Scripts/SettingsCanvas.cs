@@ -20,6 +20,7 @@ public class SettingsCanvas : Submenu
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private TMP_InputField sfxInputField;
     [Space(5)]
+    [SerializeField] private Toggle screenshakeToggle;
     [SerializeField] private Toggle timerToggle;
     [SerializeField] private Toggle tutToggle;
 
@@ -74,6 +75,7 @@ public class SettingsCanvas : Submenu
 
         tutToggle.isOn = SaveData.CurrSaveData.ShowTutText;
         timerToggle.isOn = SaveData.CurrSaveData.ShowTimer;
+        screenshakeToggle.isOn = SaveData.CurrSaveData.EnableScreenshake;
     }
 
     public override void OnSubmenuSelected()
@@ -229,5 +231,10 @@ public class SettingsCanvas : Submenu
     public void OnTimerToggled(bool _on)
     {
         SaveData.CurrSaveData.ShowTimer = _on;
+    }
+
+    public void OnScreenshakeToggled(bool _on)
+    {
+        SaveData.CurrSaveData.EnableScreenshake = _on;
     }
 }
