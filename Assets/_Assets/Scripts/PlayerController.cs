@@ -185,7 +185,7 @@ public class PlayerController : Singleton<PlayerController>
 
         //Camera Spin horizontal
         float amountToTurn = MouseSens * InputHandler.Instance.Look.x * Time.deltaTime;
-        transform.rotation = Quaternion.AngleAxis(amountToTurn, transform.up) * transform.rotation;
+        transform.eulerAngles += new Vector3(0, amountToTurn, 0);
 
         //Camera Spin vertical
         //targVerticalSpin -= turnSpeedY * InputHandler.Instance.Look.y * Time.deltaTime;
