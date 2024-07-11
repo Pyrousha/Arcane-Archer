@@ -562,7 +562,7 @@ MonoBehaviour:
   sfxSlider: {fileID: 8225643620801424694}
   sfxInputField: {fileID: 3235980072705289411}
   timerToggle: {fileID: 7798419883367726118}
-  tutToggle: {fileID: 0}
+  tutToggle: {fileID: 3233662200346656070}
 --- !u!114 &1894349579828239562
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1078,6 +1078,16 @@ PrefabInstance:
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 330585546}
+    - target: {fileID: 4848514860880018623, guid: 9b74728742ce8b04a974a18c3547af64,
+        type: 3}
+      propertyPath: cameraShakePower
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4848514860880018623, guid: 9b74728742ce8b04a974a18c3547af64,
+        type: 3}
+      propertyPath: numShakeIterations
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4848514860998066145, guid: 9b74728742ce8b04a974a18c3547af64,
         type: 3}
       propertyPath: explodeAnim
@@ -1107,16 +1117,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6668021362154643285, guid: 5e7ac89b69badd946a960f48e47bcfa0,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 6668021362841651956, guid: 5e7ac89b69badd946a960f48e47bcfa0,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6668021362841651956, guid: 5e7ac89b69badd946a960f48e47bcfa0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1171,11 +1171,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvases
-      objectReference: {fileID: 0}
-    - target: {fileID: 9164311553851922986, guid: 5e7ac89b69badd946a960f48e47bcfa0,
-        type: 3}
-      propertyPath: m_Name
-      value: TutorialText
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -483,6 +483,9 @@ MonoBehaviour:
   targArrowPos: {fileID: 0}
   arrowPrefab: {fileID: 4708280402988065920, guid: aa4601fc13001d841a3953969c378579,
     type: 3}
+  numShakeIterations: 15
+  cameraShakePower: 1
+  cameraShakeDuration: 0.015
   arrowPower: 35
   maxSpeed_Normal: 20
   maxSpeed_Charging: 20

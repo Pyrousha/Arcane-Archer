@@ -36,6 +36,7 @@ public class Explosion : Singleton<Explosion>
         currVelocity.y = Mathf.Max((currVelocity.y * 0.35f) + boomVelocity.y, boomVelocity.y);
         currVelocity += new Vector3(boomVelocity.x, 0, boomVelocity.z);
         PlayerController.Instance.RB.velocity = currVelocity;
+        PlayerController.Instance.DoScreenshake();
 
         //Vector3 horizontalVelocity = (_player.position - transform.position).normalized;
         //horizontalVelocity.y = 0;

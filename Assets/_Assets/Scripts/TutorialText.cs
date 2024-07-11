@@ -5,6 +5,7 @@ using static RebindControlsMenu;
 public class TutorialText : Singleton<TutorialText>
 {
     [SerializeField] private TextMeshProUGUI tutText;
+    [SerializeField] private GameObject dialogueParent;
 
     const string prefix = "<color=#FF8000>";
     const string suffix = "</color>";
@@ -19,6 +20,7 @@ public class TutorialText : Singleton<TutorialText>
 
     public void SetText()
     {
+        dialogueParent.SetActive(SaveData.CurrSaveData.ShowTutText);
         tutText.text = GetTutorialTextForLevelIndex(currLevelIndex);
     }
 
@@ -34,7 +36,7 @@ public class TutorialText : Singleton<TutorialText>
                        $"{prefix + GetNameOfBinding(InputID.BACK) + suffix}{prefix + GetNameOfBinding(InputID.RIGHT) + suffix} to move and {prefix + GetNameOfBinding(InputID.JUMP) + suffix} to jump.";
 
             case 1:
-                return $"Open the pause menu with ESC.";
+                return $"Open the pause menu with {prefix}ESC{suffix}.";
 
             case 2:
                 return $"Hold and release {prefix + GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
@@ -58,7 +60,7 @@ public class TutorialText : Singleton<TutorialText>
                 return $"Scale walls by detonating arrows in them!";
 
             case 7:
-                return $"You'll fall through green terrain, but arrows won't!" +
+                return $"You'll fall through green terrain,\n but arrows won't!" +
                        $"\nTime those detonations well!";
 
             case 8:

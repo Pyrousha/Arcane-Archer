@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,9 @@ public class PlayerController : Singleton<PlayerController>
     private Arrow currArrow;
 
     [Header("Parameters")]
+    [SerializeField] private int numShakeIterations;
+    [SerializeField] private float cameraShakePower;
+    [SerializeField] private float cameraShakeDuration;
     [SerializeField] private float arrowPower;
     [SerializeField] private float maxSpeed_Normal;
     [SerializeField] private float maxSpeed_Charging;
@@ -61,6 +65,8 @@ public class PlayerController : Singleton<PlayerController>
 
     private bool releasedArrow = false;
 
+    private Vector3 camTargOffsetStart;
+
     private enum BowStateEnum
     {
         Ready,
@@ -87,6 +93,44 @@ public class PlayerController : Singleton<PlayerController>
             SceneManager.LoadScene(0);
 
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
+
+        camTargOffsetStart = cameraTarget.localPosition;
+    }
+
+    private Coroutine currScreenshakeRoutine;
+
+    public void DoScreenshake()
+    {
+        if (currScreenshakeRoutine != null)
+            StopCoroutine(currScreenshakeRoutine);
+
+        currScreenshakeRoutine = StartCoroutine(CameraShakeRoutine(numShakeIterations));
+    }
+
+    private IEnumerator CameraShakeRoutine(int _numberOfTimesToRepeat)
+    {
+        float startTime = Time.time;
+        float endTime = Time.time + cameraShakeDuration;
+
+        float randAngle = Random.Range(0, 2 * Mathf.PI);
+        Vector3 currOffset = cameraShakePower * ((float)_numberOfTimesToRepeat / numShakeIterations) * new Vector3(Mathf.Cos(randAngle), Mathf.Sin(randAngle), 0);
+
+        float t = 0;
+        while (t < 1)
+        {
+            t = Mathf.Min(Utils.Remap(Time.time, startTime, endTime, 0, 1), 1);
+            cameraTarget.transform.localPosition = camTargOffsetStart + (1 - t) * currOffset;
+            yield return null;
+        }
+
+        cameraTarget.transform.localPosition = camTargOffsetStart;
+
+
+        _numberOfTimesToRepeat--;
+        if (_numberOfTimesToRepeat > 0)
+            currScreenshakeRoutine = StartCoroutine(CameraShakeRoutine(_numberOfTimesToRepeat));
+        else
+            currScreenshakeRoutine = null;
     }
 
     void Update()
