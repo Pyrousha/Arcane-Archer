@@ -40,6 +40,7 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
             {
                 //Full game just finished! 
                 GotNewBestTime = SaveData.Instance.OnFullGameCompleted(Timer.Instance.TotalTime);
+                LeaderboardCallHandler.Instance.UpdateScore((int)(SaveData.CurrSaveData.BestFullTime * 1000));
             }
 
             LoadSceneWithIndex(nextIndex);
