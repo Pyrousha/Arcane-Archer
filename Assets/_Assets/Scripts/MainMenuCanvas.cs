@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,9 @@ public class MainMenuCanvas : Submenu
     [SerializeField] private Button levelSelectButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button quitButton;
+    [Space(10)]
+    [SerializeField] private TextMeshProUGUI versionLabel1;
+    [SerializeField] private TextMeshProUGUI versionLabel2;
 
     private void Start()
     {
@@ -28,6 +32,9 @@ public class MainMenuCanvas : Submenu
         }
 
         playButton.Select();
+
+        versionLabel1.text = SaveData.Instance.VersionNumText;
+        versionLabel2.text = SaveData.Instance.VersionNumText;
     }
 
     public void OnPlayClicked()
@@ -51,4 +58,10 @@ public class MainMenuCanvas : Submenu
     {
         Application.Quit();
     }
+
+    public override void OnSubmenuSelected()
+    { }
+
+    public override void OnSubmenuClosed()
+    { }
 }

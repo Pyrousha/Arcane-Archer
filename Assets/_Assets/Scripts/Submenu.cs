@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Submenu : MonoBehaviour
+public abstract class Submenu : MonoBehaviour
 {
     public static Submenu ActiveSubmenu { get; private set; }
 
@@ -61,6 +61,6 @@ public class Submenu : MonoBehaviour
         OnSubmenuSelected();
     }
 
-    public virtual void OnSubmenuSelected() { }
-    public virtual void OnSubmenuClosed() { }
+    public abstract void OnSubmenuSelected();
+    public abstract void OnSubmenuClosed();
 }

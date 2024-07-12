@@ -44,12 +44,24 @@ public class Timer : Singleton<Timer>
 
     public void PauseTimer()
     {
+        if (isPaused)
+        {
+            Debug.LogWarning("Timer already paused");
+            return;
+        }
+
         TotalTime += CurrTime;
         isPaused = true;
     }
 
     public IEnumerator ResumeTimer()
     {
+        if (!isPaused)
+        {
+            Debug.LogWarning("Timer already unpaused");
+            yield break;
+        }
+
         yield return new WaitForSeconds(SceneTransitioner.FADE_ANIM_DURATION);
 
         CurrTime = 0;

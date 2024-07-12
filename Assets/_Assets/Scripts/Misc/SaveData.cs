@@ -13,6 +13,8 @@ public class SaveData : Singleton<SaveData>
     public const string SAVE_KEY = "SaveData";
     public const int NUM_TOTAL_LEVELS = 12;
 
+    [field: SerializeField] public string VersionNumText { get; private set; } = "Version 20xx";
+
     public void Start()
     {
         LoadSaveData();

@@ -27,6 +27,11 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
         ToMainMenu();
     }
 
+    private void Update()
+    {
+        Debug.Log("IsFading: " + IsFading);
+    }
+
     public void OnLevelFinished()
     {
         LevelFinished = true;
@@ -67,10 +72,18 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
 
     public void LoadSceneWithIndex(int _index)
     {
+        Timer.Instance.PauseTimer();
         StartCoroutine(LoadSceneRoutine(_index));
     }
+
     private IEnumerator LoadSceneRoutine(int _index)
     {
+        if (IsFading)
+        {
+            Debug.LogWarning("Already fading!");
+            yield break;
+        }
+
         IsFading = true;
 
         anim.ResetTrigger("ToClear");
@@ -89,7 +102,6 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
 
         AchievementHandler.Instance.TryUnlockAchievement(AchievementHandler.AchievementIDEnum.DIE);
 
-        Timer.Instance.PauseTimer();
         LoadSceneWithIndex(CurrBuildIndex);
     }
 
@@ -129,6 +141,24 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
                 }
         }
 
+        StartCoroutine(AfterFadeInAnimationDone());
+    }
+
+    private IEnumerator AfterFadeInAnimationDone()
+    {
+        if (!IsFading)
+            yield break;
+
+        yield return new WaitForSeconds(FADE_ANIM_DURATION);
+
         IsFading = false;
+    }
+
+    public void Restart()
+    {
+        if (IsFullGame)
+            LoadSceneWithIndex(FIRST_LEVEL_INDEX);
+        else
+            LoadSceneWithIndex(CurrBuildIndex);
     }
 }

@@ -45,13 +45,13 @@ public class LevelSelectCanvas : Submenu
 
     private void OpenPopup()
     {
+        if (isOpen)
+            return;
+
         foreach (LevelButton levelButton in levels)
         {
             levelButton.SetData();
         }
-
-        if (isOpen)
-            return;
 
         isOpen = true;
         parent.SetActive(true);

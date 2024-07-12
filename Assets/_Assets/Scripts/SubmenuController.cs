@@ -5,11 +5,10 @@ public class SubmenuController : Singleton<SubmenuController>
     // Update is called once per frame
     void Update()
     {
-        if (InputHandler.Instance.Pause.Down && SceneTransitioner.IsFading == false)
-        {
-            if (Submenu.ActiveSubmenu == null)
-                PauseMenuCanvas.Instance.TryOpen();
-        }
+        if (InputHandler.Instance.Pause.Down)
+            if (!SceneTransitioner.IsFading)
+                if (Submenu.ActiveSubmenu == null)
+                    PauseMenuCanvas.Instance.TryOpen();
     }
 
     public void OnCancelPressed()

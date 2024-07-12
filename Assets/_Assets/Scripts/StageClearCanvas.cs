@@ -57,6 +57,11 @@ public class StageClearCanvas : Submenu
         firstSelectable.Select();
     }
 
+    public override void OnSubmenuClosed()
+    {
+        ClosePopup();
+    }
+
     public void ClosePopup()
     {
         if (!isOpen)
@@ -89,4 +94,7 @@ public class StageClearCanvas : Submenu
         ClosePopup();
         SceneTransitioner.Instance.ToMainMenu();
     }
+
+    public override void OnSubmenuSelected()
+    { }
 }

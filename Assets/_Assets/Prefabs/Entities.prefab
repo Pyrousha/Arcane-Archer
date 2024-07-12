@@ -485,7 +485,7 @@ MonoBehaviour:
     type: 3}
   maxSpeedForSpeedlines: 40
   numShakeIterations: 15
-  cameraShakePower: 1
+  cameraShakePower: 1.25
   cameraShakeDuration: 0.015
   arrowPower: 35
   maxSpeed_Normal: 20

@@ -350,17 +350,6 @@
                 },
                 {
                     "name": "",
-                    "id": "27185412-fafb-4c4d-ba71-2749e9d961fe",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ae618fce-5ca3-4549-976c-a8ca8d2cb54a",
                     "path": "<Keyboard>/space",
                     "interactions": "",

@@ -83,7 +83,8 @@ public class PauseMenuCanvas : Submenu
         parent.SetActive(false);
         Time.timeScale = 1;
 
-        StartCoroutine(ClosePopupRoutine());
+        IsOpen = false;
+        //StartCoroutine(ClosePopupRoutine());
     }
 
     private IEnumerator ClosePopupRoutine()
@@ -110,7 +111,7 @@ public class PauseMenuCanvas : Submenu
     {
         ToLastSubmenu();
 
-        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.CurrBuildIndex);
+        SceneTransitioner.Instance.Restart();
     }
 
     public void OnOptionsClicked()
