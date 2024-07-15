@@ -7,6 +7,9 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
     public bool LevelFinished { get; private set; } = false;
 
     [SerializeField] private Animator anim;
+    [SerializeField] private Animator restartTextAnim;
+
+    private bool restartActive;
 
     public const int MAIN_MENU_INDEX = 1;
     public const int FIRST_LEVEL_INDEX = 2;
@@ -27,9 +30,34 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
         ToMainMenu();
     }
 
+    public void OnRestartFadeoutAnimFinished()
+    {
+        restartActive = false;
+    }
+
     private void Update()
     {
-        Debug.Log("IsFading: " + IsFading);
+        if (InputHandler.Instance.Restart.Down)
+        {
+            if (CurrBuildIndex > MAIN_MENU_INDEX && CurrBuildIndex < CREDITS_SCENE_INDEX)
+            {
+                if (!restartActive)
+                {
+                    restartActive = true;
+
+                    restartTextAnim.ResetTrigger("ToNotVisible");
+                    restartTextAnim.SetTrigger("ToVisible");
+                }
+                else
+                {
+                    restartTextAnim.ResetTrigger("ToVisible");
+                    restartTextAnim.SetTrigger("ToNotVisible");
+
+                    restartActive = false;
+                    Restart();
+                }
+            }
+        }
     }
 
     public void OnLevelFinished()

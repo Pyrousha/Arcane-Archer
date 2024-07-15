@@ -305,8 +305,8 @@ public class PlayerController : Singleton<PlayerController>
         // if (useSlamGrav)
         //     currInput = Vector3.zero;
 
-        if (InputHandler.Instance.Restart.Down)
-            Debug.Log("a?");
+        //if (InputHandler.Instance.Restart.Down)
+        //    Debug.Log("a?");
 
         if (currInput.magnitude > 1f)
             currInput.Normalize();

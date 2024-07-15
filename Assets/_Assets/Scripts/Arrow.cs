@@ -20,6 +20,9 @@ public class Arrow : MonoBehaviour
     [SerializeField] private Animator arrowAnim;
     [SerializeField] private GameObject recallExplosionPrefab;
     [SerializeField] private ParticleSystem pSystem;
+    [SerializeField] private AudioSource thunkSFX;
+    [SerializeField] private float thunkVol;
+    [SerializeField] private float swishVol;
     [Space(5)]
     [SerializeField] private float lerpSpeed;
     [SerializeField] private float explodeSpeed;
@@ -103,6 +106,9 @@ public class Arrow : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.velocity = Vector3.zero;
             rb.useGravity = false;
+
+            thunkSFX.volume = thunkVol * SaveData.CurrSaveData.SfxVol;
+            thunkSFX.Play();
         }
     }
 
@@ -181,12 +187,11 @@ public class Arrow : MonoBehaviour
         gameObject.SetActive(true);
         rb.useGravity = true;
 
-        transform.position = targArrowPos.position;
-        transform.rotation = targArrowPos.rotation;
+        transform.SetPositionAndRotation(targArrowPos.position, targArrowPos.rotation);
         transform.gameObject.SetActive(true);
         rb.velocity = targArrowPos.forward * arrowPower; //+ new Vector3(0, playerRB.velocity.y, 0);
 
-        audioSourceIDK.volume = SaveData.CurrSaveData.SfxVol;
+        audioSourceIDK.volume = swishVol * SaveData.CurrSaveData.SfxVol;
         audioSourceIDK.Play();
     }
 

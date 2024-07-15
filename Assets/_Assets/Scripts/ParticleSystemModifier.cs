@@ -22,9 +22,10 @@ public class ParticleSystemModifier : MonoBehaviour
         pSystem = GetComponent<ParticleSystem>();
     }
 
-    // Update is called once per frame
     public void UpdateParticleSystem(float percent)
     {
+#pragma warning disable CS0618 // Type or member is obsolete
+
         if (modifySpeed)
             pSystem.startSpeed = Mathf.Lerp(minStartSpeed, maxStartSpeed, percent);
 
@@ -36,5 +37,7 @@ public class ParticleSystemModifier : MonoBehaviour
 
         if (modifyEmission)
             pSystem.emissionRate = Mathf.Lerp(minEmission, maxEmission, percent);
+
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 }

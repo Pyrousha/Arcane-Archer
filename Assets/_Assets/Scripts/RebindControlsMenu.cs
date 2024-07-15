@@ -43,7 +43,9 @@ public class RebindControlsMenu : Submenu
         JUMP,
         FALL,
         SHOOT,
-        KABOOM
+        DETONATE,
+        INTERACT,
+        RESTART
     }
 
     [System.Serializable]

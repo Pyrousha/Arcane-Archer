@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static RebindControlsMenu;
@@ -6,11 +7,15 @@ public class TutorialText : Singleton<TutorialText>
 {
     [SerializeField] private TextMeshProUGUI tutText;
     [SerializeField] private GameObject dialogueParent;
+    [SerializeField] private TypewriterEffect typewriterEffect;
+    [SerializeField] private AudioClip voiceAudioClip;
 
-    const string prefix = "<color=#FF8000>";
-    const string suffix = "</color>";
+    const char prefix = '<';
+    const char suffix = '>';
 
     int currLevelIndex;
+
+    private bool shownText = false;
 
     private void Start()
     {
@@ -21,7 +26,42 @@ public class TutorialText : Singleton<TutorialText>
     public void SetText()
     {
         dialogueParent.SetActive(SaveData.CurrSaveData.ShowTutText);
-        tutText.text = GetTutorialTextForLevelIndex(currLevelIndex);
+
+        if (shownText)
+            return;
+
+        shownText = true;
+
+        tutText.text = "";
+        string textToShow = GetTutorialTextForLevelIndex(currLevelIndex);
+
+        List<int> coloredIndices = new List<int>();
+        for (int i = 0; i < textToShow.Length; i++)
+        {
+            int endIndex = -1;
+            if (textToShow[i] == prefix)
+            {
+                for (int j = i + 1; j < textToShow.Length; j++)
+                {
+                    if (textToShow[j] == suffix)
+                    {
+                        endIndex = j - 2;
+
+                        textToShow = textToShow.Remove(i, 1);
+                        textToShow = textToShow.Remove(j - 1, 1);
+
+                        for (int a = i; a <= endIndex; a++)
+                            coloredIndices.Add(a);
+
+                        break;
+                    }
+                }
+
+                i = endIndex;
+            }
+        }
+        coloredIndices.Reverse();
+        typewriterEffect.ShowText(textToShow, tutText, voiceAudioClip, coloredIndices);
     }
 
     private string GetTutorialTextForLevelIndex(int _levelIndex)
@@ -42,12 +82,12 @@ public class TutorialText : Singleton<TutorialText>
 
             case 2:
                 return $"Hold and release {prefix + GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
-                       $"\nthen press {prefix + GetNameOfBinding(InputID.KABOOM) + suffix} to detonate!" +
+                       $"\nthen press {prefix + GetNameOfBinding(InputID.DETONATE) + suffix} to detonate!" +
                        $"\nLonger charge = more powerful explosion!";
 
             case 3:
                 return $"It's ok if you miss!" +
-                       $"\nPress {prefix + GetNameOfBinding(InputID.KABOOM) + suffix} to recall your arrow at any time";
+                       $"\nPress {prefix + GetNameOfBinding(InputID.DETONATE) + suffix} to recall your arrow at any time";
 
             case 4:
                 return $"Pro gamer tip:" +

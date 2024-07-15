@@ -17,6 +17,11 @@ public class Timer : Singleton<Timer>
     private bool total_enabled;
     private bool curr_enabled;
 
+    private void Start()
+    {
+        currTime_Label.text = TimeToString(0);
+    }
+
     public void SetTimerVisualsStatus(bool _totalTimeVisible, bool _currTimeVisible)
     {
         total_enabled = _totalTimeVisible;
@@ -33,10 +38,13 @@ public class Timer : Singleton<Timer>
 
     public IEnumerator RestartTimer()
     {
-        yield return new WaitForSeconds(SceneTransitioner.FADE_ANIM_DURATION);
-
         CurrTime = 0;
         TotalTime = 0;
+
+        UpdateUI();
+
+        yield return new WaitForSeconds(SceneTransitioner.FADE_ANIM_DURATION);
+
         startingTime = Time.time;
 
         isPaused = false;

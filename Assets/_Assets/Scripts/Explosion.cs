@@ -6,9 +6,16 @@ public class Explosion : Singleton<Explosion>
     public Renderer RangeObj => rangeObj;
 
     [SerializeField] private float explosionPower;
+    private float boomVol;
 
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip[] clips;
+
+    private void Start()
+    {
+        if (source != null)
+            boomVol = source.volume;
+    }
 
     public void BoomPlayer(float _sqrExplosionRadius)
     {
@@ -53,7 +60,7 @@ public class Explosion : Singleton<Explosion>
             rand = 0;
         source.clip = clips[rand];
 
-        source.volume = SaveData.CurrSaveData.SfxVol;
+        source.volume = boomVol * SaveData.CurrSaveData.SfxVol;
         source.Play();
     }
 }

@@ -13,7 +13,8 @@ public class InputHandler : Singleton<InputHandler>
         Explode = 2,
         Slam = 3,
         Restart = 4,
-        Pause = 5
+        Pause = 5,
+        Interact = 6
     }
 
     public Vector2 MoveXZ
@@ -55,8 +56,12 @@ public class InputHandler : Singleton<InputHandler>
     {
         get { return buttons[(int)ButtonIndices.Pause]; }
     }
+    public ButtonState Interact
+    {
+        get { return buttons[(int)ButtonIndices.Interact]; }
+    }
 
-    private int buttonCount = 6;
+    private int buttonCount = 7;
     [SerializeField] private short bufferFrames = 5;
     [SerializeField] private bool bufferEnabled = false;
     private short IDSRC = 0;
@@ -131,6 +136,10 @@ public class InputHandler : Singleton<InputHandler>
     public void CTX_Pause(InputAction.CallbackContext _ctx)
     {
         buttons[(int)ButtonIndices.Pause].Set(_ctx);
+    }
+    public void CTX_Interact(InputAction.CallbackContext _ctx)
+    {
+        buttons[(int)ButtonIndices.Interact].Set(_ctx);
     }
 
 
