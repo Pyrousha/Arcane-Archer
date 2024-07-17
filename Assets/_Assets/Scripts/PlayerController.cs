@@ -12,6 +12,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Animator bowAnim;
     [SerializeField] private Transform cameraTarget;
     [SerializeField] private Transform shadowTransform;
+    [SerializeField] private AudioSource bowDrawSFX;
+    private float bowDrawVol;
     [field: SerializeField] public Transform BottomOfModel { get; private set; }
 
     [Header("External References")]
@@ -96,6 +98,8 @@ public class PlayerController : Singleton<PlayerController>
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
 
         camTargOffsetStart = cameraTarget.localPosition;
+
+        bowDrawVol = bowDrawSFX.volume;
     }
 
     private Coroutine currScreenshakeRoutine;
@@ -160,6 +164,9 @@ public class PlayerController : Singleton<PlayerController>
                         releasedArrow = false;
                         bowState = BowStateEnum.DrawBack;
                         bowAnim.SetTrigger("DrawBack");
+
+                        bowDrawSFX.volume = SaveData.CurrSaveData.SfxVol * bowDrawVol;
+                        bowDrawSFX.Play();
                     }
                     break;
                 case BowStateEnum.DrawBack:
@@ -214,6 +221,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void FireArrow()
     {
+        bowDrawSFX.Stop();
         nextShootPickupTime = Time.time + shootPickupDuration;
 
         bowState = BowStateEnum.Fired;

@@ -11,9 +11,15 @@ public class SFXAudio : MonoBehaviour
         ChangeVolume();
     }
 
-    public void ChangeVolume()
+    private void ChangeVolume()
     {
         audioSource.volume = volume * SaveData.CurrSaveData.SfxVol;
+    }
+
+    public void Play()
+    {
+        ChangeVolume();
+        audioSource.Play();
     }
 
 #if UNITY_EDITOR

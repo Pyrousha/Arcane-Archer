@@ -13,7 +13,7 @@ public class Arrow : MonoBehaviour
     private ArrowStateEnum state;
     public ArrowStateEnum State => state;
 
-    AudioSource audioSourceIDK;
+    AudioSource arrowSwooshSFX;
 
     private Transform playerTransform;
     //[SerializeField] private Animator explodeAnim;
@@ -35,11 +35,13 @@ public class Arrow : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        audioSourceIDK = GetComponent<AudioSource>();
+        arrowSwooshSFX = GetComponent<AudioSource>();
 
         playerTransform = PlayerController.Instance.transform;
 
         distToPlayer *= distToPlayer;
+
+        swishVol = arrowSwooshSFX.volume;
     }
 
     private void FixedUpdate()
@@ -155,6 +157,8 @@ public class Arrow : MonoBehaviour
             Instantiate(recallExplosionPrefab, transform.position, Quaternion.identity);
         }
 
+        ObjReferencer.Instance.ArrowRecallSFX.Play();
+
         ObjReferencer.Instance.ExplodeIndicator.SetActive(false);
 
         state = ArrowStateEnum.FlyingBack;
@@ -191,8 +195,8 @@ public class Arrow : MonoBehaviour
         transform.gameObject.SetActive(true);
         rb.velocity = targArrowPos.forward * arrowPower; //+ new Vector3(0, playerRB.velocity.y, 0);
 
-        audioSourceIDK.volume = swishVol * SaveData.CurrSaveData.SfxVol;
-        audioSourceIDK.Play();
+        arrowSwooshSFX.volume = swishVol * SaveData.CurrSaveData.SfxVol;
+        arrowSwooshSFX.Play();
     }
 
     public void Pickup()
