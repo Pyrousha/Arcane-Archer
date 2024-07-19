@@ -10,6 +10,7 @@ public class TypewriterEffect : MonoBehaviour
 
     [SerializeField] private Color textColor;
     [SerializeField] private Color coloredTextColor;
+    public Color ColoredTextColor => coloredTextColor;
     [SerializeField] private AudioSource voiceAudioSource;
     private float voiceVol;
 
@@ -58,6 +59,8 @@ public class TypewriterEffect : MonoBehaviour
 
     private IEnumerator TypeText(string textToType, TMP_Text textLabel, AudioClip voiceClip, List<int> coloredIndices)
     {
+        bool pressedSkip = false;
+
         textLabel.text = textToType;
 
         TMP_TextInfo textInfo = textLabel.textInfo;
@@ -83,12 +86,18 @@ public class TypewriterEffect : MonoBehaviour
 
         while (charIndex < textToType.Length - numBreaks * 4)
         {
+            if (InputHandler.Instance.Interact.Down)
+                pressedSkip = true;
+
             int lastCharIndex = charIndex;
 
             t += Time.deltaTime * writingSpeed;
             charIndex = Mathf.FloorToInt(t);
 
             charIndex = Mathf.Clamp(charIndex, 0, textToType.Length);
+
+            if (pressedSkip)
+                charIndex = textToType.Length;
 
             for (int i = lastCharIndex; i < charIndex; i++)
             {
@@ -140,14 +149,19 @@ public class TypewriterEffect : MonoBehaviour
                         voiceAudioSource.volume = voiceVol * SaveData.CurrSaveData.SfxVol;
                         voiceAudioSource.Play();
                     }
-                    yield return new WaitForSeconds(waitTime);
+
+                    if (!pressedSkip)
+                        yield return new WaitForSeconds(waitTime);
                 }
             }
 
-            yield return null;
+            if (!pressedSkip)
+                yield return null;
         }
 
         IsRunning = false;
+
+        TutorialText.Instance.OnTextDoneTyping();
         voiceAudioSource.Stop();
     }
 

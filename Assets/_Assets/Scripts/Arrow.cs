@@ -157,7 +157,7 @@ public class Arrow : MonoBehaviour
             Instantiate(recallExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        ObjReferencer.Instance.ArrowRecallSFX.Play();
+        ObjReferencer.Instance.ArrowRecallSFX.Play(0.125f);
 
         ObjReferencer.Instance.ExplodeIndicator.SetActive(false);
 

@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static RebindControlsMenu;
 
 public class TutorialText : Singleton<TutorialText>
 {
     [SerializeField] private TextMeshProUGUI tutText;
+    [SerializeField] private TextMeshProUGUI closeText;
     [SerializeField] private GameObject dialogueParent;
+    [SerializeField] private Animator anim;
     [SerializeField] private TypewriterEffect typewriterEffect;
     [SerializeField] private AudioClip voiceAudioClip;
 
@@ -16,6 +19,8 @@ public class TutorialText : Singleton<TutorialText>
     int currLevelIndex;
 
     private bool shownText = false;
+    private bool doneTypingText = false;
+    private bool dismissedText = false;
 
     private void Start()
     {
@@ -23,11 +28,20 @@ public class TutorialText : Singleton<TutorialText>
         SetText();
     }
 
+    private void Update()
+    {
+        if (doneTypingText && InputHandler.Instance.Interact.Down && !dismissedText)
+        {
+            dismissedText = true;
+            anim.SetTrigger("FadeOut");
+        }
+    }
+
     public void SetText()
     {
         dialogueParent.SetActive(SaveData.CurrSaveData.ShowTutText);
 
-        if (shownText)
+        if (shownText || !SaveData.CurrSaveData.ShowTutText)
             return;
 
         shownText = true;
@@ -62,6 +76,12 @@ public class TutorialText : Singleton<TutorialText>
         }
         coloredIndices.Reverse();
         typewriterEffect.ShowText(textToShow, tutText, voiceAudioClip, coloredIndices);
+    }
+
+    public void OnTextDoneTyping()
+    {
+        doneTypingText = true;
+        closeText.text = $"[Press <color=#{typewriterEffect.ColoredTextColor.ToHexString()}>{GetNameOfBinding(InputID.INTERACT)}</color> to close]";
     }
 
     private string GetTutorialTextForLevelIndex(int _levelIndex)

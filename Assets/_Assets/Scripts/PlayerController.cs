@@ -163,6 +163,8 @@ public class PlayerController : Singleton<PlayerController>
                     {
                         releasedArrow = false;
                         bowState = BowStateEnum.DrawBack;
+                        //bowAnim.ResetTrigger("Pickup");
+                        bowAnim.ResetTrigger("Fire");
                         bowAnim.SetTrigger("DrawBack");
 
                         bowDrawSFX.volume = SaveData.CurrSaveData.SfxVol * bowDrawVol;
@@ -214,6 +216,8 @@ public class PlayerController : Singleton<PlayerController>
     public void PickupArrow()
     {
         bowState = BowStateEnum.Ready;
+        //bowAnim.ResetTrigger("DrawBack");
+        //bowAnim.ResetTrigger("Fire");
         bowAnim.SetTrigger("Pickup");
 
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
@@ -232,6 +236,8 @@ public class PlayerController : Singleton<PlayerController>
         currArrow = Instantiate(arrowPrefab, transform.parent).GetComponent<Arrow>();
         currArrow.Fire(targArrowPos, firePower);
 
+        //bowAnim.ResetTrigger("Pickup");
+        //bowAnim.ResetTrigger("DrawBack");
         bowAnim.SetTrigger("Fire");
     }
 
