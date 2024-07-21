@@ -11,6 +11,7 @@ public class ObjReferencer : Singleton<ObjReferencer>
     [field: SerializeField] public Transform SkyboxTransform { get; private set; }
     [field: SerializeField] public ParticleSystemModifier SpeedLines { get; private set; }
     [field: SerializeField] public SFXAudio ArrowRecallSFX { get; private set; }
+    [field: SerializeField] public FilterController FilterController { get; private set; }
 
     private void Start()
     {

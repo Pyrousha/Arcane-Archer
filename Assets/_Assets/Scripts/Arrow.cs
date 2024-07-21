@@ -122,11 +122,13 @@ public class Arrow : MonoBehaviour
             if (currDist <= distToPlayer)
             {
                 BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.InRange);
+                ObjReferencer.Instance.FilterController.SetFilterStatus(true);
                 inRange = true;
             }
             else
             {
                 BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.CanBoom);
+                ObjReferencer.Instance.FilterController.SetFilterStatus(false);
                 inRange = false;
             }
         }
@@ -146,6 +148,7 @@ public class Arrow : MonoBehaviour
             }
 
             BowLightIndicator.Instance.SetColor(BowLightIndicator.ColorStateEnum.Unlit);
+            ObjReferencer.Instance.FilterController.SetFilterStatus(false);
 
             //BOOM!!!!
             Explosion.Instance.PlaySFX();
