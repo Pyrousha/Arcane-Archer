@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static SFXManager;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -59,8 +60,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private List<Transform> raycastPoints = new List<Transform>();
 
-    private float shootPickupDuration = 0.3f;
-    private float nextShootPickupTime;
+    private bool reachedFullCharge = false;
 
     public bool CanSpaceRelease = false;
 
@@ -163,6 +163,7 @@ public class PlayerController : Singleton<PlayerController>
                     {
                         releasedArrow = false;
                         bowState = BowStateEnum.DrawBack;
+
                         //bowAnim.ResetTrigger("Pickup");
                         bowAnim.ResetTrigger("Fire");
                         bowAnim.SetTrigger("DrawBack");
@@ -175,6 +176,16 @@ public class PlayerController : Singleton<PlayerController>
                     bowDrawPercent = Mathf.Min(1, bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime);
                     ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.one * bowDrawPercent;
 
+                    if (BowDrawPercent < 0.5f)
+                        reachedFullCharge = false;
+
+                    if (BowDrawPercent >= 1 && !reachedFullCharge)
+                    {
+                        reachedFullCharge = true;
+                        bowAnim.SetTrigger("DoShine");
+                        SFXManager.Instance.Play(AudioTypeEnum.FULLCHARGE);
+                    }
+
                     if (InputHandler.Instance.Shoot.Up || !InputHandler.Instance.Shoot.Holding)
                     {
                         releasedArrow = true;
@@ -182,7 +193,7 @@ public class PlayerController : Singleton<PlayerController>
 
                     if (bowDrawPercent >= 0.5f && releasedArrow)
                     {
-                        FireArrow();
+                        FireArrow(bowDrawPercent);
                     }
 
                     break;
@@ -223,14 +234,13 @@ public class PlayerController : Singleton<PlayerController>
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
     }
 
-    private void FireArrow()
+    private void FireArrow(float _bowDrawPercent)
     {
         bowDrawSFX.Stop();
-        nextShootPickupTime = Time.time + shootPickupDuration;
 
         bowState = BowStateEnum.Fired;
 
-        float firePower = arrowPower * Mathf.Clamp(bowAnim.GetCurrentAnimatorStateInfo(0).normalizedTime, 0.1f, 1.0f);
+        float firePower = arrowPower * Mathf.Clamp(_bowDrawPercent, 0.1f, 1.0f);
         firePower *= Mathf.Max(1, Vector3.Dot(targArrowPos.forward, rb.velocity * 0.1f));
 
         currArrow = Instantiate(arrowPrefab, transform.parent).GetComponent<Arrow>();

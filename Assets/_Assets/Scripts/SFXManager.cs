@@ -1,23 +1,32 @@
-using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using UnityEngine;
 
 public class SFXManager : Singleton<SFXManager>
 {
-    [SerializeField] private AudioSource source;
-    [SerializeField] private List<AudioClip> clips;
-
-    public void Play(AudioType type)
+    [System.Serializable]
+    public struct SFXReference
     {
-        source.PlayOneShot(clips[(int)type]);
+        public AudioClip Clip;
+        [Range(0f, 1f)] public float VolumeMultiplier;
     }
-}
 
-public enum AudioType
-{
-    SQUEAK, HIT, DEATH, ENEMY_DEATH, PLAYER_HIT, //0-4
+    public enum AudioTypeEnum
+    {
+        FULLCHARGE,
+        ENTER_BOOM,
+        EXIT_BOOM
+    }
 
-    PLAYER_SHOOT, KICK_START, KICK_READY, LANTERN_HIT, BOMB, //5-9
+    [SerializeField] private AudioSource source;
+    [SerializeField]
+    private SerializedDictionary<AudioTypeEnum, SFXReference> clips;
 
-    LIFEUP, GRAZE, POWERUP, PICKUP, BOSS_DEAD, //10-14
-    BUTTON_CLICK //15-19
+
+    public void Play(AudioTypeEnum type)
+    {
+        SFXReference clipToPlay = clips[type];
+
+        source.volume = SaveData.CurrSaveData.SfxVol * clipToPlay.VolumeMultiplier;
+        source.PlayOneShot(clipToPlay.Clip);
+    }
 }
