@@ -128,7 +128,7 @@ public class SerializedSaveData
 {
     public float Version = 0.125f;
 
-    public float MusicVol = 0.5f;
+    public float MusicVol = 0.3f;
     public float SfxVol = 0.5f;
 
     public float MouseSens = 64f / 255f;
