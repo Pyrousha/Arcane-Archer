@@ -944,6 +944,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvases
       objectReference: {fileID: 0}
+    - target: {fileID: 8853927822415333624, guid: 5e7ac89b69badd946a960f48e47bcfa0,
+        type: 3}
+      propertyPath: m_text
+      value: 'Welcome Archer!
+
+        Use <sprite="KB" name="KB_w"><sprite="KB"
+        name="KB_a"><sprite="KB" name="KB_s"><sprite="KB" name="KB_d"> to move and
+        <sprite="KB" name="KB_space"> to jump.'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

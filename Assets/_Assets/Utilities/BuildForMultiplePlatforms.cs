@@ -8,12 +8,12 @@ using UnityEngine;
 public class UnityBuildForMultiplePlatforms : MonoBehaviour
 {
     static List<SupportedPlatform> platforms = new List<SupportedPlatform> {
-        new SupportedPlatform(BuildTarget.StandaloneOSX, "../Builds/TESTING/MacOS/Game.app"),
-        new SupportedPlatform(BuildTarget.StandaloneWindows64, "../Builds/TESTING/Win64/Game.exe")
-        // new SupportedPlatform(BuildTarget.StandaloneLinux64, "Linux64/Game")
+        new SupportedPlatform(BuildTarget.StandaloneWindows, "Builds/Windows/Win32/Arcane Archer.exe"),
+        new SupportedPlatform(BuildTarget.StandaloneWindows64, "Builds/Windows/Win64/Arcane Archer.exe"),
+        new SupportedPlatform(BuildTarget.StandaloneOSX, "Builds/MacOS/ArcaneArcher_x64.app")
     };
 
-    [MenuItem("Tools/My Game/Build")]
+    [MenuItem("Tools/Build")]
     public static void BuildGame()
     {
         BuildForAllPlatforms();
