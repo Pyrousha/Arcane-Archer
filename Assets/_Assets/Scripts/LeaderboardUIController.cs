@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static LeaderboardCallHandler;
 
@@ -10,6 +12,7 @@ public class LeaderboardUIController : Submenu
 
     [Space(10)]
     [SerializeField] private GameObject loadingObj;
+    [SerializeField] private TextMeshProUGUI loadingText;
     [SerializeField] private GameObject scrollViewObj;
 
     [Space(10)]
@@ -57,8 +60,22 @@ public class LeaderboardUIController : Submenu
 
         isCalling = true;
 
-        LeaderboardCallHandler.Instance.GetLeaderBoardData(Steamworks.ELeaderboardDataRequest.k_ELeaderboardDataRequestGlobal, 100);
+        try
+        {
+            LeaderboardCallHandler.Instance.GetLeaderBoardData(Steamworks.ELeaderboardDataRequest.k_ELeaderboardDataRequestGlobal, 100);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
 
+            loadingText.text = "ERROR:\n\nCouldn't connect to steam!";
+            loadingObj.SetActive(true);
+            scrollViewObj.SetActive(false);
+            localPlayerRankParent.SetActive(false);
+            return;
+        }
+
+        loadingText.text = "LOADING...";
         loadingObj.SetActive(true);
         scrollViewObj.SetActive(false);
         localPlayerRankParent.SetActive(false);

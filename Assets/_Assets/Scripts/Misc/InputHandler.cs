@@ -69,14 +69,58 @@ public class InputHandler : Singleton<InputHandler>
     private Queue<Dictionary<short, short>> inputBuffer = new Queue<Dictionary<short, short>>();
     private Dictionary<short, short> currentFrame;
 
+    private string defaultControls;
+
+    private string currControlsScheme = "";
+
     public void Start()
     {
         buttons = new ButtonState[buttonCount];
         for (int i = 0; i < buttonCount; i++)
             buttons[i].Init(ref IDSRC, this);
 
+        defaultControls = playerInput.actions.SaveBindingOverridesAsJson();
+
         if (SaveData.CurrSaveData.ReboundControls != null)
             playerInput.actions.LoadBindingOverridesFromJson(SaveData.CurrSaveData.ReboundControls);
+    }
+
+    public void OnDeviceLost(PlayerInput player)
+    {
+        Debug.Log("OnDeviceLost:");
+        Debug.Log(player);
+    }
+
+    public void OnDeviceRegained(PlayerInput player)
+    {
+        Debug.Log("OnDeviceRegained:");
+        Debug.Log(player);
+    }
+
+    public void OnControlsChanged(PlayerInput player)
+    {
+        Debug.Log("OnControlsChanged:");
+        Debug.Log(player.currentControlScheme);
+
+        if (currControlsScheme != player.currentControlScheme)
+        {
+            currControlsScheme = player.currentControlScheme;
+            if (currControlsScheme == "Gamepad")
+            {
+                //hide mouse
+                Cursor.visible = false;
+            }
+            else if (currControlsScheme == "Keyboard_Mouse")
+            {
+                //unhide mouse
+                Cursor.visible = true;
+            }
+        }
+    }
+
+    public void ResetControls()
+    {
+        playerInput.actions.LoadBindingOverridesFromJson(defaultControls);
     }
 
     private void FixedUpdate()

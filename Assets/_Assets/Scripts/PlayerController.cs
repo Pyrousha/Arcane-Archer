@@ -448,7 +448,7 @@ public class PlayerController : Singleton<PlayerController>
             rb.velocity = new Vector3(0, rb.velocity.y, 0) + transform.TransformDirection(updatedVelocity);
         }
 
-        ObjReferencer.Instance.SpeedLines.UpdateParticleSystem((rb.velocity.magnitude + Mathf.Abs(rb.velocity.y)) / maxSpeedForSpeedlines);
+        ObjReferencer.Instance.SpeedLines.UpdateParticleSystem((rb.velocity.magnitude * 0.125f + Mathf.Abs(rb.velocity.y) * 1.5f) / maxSpeedForSpeedlines);
 
         #endregion
     }

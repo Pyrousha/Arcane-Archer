@@ -55,27 +55,34 @@ public class AchievementHandler : Singleton<AchievementHandler>
 
     public void TryUnlockAchievement(AchievementIDEnum _acToUnlock)
     {
-        if (!initialized)
+        try
         {
-            Debug.LogError("Need to initialize first!");
-            TryInit();
-
             if (!initialized)
+            {
+                Debug.LogError("Need to initialize first!");
+                TryInit();
+
+                if (!initialized)
+                    return;
+            }
+
+            AchievementStruct currAc = achievementsDict[_acToUnlock];
+            if (currAc.isUnlocked)
+            {
+                Debug.Log("AC: " + _acToUnlock.ToString() + " is already unlocked.");
                 return;
-        }
+            }
 
-        AchievementStruct currAc = achievementsDict[_acToUnlock];
-        if (currAc.isUnlocked)
+            currAc.isUnlocked = true;
+
+            Debug.Log("Unlocked AC: " + _acToUnlock.ToString() + "!");
+
+            SteamUserStats.SetAchievement(currAc.APIName);
+            SteamUserStats.StoreStats();
+        }
+        catch (Exception e)
         {
-            Debug.Log("AC: " + _acToUnlock.ToString() + " is already unlocked.");
-            return;
+            Console.Error.WriteLine(e.ToString());
         }
-
-        currAc.isUnlocked = true;
-
-        Debug.Log("Unlocked AC: " + _acToUnlock.ToString() + "!");
-
-        SteamUserStats.SetAchievement(currAc.APIName);
-        SteamUserStats.StoreStats();
     }
 }

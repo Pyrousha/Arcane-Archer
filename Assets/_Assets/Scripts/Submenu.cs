@@ -47,6 +47,7 @@ public abstract class Submenu : MonoBehaviour
         LastSubmenu = _submenu;
 
         firstSelectable.Select();
+        SFXManager.Instance.Play(SFXManager.AudioTypeEnum.BUTTON_SELECT);
         //LastSelectedObj.Select();
 
         ActiveSubmenu = this;

@@ -3,14 +3,13 @@ public class LevelButton_All : LevelButton
     // Start is called before the first frame update
     public override void SetData()
     {
-        levelLabel.text = "All";
-
         lockedObj.SetActive(false);
 
         float time = SaveData.CurrSaveData.BestFullTime;
         if (time > 0)
         {
             //Level finished before
+            timeLabel.gameObject.SetActive(true);
             timeLabel.text = Timer.TimeToString(time);
         }
         else

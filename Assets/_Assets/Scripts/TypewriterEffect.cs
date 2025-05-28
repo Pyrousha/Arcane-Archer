@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
@@ -33,7 +32,7 @@ public class TypewriterEffect : MonoBehaviour
         voiceVol = voiceAudioSource.volume;
     }
 
-    public void ShowText(string textToType, TMP_Text textLabel, AudioClip voiceClip, List<int> coloredIndices)
+    public void ShowText(string textToType, TMP_Text textLabel, AudioClip voiceClip, List<int> coloredIndices = null)
     {
         IsRunning = true;
         currTextLabel = textLabel;
@@ -57,22 +56,22 @@ public class TypewriterEffect : MonoBehaviour
         }
     }
 
-    private IEnumerator TypeText(string textToType, TMP_Text textLabel, AudioClip voiceClip, List<int> coloredIndices)
+    private IEnumerator TypeText(string textToType, TMP_Text textLabel, AudioClip voiceClip, List<int> coloredIndices = null)
     {
+        if (coloredIndices == null)
+            coloredIndices = new List<int>();
+
         bool pressedSkip = false;
 
         textLabel.text = textToType;
+        textLabel.maxVisibleCharacters = 0;
 
         TMP_TextInfo textInfo = textLabel.textInfo;
-        Color32[] newVertexColors;
-        textLabel.color = Color.clear;
 
         IsRunning = true;
 
         float t = 0;
         int charIndex = 0;
-
-        int numBreaks = Regex.Matches(textToType, "<br>").Count;
 
         if (voiceClip != null)
         {
@@ -84,7 +83,7 @@ public class TypewriterEffect : MonoBehaviour
 
         yield return null;
 
-        while (charIndex < textToType.Length - numBreaks * 4)
+        while (charIndex < textInfo.characterCount)
         {
             if (InputHandler.Instance.Interact.Down)
                 pressedSkip = true;
@@ -94,54 +93,19 @@ public class TypewriterEffect : MonoBehaviour
             t += Time.deltaTime * writingSpeed;
             charIndex = Mathf.FloorToInt(t);
 
-            charIndex = Mathf.Clamp(charIndex, 0, textToType.Length);
+            charIndex = Mathf.Clamp(charIndex, 0, textInfo.characterCount);
 
             if (pressedSkip)
-                charIndex = textToType.Length;
+                charIndex = textInfo.characterCount;
+
+            textLabel.maxVisibleCharacters = charIndex;
 
             for (int i = lastCharIndex; i < charIndex; i++)
             {
-                bool isLast = i >= textToType.Length - 1;
+                bool isLast = i >= textInfo.characterCount - 1;
 
-                //Update text color to type text
-                {
-                    // Get the index of the material used by the current character.
-                    int materialIndex = textInfo.characterInfo[i].materialReferenceIndex;
-
-                    // Get the vertex colors of the mesh used by this text element (character or sprite).
-                    newVertexColors = textInfo.meshInfo[materialIndex].colors32;
-
-                    // Get the index of the first vertex used by this text element.
-                    int vertexIndex = textInfo.characterInfo[i].vertexIndex;
-
-                    // Only change the vertex color if the text element is visible.
-                    if (textInfo.characterInfo[i].isVisible)
-                    {
-                        if (coloredIndices.Count > 0 && i == coloredIndices[^1])
-                        {
-                            newVertexColors[vertexIndex + 0] = coloredTextColor;
-                            newVertexColors[vertexIndex + 1] = coloredTextColor;
-                            newVertexColors[vertexIndex + 2] = coloredTextColor;
-                            newVertexColors[vertexIndex + 3] = coloredTextColor;
-                            coloredIndices.RemoveAt(coloredIndices.Count - 1);
-                        }
-                        else
-                        {
-                            newVertexColors[vertexIndex + 0] = textColor;
-                            newVertexColors[vertexIndex + 1] = textColor;
-                            newVertexColors[vertexIndex + 2] = textColor;
-                            newVertexColors[vertexIndex + 3] = textColor;
-                        }
-
-                        // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-                        textLabel.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
-                        // This last process could be done to only update the vertex data that has changed as opposed to all of the vertex data but it would require extra steps and knowing what type of renderer is used.
-                        // These extra steps would be a performance optimization but it is unlikely that such optimization will be necessary.
-                    }
-                }
-
-                if (IsPunctuation(textToType[i], out float waitTime) && !isLast && !IsPunctuation(textToType[i + 1], out _))
+                char currCharacter = textInfo.characterInfo[i].character;
+                if (IsPunctuation(currCharacter, out float waitTime) && !isLast && !IsPunctuation(textInfo.characterInfo[i + 1].character, out _))
                 {
                     if (voiceClip != null)
                     {

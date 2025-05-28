@@ -1,15 +1,19 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CreditsSceneCanvas : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI newTimeLabel;
     [SerializeField] private TextMeshProUGUI bestTimeLabel;
     [SerializeField] private GameObject newBestTimeNotification;
+    [SerializeField] private Selectable toMenuButton;
 
     // Start is called before the first frame update
     void Start()
     {
+        toMenuButton.Select();
+
         Cursor.lockState = CursorLockMode.None;
 
         newTimeLabel.text = Timer.TimeToString(Timer.Instance.TotalTime);

@@ -22,7 +22,25 @@ public class LevelButton : MonoBehaviour
         if (levelInfo.Seconds > 0)
         {
             //Level finished before
+            timeLabel.gameObject.SetActive(true);
             timeLabel.text = Timer.TimeToString(levelInfo.Seconds);
+        }
+        else
+        {
+            //Level not played yet
+            timeLabel.gameObject.SetActive(false);
+        }
+    }
+
+    public void SetSecondsString(float _seconds, bool locked = false)
+    {
+        lockedObj.SetActive(locked);
+
+        if (_seconds > 0)
+        {
+            //Level finished before
+            timeLabel.gameObject.SetActive(true);
+            timeLabel.text = Timer.TimeToString(_seconds);
         }
         else
         {

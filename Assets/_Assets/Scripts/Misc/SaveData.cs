@@ -15,7 +15,7 @@ public class SaveData : Singleton<SaveData>
 
     [field: SerializeField] public string VersionNumText { get; private set; } = "Version 20xx";
 
-    public void Start()
+    public void Awake()
     {
         LoadSaveData();
     }
@@ -55,6 +55,12 @@ public class SaveData : Singleton<SaveData>
         {
             //Load default data and save
             CurrSaveData = new SerializedSaveData();
+            Save();
+        }
+
+        if (CurrSaveData.ButtonDisplayType == SerializedSaveData.ButtonDisplayTypeEnum.Keyboard)
+        {
+            CurrSaveData.ButtonDisplayType = SerializedSaveData.ButtonDisplayTypeEnum.XBox;
             Save();
         }
     }
@@ -126,7 +132,7 @@ public class SaveData : Singleton<SaveData>
 [Serializable]
 public class SerializedSaveData
 {
-    public float Version = 0.125f;
+    public float Version = 0.25f;
 
     public float MusicVol = 0.3f;
     public float SfxVol = 0.5f;
@@ -142,6 +148,15 @@ public class SerializedSaveData
     public bool ShowTutText = true;
     public bool ShowTimer = false;
     public bool EnableScreenshake = true;
+
+    public ButtonDisplayTypeEnum ButtonDisplayType = ButtonDisplayTypeEnum.XBox;
+
+    public enum ButtonDisplayTypeEnum
+    {
+        Keyboard = 0,
+        XBox = 1,
+        PS = 2
+    }
 
     public SerializedSaveData()
     {

@@ -13,8 +13,8 @@ public class TutorialText : Singleton<TutorialText>
     [SerializeField] private TypewriterEffect typewriterEffect;
     [SerializeField] private AudioClip voiceAudioClip;
 
-    const char prefix = '<';
-    const char suffix = '>';
+    const char prefix = '[';
+    const char suffix = ']';
 
     int currLevelIndex;
 
@@ -49,6 +49,8 @@ public class TutorialText : Singleton<TutorialText>
         tutText.text = "";
         string textToShow = GetTutorialTextForLevelIndex(currLevelIndex);
 
+        int len = 0;
+
         List<int> coloredIndices = new List<int>();
         for (int i = 0; i < textToShow.Length; i++)
         {
@@ -64,6 +66,11 @@ public class TutorialText : Singleton<TutorialText>
                         textToShow = textToShow.Remove(i, 1);
                         textToShow = textToShow.Remove(j - 1, 1);
 
+                        coloredIndices.Add(i - len);
+
+                        string splice = textToShow.Substring(i, endIndex - i + 1);
+                        len += (splice.Length - 1);
+
                         for (int a = i; a <= endIndex; a++)
                             coloredIndices.Add(a);
 
@@ -74,6 +81,13 @@ public class TutorialText : Singleton<TutorialText>
                 i = endIndex;
             }
         }
+        coloredIndices.Sort();
+        for (int i = coloredIndices.Count - 1; i > 0; i--)
+        {
+            if (coloredIndices[i] == coloredIndices[i - 1])
+                coloredIndices.RemoveAt(i);
+        }
+
         coloredIndices.Reverse();
         typewriterEffect.ShowText(textToShow, tutText, voiceAudioClip, coloredIndices);
     }
@@ -81,7 +95,7 @@ public class TutorialText : Singleton<TutorialText>
     public void OnTextDoneTyping()
     {
         doneTypingText = true;
-        closeText.text = $"[Press <color=#{typewriterEffect.ColoredTextColor.ToHexString()}>{GetNameOfBinding(InputID.INTERACT)}</color> to close]";
+        closeText.text = $"[Press <color=#{typewriterEffect.ColoredTextColor.ToHexString()}>{RebindControlsMenu.Instance.GetNameOfBinding(InputID.INTERACT)}</color> to close]";
     }
 
     private string GetTutorialTextForLevelIndex(int _levelIndex)
@@ -92,22 +106,22 @@ public class TutorialText : Singleton<TutorialText>
         switch (_levelIndex)
         {
             case 0:
-                return $"Welcome Archer!\nUse {prefix + GetNameOfBinding(InputID.FORWARD) + suffix}{prefix + GetNameOfBinding(InputID.LEFT) + suffix}" +
-                       $"{prefix + GetNameOfBinding(InputID.BACK) + suffix}{prefix + GetNameOfBinding(InputID.RIGHT) + suffix} to move and {prefix + GetNameOfBinding(InputID.JUMP) + suffix} to jump.";
+                return $"Welcome Archer!\nUse {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.FORWARD) + suffix}{prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.LEFT) + suffix}" +
+                       $"{prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.BACK) + suffix}{prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.RIGHT) + suffix} to move and {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.JUMP) + suffix} to jump.";
 
             case 1:
                 return $"Move the camera with your mouse." +
-                       $"\nAlso, {prefix}ESC{suffix} will Open the pause menu. " +
+                       $"\nAlso, {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.PAUSE) + suffix} will Open the pause menu. " +
                        $"\ntry changing controls or sensitivity!";
 
             case 2:
-                return $"Hold and release {prefix + GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
-                       $"\nthen press {prefix + GetNameOfBinding(InputID.DETONATE) + suffix} to detonate!" +
+                return $"Hold and release {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.SHOOT) + suffix} to shoot," +
+                       $"\nthen press {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.DETONATE) + suffix} to detonate!" +
                        $"\nLonger charge = more powerful explosion!";
 
             case 3:
                 return $"It's ok if you miss!" +
-                       $"\nPress {prefix + GetNameOfBinding(InputID.DETONATE) + suffix} to recall your arrow at any time";
+                       $"\nPress {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.DETONATE) + suffix} to recall your arrow at any time";
 
             case 4:
                 return $"Pro gamer tip:" +
@@ -115,7 +129,7 @@ public class TutorialText : Singleton<TutorialText>
 
             case 5:
                 return $"Falling too slow?" +
-                       $"\nHold {prefix + GetNameOfBinding(InputID.FALL) + suffix} to fall faster!" +
+                       $"\nHold {prefix + RebindControlsMenu.Instance.GetNameOfBinding(InputID.FALL) + suffix} to fall faster!" +
                        $"\n(Don't worry about how it works)";
 
             case 6:

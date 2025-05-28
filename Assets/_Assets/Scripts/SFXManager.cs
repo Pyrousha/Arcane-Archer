@@ -14,7 +14,9 @@ public class SFXManager : Singleton<SFXManager>
     {
         FULLCHARGE,
         ENTER_BOOM,
-        EXIT_BOOM
+        EXIT_BOOM,
+        BUTTON_SELECT,
+        BUTTON_CLICK
     }
 
     [SerializeField] private AudioSource source;

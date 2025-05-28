@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using static SerializedSaveData;
 
 public class RebindControlsMenu : Submenu
 {
@@ -36,16 +37,17 @@ public class RebindControlsMenu : Submenu
 
     public enum InputID
     {
-        FORWARD,
-        BACK,
-        LEFT,
-        RIGHT,
-        JUMP,
-        FALL,
-        SHOOT,
-        DETONATE,
-        INTERACT,
-        RESTART
+        FORWARD = 0,
+        BACK = 1,
+        LEFT = 2,
+        RIGHT = 3,
+        JUMP = 4,
+        FALL = 5,
+        SHOOT = 6,
+        DETONATE = 7,
+        INTERACT = 8,
+        RESTART = 9,
+        PAUSE = 10
     }
 
     [System.Serializable]
@@ -54,25 +56,14 @@ public class RebindControlsMenu : Submenu
         [field: SerializeField] public InputID InputID { get; private set; }
         [field: SerializeField] public InputActionReference Action { get; private set; }
 
-        [field: SerializeField] public string Name { get; set; }
-
         public InputIDToActionRef(InputID _inputID)
         {
             InputID = _inputID;
             Action = null;
-            Name = null;
         }
     }
 
     private bool isOpen = false;
-
-    [SerializeField] private GameObject parent;
-    [Space(10)]
-
-    [SerializeField] public List<InputIDToActionRef> actionsMap = new List<InputIDToActionRef>();
-    [SerializeField] private List<RebindButton> rebindButtons;
-
-    private string startingBinds;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -120,8 +111,8 @@ public class RebindControlsMenu : Submenu
 
     public void Start()
     {
-        foreach (InputIDToActionRef actionRef in actionsMap)
-            UpdateButtonText(actionRef);
+        if (parent.activeSelf)
+            parent.SetActive(false);
     }
 
     private void OpenPopup()
@@ -147,20 +138,99 @@ public class RebindControlsMenu : Submenu
         parent.SetActive(false);
     }
 
+    public void OnResetControlsClicked(Selectable button)
+    {
+        lastSelected = button;
+        resetChangesPopup_Parent.SetActive(true);
+        resetYesButton.Select();
+    }
+
+    public void OnResetClosed(bool resetControls)
+    {
+        resetChangesPopup_Parent.SetActive(false);
+        lastSelected.Select();
+
+        if (resetControls)
+        {
+            InputHandler.Instance.ResetControls();
+            startingBinds = playerInput.actions.SaveBindingOverridesAsJson();
+
+            //Save Changes
+            SaveData.CurrSaveData.ReboundControls = null;
+            SaveData.Instance.Save();
+
+            foreach (InputIDToActionRef actionRef in actionsMap)
+                UpdateButtonText(actionRef);
+        }
+    }
+
+
+    public void OnBackClicked(Selectable button)
+    {
+        if (startingBinds.Equals(playerInput.actions.SaveBindingOverridesAsJson()))
+        {
+            //No changes
+            CloseMenu(false);
+            return;
+        }
+
+        lastSelected = button;
+        unsavedChangesPopup_Parent.SetActive(true);
+        yesSaveButton.Select();
+    }
+
+    public void OnBackClosed(bool saveControls)
+    {
+        unsavedChangesPopup_Parent.SetActive(false);
+        CloseMenu(saveControls);
+    }
 
 
 
 
 
+    [Header("RebindControlsMenu")]
+    [SerializeField] private ListOfTmpSpriteAssets listofTmpSpriteAssets;
+
+    [SerializeField] private GameObject parent;
+    [SerializeField] private GameObject unsavedChangesPopup_Parent;
+    [SerializeField] private Selectable yesSaveButton;
+    [SerializeField] private GameObject resetChangesPopup_Parent;
+    [SerializeField] private Selectable resetYesButton;
+    [Space(10)]
+
+    [SerializeField] public List<InputIDToActionRef> actionsMap = new List<InputIDToActionRef>();
+    [SerializeField] private List<RebindButton> rebindButtons;
 
     [SerializeField] private GameObject waitingForInputObject = null;
     [SerializeField] private TextMeshProUGUI waitForInputLabel;
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private GameObject eventSystem;
     private Selectable lastSelected;
     InputIDToActionRef currRebinding = null;
 
+    private string startingBinds;
+
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+
+    private bool isControllerMenu = false;
+
+    private const int rebindTime = 5;
+    private Coroutine rebindTimerCoroutine = null;
+
+    private IEnumerator StartTimer()
+    {
+        for (int counter = rebindTime; counter >= 0; counter--)
+        {
+            timerText.text = counter.ToString();
+
+            yield return new WaitForSeconds(1);
+        }
+
+        rebindTimerCoroutine = null;
+        RebindComplete();
+    }
 
     public void StartRebinding(InputID _inputID, Selectable _lastSelected)
     {
@@ -169,6 +239,8 @@ public class RebindControlsMenu : Submenu
             Debug.LogError("Already rebinding!!");
             return;
         }
+
+        rebindTimerCoroutine = StartCoroutine(StartTimer());
 
         int inputIndex = (int)_inputID;
 
@@ -186,23 +258,35 @@ public class RebindControlsMenu : Submenu
         if (inputIndex <= (int)InputID.RIGHT)
         {
             rebindingOperation = currRebinding.Action.action.PerformInteractiveRebinding(inputIndex + 1)
-                //.WithControlsExcluding("Mouse")
                 .OnMatchWaitForAnother(0.1f)
-                .OnComplete(operation => RebindComplete())
+                .WithExpectedControlType("Button")
+                .OnCancel(_ => RebindComplete())
+                .OnComplete(_ => RebindComplete())
                 .Start();
         }
         else
         {
             rebindingOperation = currRebinding.Action.action.PerformInteractiveRebinding()
-                //.WithControlsExcluding("Mouse")
                 .OnMatchWaitForAnother(0.1f)
-                .OnComplete(operation => RebindComplete())
+                .OnCancel(_ => RebindComplete())
+                .OnComplete(_ => RebindComplete())
                 .Start();
         }
     }
 
+    public void SetIsControllerMenu(bool _isControllerMenu)
+    {
+        isControllerMenu = _isControllerMenu;
+    }
+
+
     private void RebindComplete()
     {
+        if (rebindTimerCoroutine != null)
+        {
+            StopCoroutine(rebindTimerCoroutine);
+        }
+
         UpdateButtonText(currRebinding);
 
         rebindingOperation.Dispose();
@@ -226,35 +310,113 @@ public class RebindControlsMenu : Submenu
         yield return null;
 
         eventSystem.SetActive(true);
+
+        yield return null;
+
+        foreach (InputIDToActionRef actionRef in actionsMap)
+            UpdateButtonText(actionRef);
     }
 
     private void UpdateButtonText(InputIDToActionRef actionRef)
     {
+        int index = (int)actionRef.InputID;
+        if (index >= rebindButtons.Count)
+        {
+            Debug.LogWarning($"Index out of range of rebindButtons: {index}");
+            return;
+        }
+
         RebindButton currButton = rebindButtons[(int)actionRef.InputID];
         InputActionReference currAction = actionRef.Action;
 
+        /*
         int bindingIndex;
         if ((int)actionRef.InputID <= (int)InputID.RIGHT)
             bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[(int)actionRef.InputID]);
         else
-            bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[0]);
+        {
+            if (isControllerMenu)
+                bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[1]);
+            else
+                bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[0]);
+        }
 
-        string bindingName = InputControlPath.ToHumanReadableString(
-            currAction.action.bindings[bindingIndex].effectivePath,
-            InputControlPath.HumanReadableStringOptions.OmitDevice).ToLower()
-            .Replace("left button", "lmb")
-            .Replace("right button", "rmb")
-            .Replace("control", "ctrl")
-            .Replace("left ", "l ")
-            .Replace("right ", "r ");
+        string bindingName;
+        if (isControllerMenu)
+        {
+            //Controller binds
+            bindingName = Utils.GetSpriteForBinding(currAction.action.bindings[bindingIndex], listofTmpSpriteAssets.SpriteAssets[(int)SaveData.CurrSaveData.ButtonDisplayType]);
+        }
+        else
+        {
+            //Keyboard binds
+            bindingName = Utils.GetSpriteForBinding(currAction.action.bindings[bindingIndex], listofTmpSpriteAssets.SpriteAssets[0]);
+        }
 
-        actionRef.Name = bindingName;
+        currButton.SetLabel(bindingName);*/
 
-        currButton.SetLabel(bindingName);
+        if (isControllerMenu)
+            currButton.SetLabel(GetNameOfBinding(actionRef.InputID, SaveData.CurrSaveData.ButtonDisplayType));
+        else
+            currButton.SetLabel(GetNameOfBinding(actionRef.InputID, ButtonDisplayTypeEnum.Keyboard));
     }
 
-    public static string GetNameOfBinding(InputID _button)
+    public string GetNameOfBinding(InputID _button, ButtonDisplayTypeEnum controllerType = ButtonDisplayTypeEnum.Keyboard)
     {
-        return instance.actionsMap[(int)_button].Name;
+        InputActionReference currAction = actionsMap[(int)_button].Action;
+
+        int bindingIndex;
+        if ((int)_button <= (int)InputID.RIGHT)
+        {
+            try
+            {
+                int index = (int)_button;
+                var inputControls = currAction.action.controls;
+                InputControl inputControl;
+
+                if (inputControls.Count == 4)
+                {
+                    inputControl = inputControls[index];
+                }
+                else
+                {
+                    int offset = (4 - inputControls.Count);
+                    int newIndex = Math.Max(0, index - offset);
+                    inputControl = inputControls[newIndex];
+                }
+
+                bindingIndex = currAction.action.GetBindingIndexForControl(inputControl);
+
+                //bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[(int)_button]);
+                //if (controllerType != ButtonDisplayTypeEnum.Keyboard)
+                //bindingIndex++;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+
+                int index = 0;
+                var inputControls = currAction.action.controls;
+                var inputControl = inputControls[index];
+                bindingIndex = currAction.action.GetBindingIndexForControl(inputControl);
+            }
+        }
+        else
+        {
+            //if (controllerType == ButtonDisplayTypeEnum.Keyboard)
+            bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[0]);
+            //else
+            //bindingIndex = currAction.action.GetBindingIndexForControl(currAction.action.controls[1]);
+        }
+
+        if (currAction.action.bindings[bindingIndex].effectivePath.Contains("<Gamepad>/"))
+            return Utils.GetSpriteForBinding(currAction.action.bindings[bindingIndex], listofTmpSpriteAssets.SpriteAssets[1]);
+
+
+        //if (controllerType == ButtonDisplayTypeEnum.Keyboard)
+        return Utils.GetSpriteForBinding(currAction.action.bindings[bindingIndex], listofTmpSpriteAssets.SpriteAssets[0]);
+
+        //else
+        //return Utils.GetSpriteForBinding(currAction.action.bindings[bindingIndex], listofTmpSpriteAssets.SpriteAssets[(int)SaveData.CurrSaveData.ButtonDisplayType]);
     }
 }

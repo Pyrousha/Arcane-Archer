@@ -331,20 +331,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8914494826352335568}
     m_Modifications:
+    - target: {fileID: 6104792917473199220, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199220, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -9.999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199220, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199220, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
         type: 3}
       propertyPath: m_text
-      value: Space
+      value: <sprite="KB" name="KB_w">
       objectReference: {fileID: 0}
     - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
         type: 3}
       propertyPath: m_fontSize
-      value: 48
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_fontSizeMax
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
         type: 3}
       propertyPath: m_fontSizeBase
-      value: 48
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_enableAutoSizing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6104792917473199221, guid: 693a78cafdd5f15428341421d39d20c7,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 4096
       objectReference: {fileID: 0}
     - target: {fileID: 6104792917473199223, guid: 693a78cafdd5f15428341421d39d20c7,
         type: 3}
