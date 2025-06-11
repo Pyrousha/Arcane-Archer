@@ -18,7 +18,7 @@ public class LevelButton : MonoBehaviour
             levelLabel.text += "0";
         levelLabel.text += (Index + 1);
 
-        lockedObj.SetActive(!levelInfo.Unlocked);
+        lockedObj.SetActive(!levelInfo.Unlocked && !SaveData.CurrSaveData.FinishedGame);
         if (levelInfo.Seconds > 0)
         {
             //Level finished before
@@ -55,6 +55,10 @@ public class LevelButton : MonoBehaviour
         StageClearCanvas.Instance.ToLastSubmenu();
         SceneTransitioner.IsFullGame = false;
         Timer.Instance.SetTimerVisualsStatus(false, true);
-        SceneTransitioner.Instance.LoadSceneWithIndex(SceneTransitioner.FIRST_LEVEL_INDEX + Index);
+
+        int targIndex = SceneTransitioner.FIRST_LEVEL_INDEX + Index;
+        if (targIndex >= SceneTransitioner.CREDITS_SCENE_INDEX)
+            targIndex++;
+        SceneTransitioner.Instance.LoadSceneWithIndex(targIndex);
     }
 }

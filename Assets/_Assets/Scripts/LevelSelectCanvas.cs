@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelSelectCanvas : Submenu
 {
@@ -35,6 +36,21 @@ public class LevelSelectCanvas : Submenu
     }
     #endregion
 
+    private void OnValidate()
+    {
+        List<Selectable> selectables = new List<Selectable>();
+
+        for (int i = 0; i < levels.Count; i++)
+        {
+            levels[i].Index = i;
+            levels[i].gameObject.name = "Level_" + i;
+
+            selectables.Add(levels[i].gameObject.GetComponent<Selectable>());
+        }
+
+        GetComponent<LinkSelectables>().SetSelectables(selectables);
+    }
+
     private void Start()
     {
         if (parent.activeSelf)
@@ -61,7 +77,7 @@ public class LevelSelectCanvas : Submenu
         }
         allLevelsButton.SetData();
 
-        if (SaveData.CurrSaveData.BestFullTime > 0)
+        if (SaveData.CurrSaveData.FinishedGame)
         {
             float sum = 0;
             for (int i = 0; i < levels.Count; i++)
@@ -74,6 +90,9 @@ public class LevelSelectCanvas : Submenu
 
         isOpen = true;
         parent.SetActive(true);
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(parent.gameObject.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(parent.gameObject.GetComponent<RectTransform>());
     }
 
     private void ClosePopup()

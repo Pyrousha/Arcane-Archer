@@ -69,6 +69,10 @@ public class SteamManager : MonoBehaviour
 
     protected virtual void Awake()
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         // Only one instance of SteamManager at a time!
         if (s_instance != null)
         {
@@ -148,6 +152,10 @@ public class SteamManager : MonoBehaviour
     // This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
     protected virtual void OnEnable()
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         if (s_instance == null)
         {
             s_instance = this;

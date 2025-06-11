@@ -31,6 +31,10 @@ public class DiscordController : MonoBehaviour
 
     void Start()
     {
+#if UNITY_EDITOR
+        return;
+#endif
+
         // Log in with the Application ID
         discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.NoRequireDiscord);
 

@@ -32,6 +32,8 @@ public class Arrow : MonoBehaviour
 
     private Rigidbody rb;
 
+    private bool bufferedExplosion = false;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -133,7 +135,23 @@ public class Arrow : MonoBehaviour
             }
         }
 
-        if ((state == ArrowStateEnum.InGround || state == ArrowStateEnum.Fired) && InputHandler.Instance.Explode.Down)
+        if (bufferedExplosion)
+        {
+            if (!PlayerController.Instance.IsWithinArrowReleaseBuffer())
+            {
+                bufferedExplosion = false;
+                Explode();
+                return;
+            }
+        }
+        else
+        {
+            if (PlayerController.Instance.IsWithinArrowReleaseBuffer() && InputHandler.Instance.Explode.Down_NoBufferRemoval())
+                bufferedExplosion = true;
+        }
+
+        if ((state == ArrowStateEnum.InGround || state == ArrowStateEnum.Fired) &&
+            (InputHandler.Instance.Explode.Down || bufferedExplosion))
             Explode();
     }
 
@@ -157,11 +175,16 @@ public class Arrow : MonoBehaviour
         }
         else
         {
+            //Prevent recall if arrow was just fired
+            if (PlayerController.Instance.IsWithinArrowReleaseBuffer())
+                return;
+
             Instantiate(recallExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        ObjReferencer.Instance.ArrowRecallSFX.Play(0.125f);
+        bufferedExplosion = false;
 
+        ObjReferencer.Instance.ArrowRecallSFX.Play(0.125f);
         ObjReferencer.Instance.ExplodeIndicator.SetActive(false);
 
         state = ArrowStateEnum.FlyingBack;
@@ -185,6 +208,8 @@ public class Arrow : MonoBehaviour
 
     public void Fire(Transform targArrowPos, float arrowPower)
     {
+        bufferedExplosion = false;
+
         arrowAnim.ResetTrigger("FadeOut");
         arrowAnim.SetTrigger("FadeIn");
 

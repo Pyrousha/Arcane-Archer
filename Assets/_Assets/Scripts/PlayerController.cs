@@ -67,6 +67,8 @@ public class PlayerController : Singleton<PlayerController>
     private bool levelOver = false;
 
     private bool releasedArrow = false;
+    private float nextArrowRecallTime;
+    private const float instantRecallDuration = 0.2f;
 
     private Vector3 camTargOffsetStart;
 
@@ -93,7 +95,10 @@ public class PlayerController : Singleton<PlayerController>
     private void Start()
     {
         if (SceneTransitioner.Instance == null)
+        {
+            SceneTransitioner.SetSceneToLoadAfterNextTransition(SceneManager.GetActiveScene().buildIndex);
             SceneManager.LoadScene(0);
+        }
 
         ObjReferencer.Instance.ArrowFire_Bow.localScale = Vector3.zero;
 
@@ -137,6 +142,11 @@ public class PlayerController : Singleton<PlayerController>
             currScreenshakeRoutine = StartCoroutine(CameraShakeRoutine(_numberOfTimesToRepeat));
         else
             currScreenshakeRoutine = null;
+    }
+
+    public bool IsWithinArrowReleaseBuffer()
+    {
+        return Time.time <= nextArrowRecallTime;
     }
 
     void Update()
@@ -193,6 +203,7 @@ public class PlayerController : Singleton<PlayerController>
 
                     if (bowDrawPercent >= 0.5f && releasedArrow)
                     {
+                        nextArrowRecallTime = Time.time + instantRecallDuration;
                         FireArrow(bowDrawPercent);
                     }
 

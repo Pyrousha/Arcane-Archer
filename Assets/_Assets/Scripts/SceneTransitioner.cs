@@ -35,11 +35,17 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
         restartActive = false;
     }
 
+    private static int sceneToLoadAfterNextTransition = -1;
+    public static void SetSceneToLoadAfterNextTransition(int buildIndex)
+    {
+        sceneToLoadAfterNextTransition = buildIndex;
+    }
+
     private void Update()
     {
         if (InputHandler.Instance.Restart.Down)
         {
-            if (CurrBuildIndex > MAIN_MENU_INDEX && CurrBuildIndex < CREDITS_SCENE_INDEX)
+            if (CurrBuildIndex > MAIN_MENU_INDEX && CurrBuildIndex != CREDITS_SCENE_INDEX)
             {
                 if (!restartActive)
                 {
@@ -64,7 +70,11 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
     {
         LevelFinished = true;
         Timer.Instance.PauseTimer();
-        bool isNewBestTime = SaveData.Instance.OnLevelCompleted(CurrBuildIndex - FIRST_LEVEL_INDEX, Timer.Instance.CurrTime);
+        int levelIndex = CurrBuildIndex;
+        if (levelIndex >= CREDITS_SCENE_INDEX)
+            levelIndex--;
+        levelIndex -= FIRST_LEVEL_INDEX;
+        bool isNewBestTime = SaveData.Instance.OnLevelCompleted(levelIndex, Timer.Instance.CurrTime);
 
         if (IsFullGame)
         {
@@ -88,7 +98,7 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
         }
         else
         {
-            StageClearCanvas.Instance.OpenPopup(SaveData.CurrSaveData.LevelsList[CurrBuildIndex - FIRST_LEVEL_INDEX], isNewBestTime);
+            StageClearCanvas.Instance.OpenPopup(SaveData.CurrSaveData.LevelsList[levelIndex], isNewBestTime);
             PlayerController.Instance.OnLevelEnd();
         }
     }
@@ -180,6 +190,15 @@ public class SceneTransitioner : Singleton<SceneTransitioner>
         yield return new WaitForSeconds(FADE_ANIM_DURATION);
 
         IsFading = false;
+
+        if (sceneToLoadAfterNextTransition > -1 && CurrBuildIndex == MAIN_MENU_INDEX)
+        {
+            LoadSceneWithIndex(sceneToLoadAfterNextTransition);
+
+            IsFullGame = false;
+            Timer.Instance.SetTimerVisualsStatus(false, true);
+            sceneToLoadAfterNextTransition = -1;
+        }
     }
 
     public void Restart()

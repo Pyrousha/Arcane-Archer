@@ -223,6 +223,25 @@ public class InputHandler : Singleton<InputHandler>
             get;
             private set;
         }
+
+        public bool Down_NoBufferRemoval()
+        {
+            if (handler.bufferEnabled && handler.inputBuffer != null)
+            {
+                foreach (var frame in handler.inputBuffer)
+                {
+                    if (frame.ContainsKey(id) && frame[id] == STATE_PRESSED)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            //Buffer disabled
+            return (Holding && firstFrame);
+        }
+
         public bool Down
         {
             get

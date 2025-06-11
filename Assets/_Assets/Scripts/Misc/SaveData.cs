@@ -11,7 +11,7 @@ public class SaveData : Singleton<SaveData>
     public static SerializedSaveData CurrSaveData;
 
     public const string SAVE_KEY = "SaveData";
-    public const int NUM_TOTAL_LEVELS = 12;
+    public const int NUM_TOTAL_LEVELS = 18;
 
     [field: SerializeField] public string VersionNumText { get; private set; } = "Version 20xx";
 
@@ -104,7 +104,7 @@ public class SaveData : Singleton<SaveData>
     {
         bool toReturn = false;
 
-        if (CurrSaveData.BestFullTime > 0)
+        if (CurrSaveData.FinishedGame)
         {
             //Game has been finished before
             if (_secs < CurrSaveData.BestFullTime)
@@ -140,6 +140,7 @@ public class SerializedSaveData
     public float MouseSens = 64f / 255f;
     public float Fov = 90;
     public float BestFullTime = 0;
+    public bool FinishedGame => BestFullTime > 0;
 
     public string ReboundControls = null;
 

@@ -59,7 +59,7 @@ public class AchievementHandler : Singleton<AchievementHandler>
         {
             if (!initialized)
             {
-                Debug.LogError("Need to initialize first!");
+                //Debug.LogError("Need to initialize first!");
                 TryInit();
 
                 if (!initialized)

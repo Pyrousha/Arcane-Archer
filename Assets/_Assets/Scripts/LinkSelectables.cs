@@ -14,6 +14,11 @@ public class LinkSelectables : MonoBehaviour
     [Space(10)]
     [SerializeField] private List<Selectable> selectables;
 
+    public void SetSelectables(List<Selectable> newSelectables)
+    {
+        selectables = newSelectables;
+    }
+
     public void Link()
     {
         if (startVertical)

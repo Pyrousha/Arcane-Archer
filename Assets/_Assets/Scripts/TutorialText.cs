@@ -24,7 +24,10 @@ public class TutorialText : Singleton<TutorialText>
 
     private void Start()
     {
-        currLevelIndex = SceneTransitioner.CurrBuildIndex - SceneTransitioner.FIRST_LEVEL_INDEX;
+        currLevelIndex = SceneTransitioner.CurrBuildIndex;
+        if (currLevelIndex >= SceneTransitioner.CREDITS_SCENE_INDEX)
+            currLevelIndex--;
+        currLevelIndex -= SceneTransitioner.FIRST_LEVEL_INDEX;
         SetText();
     }
 
@@ -150,6 +153,24 @@ public class TutorialText : Singleton<TutorialText>
 
             case 11:
                 return $"Who needs floor anyways?";
+
+            case 12:
+                return $"Level 13";
+
+            case 13:
+                return $"Level 14";
+
+            case 14:
+                return $"Level 15";
+
+            case 15:
+                return $"Level 16";
+
+            case 16:
+                return $"Level 17";
+
+            case 17:
+                return $"Level 18";
 
             default:
                 return "ERROR_NO_TUTORIAL_TEXT";

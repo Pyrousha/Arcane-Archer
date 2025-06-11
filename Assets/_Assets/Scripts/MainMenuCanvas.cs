@@ -16,8 +16,8 @@ public class MainMenuCanvas : Submenu
     {
         Cursor.lockState = CursorLockMode.None;
 
-        levelSelectButton.interactable = SaveData.CurrSaveData.BestFullTime > 0;
-        if (SaveData.CurrSaveData.BestFullTime <= 0)
+        levelSelectButton.interactable = SaveData.CurrSaveData.FinishedGame;
+        if (!SaveData.CurrSaveData.FinishedGame)
         {
             //Game has not been finished before, disable level select button
             levelSelectButton.interactable = false;

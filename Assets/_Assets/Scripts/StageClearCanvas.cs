@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StageClearCanvas : Submenu
@@ -51,7 +52,8 @@ public class StageClearCanvas : Submenu
             bestTimeLabel.text = "Best: " + Timer.TimeToString(_levelStruct.Seconds);
 
         //If this is the last level, shouldn't be able to click next
-        nextLevelButton.interactable = ((SceneTransitioner.CurrBuildIndex + 1) != SceneTransitioner.CREDITS_SCENE_INDEX);
+        nextLevelButton.interactable = ((SceneTransitioner.CurrBuildIndex + 1) != SceneTransitioner.CREDITS_SCENE_INDEX &&
+            (SceneTransitioner.CurrBuildIndex + 1 < SceneManager.sceneCountInBuildSettings));
         parent.SetActive(true);
 
         firstSelectable.Select();
