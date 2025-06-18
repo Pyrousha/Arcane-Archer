@@ -51,22 +51,22 @@ EditorBuildSettings:
     path: Assets/_Assets/Scenes/CreditsScene.unity
     guid: 37969b9f5fd641645a310574f85ed9ad
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_13.unity
+    path: Assets/_Assets/Scenes/Level_13 (superjump or not).unity
     guid: c961fbd25a2159a4d97945ed3721b071
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_14.unity
+    path: Assets/_Assets/Scenes/Level_14 (flappy bird).unity
     guid: a86becc2cdebeb64f8ae9d4bea042f29
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_15.unity
+    path: Assets/_Assets/Scenes/Level_15 (dropper).unity
     guid: c9d3cc7b9e25f2e4a9bb460007ffc10c
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_16.unity
+    path: Assets/_Assets/Scenes/Level_16 (monkey bars)).unity
     guid: 7edc5799793c20d4b8408283687b70de
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_17.unity
+    path: Assets/_Assets/Scenes/Level_17 (split paths).unity
     guid: 21990a4e036886b45ba9942829275b15
   - enabled: 1
-    path: Assets/_Assets/Scenes/Level_18.unity
+    path: Assets/_Assets/Scenes/Level_18 (ceiling intro maybe).unity
     guid: 2395918d04c407f4d88ef4f8bf26ebb6
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: fa58b037fdd20984cbc83566b188a834,
